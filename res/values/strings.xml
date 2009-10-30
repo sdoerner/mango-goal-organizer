@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+
+  This file is part of Mango.
+
+  Mango is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mango is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mango.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
+<resources>
+    <string name="app_name">Mango - Mobile ANdroid Goal Organizer</string>
+    <string name="app_description">Mobile ANdroid Goal Organizer</string>
+    <string name="ActivityTitle_Create">Mango - Create Goal</string>
+    <string name="ActivityTitle_Modify">Mango - Modify Goal</string>
+    <string name="Create_Helptext">For a good goal it is important to fulfill the following criteria:\n\n-Concreteness (What exactly do I want to achieve?)\n\n-Measurability (How can I detect wheter or not the goal has already been achieved?)\n\n-Positively phrased (Phrasing without: \'no\', \'not\', etc.)\n\n-Predictability (Can I imagine how to achieve the goal?\nDo I know the first step?)\n\n-Personal Integration (Does it fit to myself?)\n\n-Reachability (Do I believe that I am able to achieve the goal?)\n\n-Personal (I am the one who wants to achieve the goal!)\n\n-Meaningful (Does the goal bring certain benefits?)\n\n-Motivating (I am looking forward to reaching the goal.)\n\n-Temporally Fixed (The goal has a strict deadline.)</string>
+    <color name="Orange">#f9a41a</color>
+
+    <!-- Progress Colors -->
+    <!-- [0,25 -->
+    <color name="Progress_low">#f00</color>
+    <!-- [25,50) -->
+    <color name="Progress_lowerMiddle">#b4402a</color>
+    <!-- [50,75) -->
+    <color name="Progress_upperMiddle">#a1732a</color>
+    <!-- [75,100) -->
+    <color name="Progress_high">#8b873d</color>
+    <!-- [100,100] -->
+    <color name="Progress_complete">#b097c03d</color>
+
+    <!-- Colors of Create Dialog -->
+    <color name="DarkGreen">#ff339900</color>
+    <color name="DarkGray">#ff240127</color>
+</resources>
+

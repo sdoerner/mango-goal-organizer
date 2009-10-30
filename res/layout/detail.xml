@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+
+  This file is part of Mango.
+
+  Mango is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mango is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mango.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/Orange">
+	<RelativeLayout
+		android:id="@+detail/globals"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:paddingLeft="5px"
+		android:paddingRight="5px"
+		>
+		<RelativeLayout 
+			android:id="@+detail/helper"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			>
+			<TextView 
+				android:id="@+detail/name"
+				android:text="name"
+				android:textColor="#ffffffff"
+				android:textSize="25sp"
+				android:textStyle="bold"
+				android:maxHeight="100px"
+				android:paddingRight="10px"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:layout_marginLeft="15px"
+				/>
+			<ImageView
+				android:id="@+detail/image"
+				android:src="@drawable/nopic"
+				android:paddingRight="10px"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:maxWidth="150px"
+				android:adjustViewBounds="true"
+				android:layout_below="@detail/name" 
+				android:layout_marginTop="5px"
+				/>
+			<TextView
+				android:id="@+detail/deadline"
+				android:text="deadline"
+				android:textColor="#ff000000"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:paddingBottom="10px"
+				android:paddingTop="20px"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@detail/name"
+				android:layout_toRightOf="@detail/image"
+				android:layout_alignTop="@detail/image"
+				/>
+			<TextView 
+				android:id="@+detail/completion"
+				android:textColor="#ff000000" 
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@detail/deadline"
+				android:layout_toRightOf="@detail/image"
+				/>
+		</RelativeLayout>
+		<de.mango.gui.HorizontalSlide 
+			android:id="@+detail/progress"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:max="100"
+			android:layout_width="240px"
+			android:layout_height="wrap_content"
+			android:layout_below="@detail/helper"
+			android:layout_marginTop="5px"
+			android:layout_marginBottom="10px"
+			/>
+		<Button
+			android:id="@+detail/progressChangeButton"
+			android:text="Change"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@detail/progress"
+			android:layout_alignBottom="@detail/progress"
+			/>
+		<TextView 
+			android:id="@+detail/description"
+			android:text="description"
+			android:textColor="#ff000000"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:paddingBottom="10px"
+			android:layout_width="300px" 
+			android:layout_height="wrap_content"
+			android:layout_below="@detail/progress"
+			android:layout_centerHorizontal="true"
+			/>
+		<TextView
+			android:id="@+detail/subgoalsCaption"
+			android:text="Sub-Goals"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:textColor="#ff339900"
+			android:textSize="25sp"
+			android:maxHeight="100px"
+			android:paddingRight="10px"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@detail/description"
+			/>
+		<LinearLayout
+			android:id="@+detail/subgoalsLayout"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@detail/subgoalsCaption"
+			/>
+	</RelativeLayout>
+</ScrollView>

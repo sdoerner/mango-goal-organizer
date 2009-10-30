@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+
+  This file is part of Mango.
+
+  Mango is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mango is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mango.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/Orange"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:padding="5dp"
+		>
+		<EditText 
+		android:id="@+picture/searchString"
+		android:textSize="18sp"
+		android:layout_width="300px"
+		android:layout_height="wrap_content"
+		android:layout_margin="4dp"
+		android:maxLines="1"
+		android:inputType="text"
+		android:nextFocusDown="@picture/searchButton"
+		/>
+		<Button 
+			android:text="Search"
+			android:id="@+picture/searchButton"
+			android:layout_width="120px"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@picture/searchString"
+			android:layout_alignBaseline="@picture/searchString"
+			/>
+		<ImageView
+			android:id="@+picture/mainImageView"
+			android:src="@drawable/nopic"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@picture/searchString"
+			android:adjustViewBounds="true"
+			android:maxWidth="300px"
+			/>
+		<ImageButton 
+			android:id="@+picture/nextButton"
+			android:src="@android:drawable/ic_media_play"
+			android:layout_centerHorizontal="true"
+			android:layout_width="80px"
+			android:layout_height="50px"
+			android:layout_alignLeft="@picture/searchButton"
+			android:layout_marginTop="20px"
+			android:layout_alignTop="@picture/mainImageView"
+			/>
+		<Button 
+			android:id="@+picture/attacheButton"
+			android:text="Attache"
+			android:layout_centerHorizontal="true"
+			android:layout_width="80px"
+			android:layout_height="50px"
+			android:layout_alignLeft="@picture/searchButton"
+			android:layout_marginTop="20px"
+			android:layout_below="@picture/nextButton"
+			/>
+	</RelativeLayout>
+</ScrollView>

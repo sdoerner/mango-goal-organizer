@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+
+  This file is part of Mango.
+
+  Mango is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mango is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mango.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/Orange"
+	>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:paddingLeft="5px"
+		>
+		<ImageButton 
+			android:id="@+create/helpButton"
+			android:src="@drawable/help"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true" 
+			/>
+		<TextView
+			android:id="@+create/nameCaption"
+			android:text="Name of Goal" 
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:textColor="@color/DarkGray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"			
+			android:layout_above="@create/nameEditField"
+			android:layout_marginTop="5px"
+			android:layout_alignParentTop="true"
+			/>
+		<EditText
+			android:id="@+create/nameEditField"
+			android:maxLength="25"
+			android:singleLine="true"
+			android:textSize="18sp"
+			android:layout_width="250px"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5px"
+			android:layout_below="@create/nameCaption"
+			/>
+		<TextView 
+			android:id="@+create/descriptionCaption"
+			android:text="Description"
+			android:textStyle="bold"
+			android:textSize="16sp"
+			android:textColor="@color/DarkGray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/nameEditField"
+			android:layout_marginTop="5px"
+			/>
+		<EditText 
+			android:id="@+create/descriptionEditField"
+			android:textSize="16sp"
+			android:layout_width="250px"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/descriptionCaption"
+			android:layout_marginTop="5px"
+			/>
+		<TextView 
+			android:id="@+create/deadLineCaption"
+			android:text="Deadline"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:textColor="@color/DarkGray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/descriptionEditField"
+			android:layout_marginTop="5px"
+			/>
+		<DatePicker 
+			android:id="@+create/deadlineDatePicker"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/deadLineCaption"
+			/>
+		<TextView 
+			android:id="@+create/progressCaption"
+			android:text="Progress:"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:textColor="@color/DarkGray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/deadlineDatePicker"
+			android:layout_marginTop="5px"
+			/>
+		<de.mango.gui.HorizontalSlide
+			android:id="@+create/progressBar"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:max="100"
+			android:layout_width="295px"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/deadlineDatePicker"
+			android:layout_marginTop="5px"
+			android:layout_toRightOf="@create/progressCaption"
+			android:layout_marginLeft="5px"
+			/>
+		<Button
+			android:id="@+create/cancelButton"
+			android:text="Cancel"
+			android:textSize="16sp"
+			android:layout_width="175px"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/progressBar"
+			android:layout_marginTop="5px"
+			/>
+		<Button
+			android:id="@+create/saveButton"
+			android:text="Save"
+			android:textSize="16sp"
+			android:layout_width="175px"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/progressBar"
+			android:layout_alignRight="@create/progressBar"
+			android:layout_marginTop="5px"
+			/>
+		
+			
+		<ImageButton
+			android:id="@+create/imagebutton"
+			android:src="@drawable/imagebutton"
+			android:scaleType="centerInside"
+			android:layout_width="200px"
+			android:layout_height="200px"
+			android:layout_alignParentRight="true"
+			android:layout_below="@create/helpButton"
+			android:layout_marginTop="5px"
+			android:layout_marginRight="10px"
+			/>
+		<TextView
+			android:id="@+create/weightCaption"
+			android:text="Weight:"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:textColor="@color/DarkGray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@create/imagebutton"
+			android:layout_alignLeft="@create/imagebutton"
+			android:layout_marginTop="20px"
+			android:layout_marginLeft="40px"
+			/>
+		<RadioGroup 
+			android:id="@+create/weightRadioGroup"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:layout_below="@create/imagebutton"
+			android:layout_marginRight="10px"
+			>
+			<RadioButton
+				android:id="@+create/weightRadioButtonLow"
+				android:text="low"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				/>
+			<RadioButton
+				android:id="@+create/weightRadioButtonMedium"
+				android:text="normal"
+				android:checked="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				/>
+			<RadioButton 
+				android:id="@+create/weightRadioButtonHigh"
+				android:text="high"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				/>
+		</RadioGroup>
+
+	</RelativeLayout>
+</ScrollView>
