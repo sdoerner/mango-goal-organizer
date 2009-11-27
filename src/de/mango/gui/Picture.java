@@ -86,7 +86,7 @@ public class Picture extends Activity implements OnClickListener,
 			iv.setImageBitmap(bm);
 			imageVector.add(bm);
 
-			Toast t = Toast.makeText(this, "Please type in your search query.",
+			Toast t = Toast.makeText(this, R.string.Picture_type_search_query,
 					Toast.LENGTH_LONG);
 			t.setGravity(Gravity.TOP, 0, 0);
 			t.show();
@@ -154,7 +154,7 @@ public class Picture extends Activity implements OnClickListener,
 			// Search for user input "searchString"
 			EditText queryField = (EditText) findViewById(R.picture.searchString);
 			//start progress
-			pd = ProgressDialog.show(Picture.this, "Searching..", "Searching for Images",
+			pd = ProgressDialog.show(Picture.this, getString(R.string.Picture_search_progress_title), getString(R.string.Picture_search_progress_text),
 					true, false);
 			search(queryField.getText().toString());
 		}
@@ -178,7 +178,7 @@ public class Picture extends Activity implements OnClickListener,
 			iv.setImageBitmap(bitmaps.get(0));
 			counter = 0;
 		} else
-			Toast.makeText(this, "Sorry, no results for your query.",
+			Toast.makeText(this, R.string.Picture_no_results,
 					Toast.LENGTH_SHORT).show();
 	}
 

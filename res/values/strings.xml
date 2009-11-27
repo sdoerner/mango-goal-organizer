@@ -19,27 +19,83 @@
 
  -->
 <resources>
+	  <!-- General information -->
     <string name="app_name">Mango - Mobile ANdroid Goal Organizer</string>
     <string name="app_description">Mobile ANdroid Goal Organizer</string>
+    
+    <!-- Activity titles -->
+    <string name="ActivityTitle_Main">Mango - Goal Overview</string>
     <string name="ActivityTitle_Create">Mango - Create Goal</string>
     <string name="ActivityTitle_Modify">Mango - Modify Goal</string>
+    <string name="ActivityTitle_Hierarchy">Mango - Goal Hierarchy</string>
+    <string name="ActivityTitle_Picture">Mango - Picture Search</string>
+    <string name="ActivityTitle_Details">Mango - Goal Details</string>
+
+    <!-- Common Strings -->
+    <string name="How_to_send_the_goals">How to send the Goals?</string>
+    <string name="Please_select_a_file">Please select a file</string>
+    <string name="Really_delete">Do you really want to delete the Goal "%s" and all of its children?</string>
+    <string name="No_keep_it">No, keep it.</string>
+    <string name="Yes_delete_it">Yes, delete it.</string>
+    <string name="Progress">Progress</string>
+
+    <!-- Common Button Captions -->
+    <string name="Button_change">Change</string>
+    <string name="Button_accept">Accept</string>
+    <string name="Button_save">Save</string>
+    <string name="Button_cancel">Cancel</string>
+    <string name="Button_yes">Yes</string>
+    <string name="Button_no">No</string>
+    <string name="Button_ok">ok</string>
+    <string name="Button_modify">Modify</string>
+
+    <!-- Menu Entries -->
+    <string name="Menu_create_new_goal">Create New Goal</string>
+    <string name="Menu_create_subgoal">Create Subgoal</string>
+    <string name="Menu_show_details">Show Details</string>
+    <string name="Menu_modify_goal">Modify Goal</string>
+    <string name="Menu_delete_goal">Delete Goal</string>
+    <string name="Menu_import_xml">Import from XML File</string>
+    <string name="Menu_send_ics">Send ICS Export</string>
+    <string name="Menu_send_xml">Send XML Export</string>
+    <string name="Menu_export">Export</string>
+    <string name="Menu_export_ics">Export Goals to ICS File</string>
+    <string name="Menu_export_xml">Export Goals to XML File</string>
+    <string name="Menu_choose_calendar_application">Choose Calendar application</string>
+    <string name="Menu_export_to_calendar">Export to Calendar</string>
+
+    <!-- Create Activity -->
+    <string name="Create_high">high</string>
+    <string name="Create_normal">normal</string>
+    <string name="Create_low">low</string>
+    <string name="Create_weight">Weight</string>
+    <string name="Create_deadline">Deadline</string>
+    <string name="Create_description">Description</string>
+    <string name="Create_name_of_goal">Name of Goal</string>
     <string name="Create_Helptext">For a good goal it is important to fulfill the following criteria:\n\n-Concreteness (What exactly do I want to achieve?)\n\n-Measurability (How can I detect wheter or not the goal has already been achieved?)\n\n-Positively phrased (Phrasing without: \'no\', \'not\', etc.)\n\n-Predictability (Can I imagine how to achieve the goal?\nDo I know the first step?)\n\n-Personal Integration (Does it fit to myself?)\n\n-Reachability (Do I believe that I am able to achieve the goal?)\n\n-Personal (I am the one who wants to achieve the goal!)\n\n-Meaningful (Does the goal bring certain benefits?)\n\n-Motivating (I am looking forward to reaching the goal.)\n\n-Temporally Fixed (The goal has a strict deadline.)</string>
-    <color name="Orange">#f9a41a</color>
+    <string name="Create_Error_deadline_in_past">Deadline is in past!</string>
+    <string name="Create_Error_description_is_empty">Description is empty!</string>
+    <string name="Create_Error_name_is_empty">Name is empty!</string>
+    <string name="Create_DL_before_child">Deadline is before one or more child(ren) deadline(s).\n\nDo you want to change child(dren) deadlines automatically?</string>
+    <string name="Create_DL_behind_parent">Deadline is behind parent's deadline.\n\nDo you want to change parent's deadline automatically?</string>
+    <string name="Create_Helptitle">How to define a goal...</string>
+    <string name="Create_no_network">No network connection available.</string>
 
-    <!-- Progress Colors -->
-    <!-- [0,25 -->
-    <color name="Progress_low">#f00</color>
-    <!-- [25,50) -->
-    <color name="Progress_lowerMiddle">#b4402a</color>
-    <!-- [50,75) -->
-    <color name="Progress_upperMiddle">#a1732a</color>
-    <!-- [75,100) -->
-    <color name="Progress_high">#8b873d</color>
-    <!-- [100,100] -->
-    <color name="Progress_complete">#b097c03d</color>
+    <!-- Details Activity -->
+    <string name="Detail_sub_goals">Sub-Goals</string>
 
-    <!-- Colors of Create Dialog -->
-    <color name="DarkGreen">#ff339900</color>
-    <color name="DarkGray">#ff240127</color>
+    <!-- Main Activity -->
+    <string name="Main_goals_exported_to">Goals have been exported to\n</string>
+    <string name="Main_goals_saved_to">Goals have been saved to\n</string>
+    <string name="Main_import_successful">Import successful</string>
+    <string name="Main_import_failed">Import from %s failed</string>
+
+    <!-- Picture Activity -->
+    <string name="Picture_no_results">Sorry, no results for your query.</string>
+    <string name="Picture_search_progress_text">Searching for Images</string>
+    <string name="Picture_search_progress_title">Searching...</string>
+    <string name="Picture_type_search_query">Please type in your search query.</string>
+    <string name="Picture_attache">Attache</string>
+    <string name="Picture_search">Search</string>
 </resources>
 

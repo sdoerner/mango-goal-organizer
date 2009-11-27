@@ -41,7 +41,7 @@
 		android:nextFocusDown="@+picture/searchButton"
 		/>
 		<Button 
-			android:text="Search"
+			android:text="@string/Picture_search"
 			android:id="@picture/searchButton"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
 			/>
 		<Button 
 			android:id="@+picture/attacheButton"
-			android:text="Attache"
+			android:text="@string/Picture_attache"
 			android:layout_centerHorizontal="true"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

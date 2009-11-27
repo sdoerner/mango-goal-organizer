@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+
+  This file is part of Mango.
+
+  Mango is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mango is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mango.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
+<resources>
+    <!-- Activity titles -->
+    <string name="ActivityTitle_Main">Mango - Zielübersicht</string>
+    <string name="ActivityTitle_Create">Mango - Ziel erstellen</string>
+    <string name="ActivityTitle_Modify">Mango - Ziel bearbeiten</string>
+    <string name="ActivityTitle_Hierarchy">Mango - Zielhierarchie</string>
+    <string name="ActivityTitle_Picture">Mango - Bildersuche</string>
+    <string name="ActivityTitle_Details">Mango - Details eines Ziels</string>
+    
+    <!-- Common Strings -->
+    <string name="How_to_send_the_goals">Wie wollen Sie ihre Ziele versenden?</string>
+    <string name="Please_select_a_file">Bitte wählen Sie eine Datei aus</string>
+    <string name="Really_delete">Wollen Sie wirklich das Ziel "%s" und all seine Kinder löschen?</string>
+    <string name="No_keep_it">Nein, das Ziel behalten.</string>
+    <string name="Yes_delete_it">Ja, löschen.</string>
+    <string name="Progress">Fortschritt</string>
+
+    <!-- Common Button Captions -->
+    <string name="Button_change">Ändern</string>
+    <string name="Button_accept">OK</string>
+    <string name="Button_save">Speichern</string>
+    <string name="Button_cancel">Abbrechen</string>
+    <string name="Button_yes">Ja</string>
+    <string name="Button_no">Nein</string>
+    <string name="Button_ok">ok</string>
+    <string name="Button_modify">Speichern</string>
+
+    <!-- Menu Entries -->
+    <string name="Menu_create_new_goal">Neues Ziel erstellen</string>
+    <string name="Menu_create_subgoal">Sub-Ziel erstellen</string>
+    <string name="Menu_show_details">Details anzeigen</string>
+    <string name="Menu_modify_goal">Ziel bearbeiten</string>
+    <string name="Menu_delete_goal">Ziel löschen</string>
+    <string name="Menu_import_xml">Aus XML-Datei importieren</string>
+    <string name="Menu_send_ics">ICS-Export versenden</string>
+    <string name="Menu_send_xml">XML-Export versenden</string>
+    <string name="Menu_export">Exportieren</string>
+    <string name="Menu_export_ics">Ziele in ICS-Datei exportieren</string>
+    <string name="Menu_export_xml">Ziele in XML-Datei exportieren</string>
+    <string name="Menu_choose_calendar_application">Wählen Sie die Kalender-Anwendung</string>
+    <string name="Menu_export_to_calendar">In den Kalender exportieren</string>
+
+    <!-- Create Activity -->
+    <string name="Create_high">hoch</string>
+    <string name="Create_normal">normal</string>
+    <string name="Create_low">gering</string>
+    <string name="Create_weight">Gewicht</string>
+    <string name="Create_deadline">Termin</string>
+    <string name="Create_description">Beschreibung</string>
+    <string name="Create_name_of_goal">Name des Ziels</string>
+    <string name="Create_Helptext">Ein gutes Ziel will richtig formuliert sein. Hier einige Regeln, um das zu erreichen :\n\n-Konkretheit (Was genau will ich erreichen?)\n\n-Messbarkeit (Woran erkenne ich, dass ich das Ziel erreicht habe?)\n\n-Positiv formuliert (vermeide: \'kein\', \'nicht\', \'ohne\', etc.)\n\n-Planbarkeit (Ich habe eine Vorstellung, wie ich es erreiche.\nKenne ich den ersten Schritt?)\n\n-Integriert (Das Ziel passt zu mir, meinen Fähigkeiten, Werten, usw.)\n\n-Erreichbarkeit (Ich glaube, dass ich das Ziel erreichen kann.)\n\n-Eigen (Ich will das Ziel von mir auch erreichen, es ist nicht von außen an mich herangetragen.)\n\n-Sinnbehaftet (Das Ziel bringt für mich oder andere einen Nutzen.)\n\n-Motivierend (Ich freue mich darauf, das Ziel zu erreichen.)\n\n-Zeitlich fixiert (Das Ziel hat einen verbindlichen und genauen Termin.)</string>
+    <string name="Create_Error_deadline_in_past">Der Termin liegt in der Vergangenheit!</string>
+    <string name="Create_Error_description_is_empty">Die Beschreibung ist leer!</string>
+    <string name="Create_Error_name_is_empty">Der Name ist leer!</string>
+    <string name="Create_DL_before_child">Der Termin liegt vor dem von mindestens einem Kind.\n\nMöchten Sie die Termine der Kinder automatisch anpassen?</string>
+    <string name="Create_DL_behind_parent">Der Termin liegt hinter dem seines übergeordneten Ziels. \n\nMöchten Sie den Termin des übergeordneten Ziels automatisch anpassen?</string>
+    <string name="Create_Helptitle">Wie man ein Ziel definiert...</string>
+    <string name="Create_no_network">Keine Netzwerkverbindung verfügbar.</string>
+
+    <!-- Details Activity -->
+    <string name="Detail_sub_goals">Sub-Ziele</string>
+
+    <!-- Main Activity -->
+    <string name="Main_goals_exported_to">Die Ziele wurden exportiert in \n</string>
+    <string name="Main_goals_saved_to">Die Ziele wurden gespeichert in \n</string>
+    <string name="Main_import_successful">Import erfolgreich</string>
+    <string name="Main_import_failed">Import von %s fehlgeschlagen</string>
+
+    <!-- Picture Activity -->
+    <string name="Picture_no_results">Es tut uns leid, aber ihr Suchbegriff lieferte keine Resultate.</string>
+    <string name="Picture_search_progress_text">Suche nach Bildern</string>
+    <string name="Picture_search_progress_title">Suche läuft...</string>
+    <string name="Picture_type_search_query">Bitte geben Sie einen Suchbegriff ein.</string>
+    <string name="Picture_attache">Anhängen</string>
+    <string name="Picture_search">Suchen</string>
+</resources>
+

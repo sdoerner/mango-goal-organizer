@@ -153,7 +153,7 @@ public class Create extends Activity implements OnClickListener
 				if (goalImage==null && !g.getImageName().equals(""))
 					goalImage = ImageHandling.loadLocalBitmap(g.getImageName(), this);
 
-				save.setText("Modify");
+				save.setText(getResources().getString(R.string.Button_modify));
 			}
 		}
 		if (goalImage != null)
@@ -195,10 +195,10 @@ public class Create extends Activity implements OnClickListener
 		if (v == findViewById(R.create.helpButton))
 		{
 			Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("How to define a goal...");
+			builder.setTitle(R.string.Create_Helptitle);
 			builder.setIcon(R.drawable.help);
 			builder.setMessage(R.string.Create_Helptext);
-			builder.setPositiveButton("ok", null);
+			builder.setPositiveButton(getResources().getString(R.string.Button_ok), null);
 			builder.show();
 		}
 		else if (v == findViewById(R.create.imagebutton))
@@ -214,7 +214,7 @@ public class Create extends Activity implements OnClickListener
 				startActivityForResult(i, 0);
 			}
 			else
-				Toast.makeText(this, "No network connection available.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getResources().getString(R.string.Create_no_network), Toast.LENGTH_SHORT).show();
 		}
 		else if (v == findViewById(R.create.saveButton))
 		{
@@ -254,10 +254,9 @@ public class Create extends Activity implements OnClickListener
 					{
 						mAlertDialogBuilder = new AlertDialog.Builder(this);
 						mAlertDialogBuilder.setCancelable(true);
-						mAlertDialogBuilder.setMessage("Deadline is behind parent's deadline."
-								+ "\n\nDo you want to change parent's deadline automatically?");
+						mAlertDialogBuilder.setMessage(R.string.Create_DL_behind_parent);
 						AlertDialog dialog = mAlertDialogBuilder.create();
-						dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+						dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.Button_yes),
 								new DialogInterface.OnClickListener()
 								{
 									public void onClick(DialogInterface dialog, int which)
@@ -276,7 +275,7 @@ public class Create extends Activity implements OnClickListener
 										}
 									}
 								});
-						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.Button_no),
 								(DialogInterface.OnClickListener) null);
 						dialog.show();
 					}
@@ -286,10 +285,9 @@ public class Create extends Activity implements OnClickListener
 						mAlertDialogBuilder = new AlertDialog.Builder(this);
 						mAlertDialogBuilder.setCancelable(true);
 						mAlertDialogBuilder
-								.setMessage("Deadline is after one or more child(ren) deadline(s)."
-										+ "\n\nDo you want to change child(dren) deadlines automatically?");
+								.setMessage(R.string.Create_DL_before_child);
 						AlertDialog dialog = mAlertDialogBuilder.create();
-						dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+						dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.Button_yes),
 								new DialogInterface.OnClickListener()
 								{
 									public void onClick(DialogInterface dialog, int which)
@@ -301,7 +299,7 @@ public class Create extends Activity implements OnClickListener
 										}
 									}
 								});
-						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.Button_no),
 								(DialogInterface.OnClickListener) null);
 						dialog.show();
 
@@ -330,7 +328,7 @@ public class Create extends Activity implements OnClickListener
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		// insert image chosen in Picture Acitivity
+		// insert image chosen in Picture Activity
 		if (resultCode == RESULT_OK)
 		{
 			ImageButton iv = (ImageButton) findViewById(R.create.imagebutton);
@@ -362,11 +360,11 @@ public class Create extends Activity implements OnClickListener
 
 		Vector<String> errors = new Vector<String>();
 		if (name.equals(""))
-			errors.add("- Name is empty!");
+			errors.add("- " + getString(R.string.Create_Error_name_is_empty));
 		if (description.equals(""))
-			errors.add("- Description is empty!");
+			errors.add("- " + getString(R.string.Create_Error_description_is_empty));
 		if (deadline.compareTo(new GregorianCalendar()) == -1)
-			errors.add("- Deadline is in past!");
+			errors.add("- " + getString(R.string.Create_Error_deadline_in_past));
 
 		if (!errors.isEmpty())
 		{

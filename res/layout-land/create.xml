@@ -38,7 +38,7 @@
 			/>
 		<TextView
 			android:id="@+create/nameCaption"
-			android:text="Name of Goal" 
+			android:text="@string/Create_name_of_goal" 
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:textColor="@color/DarkGray"
@@ -59,7 +59,7 @@
 			/>
 		<TextView 
 			android:id="@+create/descriptionCaption"
-			android:text="Description"
+			android:text="@string/Create_description"
 			android:textStyle="bold"
 			android:textSize="16sp"
 			android:textColor="@color/DarkGray"
@@ -78,7 +78,7 @@
 			/>
 		<TextView 
 			android:id="@+create/deadLineCaption"
-			android:text="Deadline"
+			android:text="@string/Create_deadline"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:textColor="@color/DarkGray"
@@ -117,7 +117,7 @@
 			/>
 		<Button
 			android:id="@+create/cancelButton"
-			android:text="Cancel"
+			android:text="@string/Button_cancel"
 			android:textSize="16sp"
 			android:layout_width="175px"
 			android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
 			/>
 		<Button
 			android:id="@+create/saveButton"
-			android:text="Save"
+			android:text="@string/Button_save"
 			android:textSize="16sp"
 			android:layout_width="175px"
 			android:layout_height="wrap_content"
@@ -171,20 +171,20 @@
 			>
 			<RadioButton
 				android:id="@+create/weightRadioButtonLow"
-				android:text="low"
+				android:text="@string/Create_low"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				/>
 			<RadioButton
 				android:id="@+create/weightRadioButtonMedium"
-				android:text="normal"
+				android:text="@string/Create_normal"
 				android:checked="true"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				/>
 			<RadioButton 
 				android:id="@+create/weightRadioButtonHigh"
-				android:text="high"
+				android:text="@string/Create_high"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				/>

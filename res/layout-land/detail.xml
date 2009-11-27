@@ -37,7 +37,6 @@
 			>
 			<TextView 
 				android:id="@+detail/name"
-				android:text="name"
 				android:textColor="#ffffffff"
 				android:textSize="25sp"
 				android:textStyle="bold"
@@ -61,7 +60,6 @@
 				/>
 			<TextView
 				android:id="@+detail/deadline"
-				android:text="deadline"
 				android:textColor="#ff000000"
 				android:textSize="16sp"
 				android:textStyle="bold"
@@ -96,7 +94,7 @@
 			/>
 		<Button
 			android:id="@+detail/progressChangeButton"
-			android:text="Change"
+			android:text="@string/Button_change"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@detail/progress"
@@ -116,7 +114,7 @@
 			/>
 		<TextView
 			android:id="@+detail/subgoalsCaption"
-			android:text="Sub-Goals"
+			android:text="@string/Detail_sub_goals"
 			android:visibility="gone"
 			android:textStyle="bold"
 			android:textColor="#ff339900"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Mango Orange -->	
+	<color name="Orange">#f9a41a</color>
+	
+    <!-- Progress Colors -->
+    <!-- [0,25 -->
+    <color name="Progress_low">#f00</color>
+    <!-- [25,50) -->
+    <color name="Progress_lowerMiddle">#b4402a</color>
+    <!-- [50,75) -->
+    <color name="Progress_upperMiddle">#a1732a</color>
+    <!-- [75,100) -->
+    <color name="Progress_high">#8b873d</color>
+    <!-- [100,100] -->
+    <color name="Progress_complete">#b097c03d</color>
+    
+    <!-- Colors of Create Dialog -->
+    <color name="DarkGreen">#ff339900</color>
+    <color name="DarkGray">#ff240127</color>
+</resources>

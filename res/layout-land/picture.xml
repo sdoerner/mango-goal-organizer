@@ -40,7 +40,7 @@
 		android:nextFocusDown="@picture/searchButton"
 		/>
 		<Button 
-			android:text="Search"
+			android:text="@string/Picture_search"
 			android:id="@+picture/searchButton"
 			android:layout_width="120px"
 			android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
 			android:id="@+picture/nextButton"
 			android:src="@android:drawable/ic_media_play"
 			android:layout_centerHorizontal="true"
-			android:layout_width="80px"
+			android:layout_width="85px"
 			android:layout_height="50px"
 			android:layout_alignLeft="@picture/searchButton"
 			android:layout_marginTop="20px"
@@ -68,9 +68,9 @@
 			/>
 		<Button 
 			android:id="@+picture/attacheButton"
-			android:text="Attache"
+			android:text="@string/Picture_attache"
 			android:layout_centerHorizontal="true"
-			android:layout_width="80px"
+			android:layout_width="85px"
 			android:layout_height="50px"
 			android:layout_alignLeft="@picture/searchButton"
 			android:layout_marginTop="20px"

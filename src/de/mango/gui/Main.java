@@ -108,15 +108,15 @@ public class Main extends Activity implements OnClickListener,
 		mPickFileAvailable = isIntentAvailable(this,"org.openintents.action.PICK_FILE");
 
 		menu.add(Menu.NONE, CreateGoalMenu, Menu.NONE,
-				"Create New Goal");
-		SubMenu submenu = menu.addSubMenu("Export");
+				R.string.Menu_create_new_goal);
+		SubMenu submenu = menu.addSubMenu(R.string.Menu_export);
 		submenu.add(Menu.NONE, ExportToXMLMenu,
-				Menu.NONE, "Export Goals to XML File");
+				Menu.NONE, R.string.Menu_export_xml);
 		submenu.add(Menu.NONE, ExportToICSMenu, Menu.NONE,
-				"Export Goals to ICS File");
-		submenu.add(Menu.NONE, SendXMLMenu, Menu.NONE, "Send XML Export");
-		submenu.add(Menu.NONE, SendICSMenu, Menu.NONE, "Send ICS Export");
-		menu.add(Menu.NONE, ImportFromXMLMenu, Menu.NONE,"Import from XML File");
+				R.string.Menu_export_ics);
+		submenu.add(Menu.NONE, SendXMLMenu, Menu.NONE, R.string.Menu_send_xml);
+		submenu.add(Menu.NONE, SendICSMenu, Menu.NONE, R.string.Menu_send_ics);
+		menu.add(Menu.NONE, ImportFromXMLMenu, Menu.NONE,R.string.Menu_import_xml);
 		return true;
 	}
 
@@ -138,13 +138,13 @@ public class Main extends Activity implements OnClickListener,
 				i = new Intent("org.openintents.action.PICK_FILE");
 				i.setData(Uri.parse("file:///sdcard/goals.mango"));
 				i.putExtra("org.openintents.extra.TITLE",
-						"Please select a file");
+						R.string.Please_select_a_file);
 				startActivityForResult(i, REQUEST_CODE_PICK_XML_EXPORT_FILE);
 			}
 			else
 			{
 				if (ImExport.exportToXML(crud, "/sdcard/goals.mango", this))
-					Toast.makeText(this, "Goals have been exported to \n/sdcard/goals.mango", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.Main_goals_exported_to+"\n/sdcard/goals.mango", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case ExportToICSMenu:
@@ -152,13 +152,13 @@ public class Main extends Activity implements OnClickListener,
 			{
 				i= new Intent("org.openintents.action.PICK_FILE");
 				i.setData(Uri.parse("file:///sdcard/goals.ics"));
-				i.putExtra("org.openintents.extra.TITLE", "Please select a file");
+				i.putExtra("org.openintents.extra.TITLE", R.string.Please_select_a_file);
 				startActivityForResult(i, REQUEST_CODE_PICK_ICS_FILE);
 			}
 			else
 			{
 				if (ImExport.exportToICS(crud, this, "/sdcard/goals.ics", true))
-					Toast.makeText(this, "Goals have been exported to \n/sdcard/goals.ics", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.Main_goals_exported_to +"\n/sdcard/goals.ics", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case SendXMLMenu:
@@ -168,7 +168,7 @@ public class Main extends Activity implements OnClickListener,
 			i.setType("text/xml");
 			i.putExtra(Intent.EXTRA_STREAM, Uri
 					.parse("file:///sdcard/goals.mango"));
-			i = Intent.createChooser(i, "How to send the Goals?");
+			i = Intent.createChooser(i, getString(R.string.How_to_send_the_goals));
 			startActivity(i);
 			break;
 		case SendICSMenu:
@@ -178,7 +178,7 @@ public class Main extends Activity implements OnClickListener,
 			i.setType("text/calendar");
 			i.putExtra(Intent.EXTRA_STREAM, Uri
 					.parse("file:///sdcard/goals.ics"));
-			i= Intent.createChooser(i, "How to send the Goals?");
+			i= Intent.createChooser(i, getString(R.string.How_to_send_the_goals));
 			startActivity(i);
 			break;
 		case ImportFromXMLMenu:
@@ -187,7 +187,7 @@ public class Main extends Activity implements OnClickListener,
 				i = new Intent("org.openintents.action.PICK_FILE");
 				i.setData(Uri.parse("file:///sdcard/"));
 				i.putExtra("org.openintents.extra.TITLE",
-					"Please select a file");
+					R.string.Please_select_a_file);
 				startActivityForResult(i, REQUEST_CODE_PICK_XML_IMPORT_FILE);
 			}
 			else
@@ -199,10 +199,10 @@ public class Main extends Activity implements OnClickListener,
 						inflateGridView();
 					else
 						mAdapter.notifyDataSetChanged();
-					Toast.makeText(this, "Import successful", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.Main_import_successful, Toast.LENGTH_SHORT).show();
 				}
 				else
-					Toast.makeText(this, "Import from /sdcard/goals.mango failed", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, String.format(getResources().getString(R.string.Main_import_failed),"/sdcard/goals.mango"), Toast.LENGTH_LONG).show();
 			}
 			break;
 		}
@@ -216,11 +216,11 @@ public class Main extends Activity implements OnClickListener,
 			ContextMenuInfo menuInfo)
 	{
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(Menu.NONE, ShowDetails, Menu.NONE, "Show Details");
-		menu.add(Menu.NONE, CreateSubGoalMenu, Menu.NONE, "Create Subgoal");
-		menu.add(Menu.NONE, ModifyGoalMenu, Menu.NONE, "Modify Goal");
-		menu.add(Menu.NONE, DeleteGoalMenu, Menu.NONE, "Delete Goal");
-		menu.add(Menu.NONE, ExportToCalendarMenu, Menu.NONE,"Export to Calendar");
+		menu.add(Menu.NONE, ShowDetails, Menu.NONE, R.string.Menu_show_details);
+		menu.add(Menu.NONE, CreateSubGoalMenu, Menu.NONE, R.string.Menu_create_subgoal);
+		menu.add(Menu.NONE, ModifyGoalMenu, Menu.NONE, R.string.Menu_modify_goal);
+		menu.add(Menu.NONE, DeleteGoalMenu, Menu.NONE, R.string.Menu_delete_goal);
+		menu.add(Menu.NONE, ExportToCalendarMenu, Menu.NONE,R.string.Menu_export_to_calendar);
 
 	}
 
@@ -248,11 +248,10 @@ public class Main extends Activity implements OnClickListener,
 			case DeleteGoalMenu:
 				mAlertDialogBuilder.setCancelable(true);
 				mAlertDialogBuilder
-						.setMessage("Do you really want to delete the Goal\""
-								+ g.getName() + "\" and all of its children?");
+						.setMessage(String.format(getResources().getString(R.string.Really_delete), g.getName()));
 				AlertDialog dialog = mAlertDialogBuilder.create();
 				dialog.setButton(AlertDialog.BUTTON_POSITIVE,
-						"Yes, delete it.",
+						getString(R.string.Yes_delete_it),
 						new DialogInterface.OnClickListener()
 						{
 							public void onClick(DialogInterface dialog,
@@ -266,7 +265,7 @@ public class Main extends Activity implements OnClickListener,
 								}
 							}
 						});
-				dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No, keep it.",
+				dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.No_keep_it),
 						(DialogInterface.OnClickListener) null);
 				dialog.show();
 				break;
@@ -279,7 +278,7 @@ public class Main extends Activity implements OnClickListener,
 				Intent i4 = new Intent("android.intent.action.EDIT");
 				i4.setType("vnd.android.cursor.item/event");
 				g.putCalendarExtras(i4);
-				i4 = Intent.createChooser(i4, "Choose Calendar application");
+				i4 = Intent.createChooser(i4, getString(R.string.Menu_choose_calendar_application));
 				startActivity(i4);
 				break;
 		}
@@ -339,7 +338,7 @@ public class Main extends Activity implements OnClickListener,
 				{
 					String uri = data.getData().getEncodedPath();
 					if (ImExport.exportToXML(crud, uri, this))
-						Toast.makeText(this, "Goals have been saved to \n"+uri, Toast.LENGTH_LONG).show();
+						Toast.makeText(this, R.string.Main_goals_saved_to+uri, Toast.LENGTH_LONG).show();
 				}
 				break;
 			case REQUEST_CODE_PICK_ICS_FILE:
@@ -347,7 +346,7 @@ public class Main extends Activity implements OnClickListener,
 				{
 					String uri = data.getData().getEncodedPath();
 					if (ImExport.exportToICS(crud, this, uri, true))
-						Toast.makeText(this, "Goals have been exported to \n"+uri, Toast.LENGTH_LONG).show();
+						Toast.makeText(this, R.string.Main_goals_exported_to+uri, Toast.LENGTH_LONG).show();
 				}
 				break;
 			case REQUEST_CODE_PICK_XML_IMPORT_FILE:
@@ -361,7 +360,7 @@ public class Main extends Activity implements OnClickListener,
 							inflateGridView();
 						else
 							mAdapter.notifyDataSetChanged();
-						Toast.makeText(this, "Import successful", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, R.string.Main_import_successful, Toast.LENGTH_SHORT).show();
 					}
 				}
 				break;

@@ -70,10 +70,10 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(Menu.NONE, CreateSubGoalMenu, Menu.NONE, "Create Subgoal");
-		menu.add(Menu.NONE, ModifyGoalMenu, Menu.NONE, "Modify Goal");
-		menu.add(Menu.NONE, DeleteGoalMenu, Menu.NONE, "Delete Goal");
-		menu.add(Menu.NONE, ExportToCalendarMenu, Menu.NONE, "Export to Calendar");
+		menu.add(Menu.NONE, CreateSubGoalMenu, Menu.NONE, R.string.Menu_create_subgoal);
+		menu.add(Menu.NONE, ModifyGoalMenu, Menu.NONE, R.string.Menu_modify_goal);
+		menu.add(Menu.NONE, DeleteGoalMenu, Menu.NONE, R.string.Menu_delete_goal);
+		menu.add(Menu.NONE, ExportToCalendarMenu, Menu.NONE, R.string.Menu_export_to_calendar);
 	}
 
 	/*
@@ -103,10 +103,9 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			// show "Are you sure?" dialog
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setCancelable(true);
-			dialogBuilder.setMessage("Do you really want to delete the Goal\"" + g.getName()
-					+ "\" and all of its children?");
+			dialogBuilder.setMessage(String.format(getString(R.string.Really_delete), g.getName()));
 			AlertDialog dialog = dialogBuilder.create();
-			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes, delete it.",
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.Yes_delete_it),
 					new DialogInterface.OnClickListener()
 					{
 						public void onClick(DialogInterface dialog, int which)
@@ -131,7 +130,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 							}
 						}
 					});
-			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No, keep it.",
+			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.No_keep_it),
 					(DialogInterface.OnClickListener) null);
 			dialog.show();
 			break;
@@ -139,7 +138,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			Intent i3 = new Intent("android.intent.action.EDIT");
 			i3.setType("vnd.android.cursor.item/event");
 			g.putCalendarExtras(i3);
-			i3 = Intent.createChooser(i3, "Choose Calendar application");
+			i3 = Intent.createChooser(i3, getString(R.string.Menu_choose_calendar_application));
 			startActivity(i3);
 			break;
 		}

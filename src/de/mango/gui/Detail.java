@@ -107,7 +107,7 @@ public class Detail extends Activity implements OnClickListener
 			text.setText(goal.getFormattedDeadline());
 
 			text = (TextView) findViewById(R.detail.completion);
-			text.setText("Progress: "
+			text.setText(getResources().getString(R.string.Progress)+": "
 					+ Integer.toString(goal.getCompletion()) + "%");
 			this.completionTextView = text;
 
@@ -122,7 +122,7 @@ public class Detail extends Activity implements OnClickListener
 			{
 				progress.setModifiable(true);
 				progress.setProgress(savedInstanceState.getInt("currentProgress"));
-				changeProgress.setText("Accept");
+				changeProgress.setText(R.string.Button_accept);
 			}
 			else
 			{
@@ -148,7 +148,7 @@ public class Detail extends Activity implements OnClickListener
 	{
 		super.onSaveInstanceState(outState);
 		Detail.currentGoal = goal;
-		boolean slideActiveState = changeProgress.getText().equals("Accept");
+		boolean slideActiveState = changeProgress.getText().equals(R.string.Button_accept);
 		outState.putBoolean("ChangeButtonPressed", slideActiveState);
 		if (slideActiveState)
 			outState.putInt("currentProgress", progress.getProgress());
@@ -175,17 +175,17 @@ public class Detail extends Activity implements OnClickListener
 		{
 			Button changeButton = (Button) v;
 			HorizontalSlide progress = (HorizontalSlide) findViewById(R.detail.progress);
-			if (changeButton.getText().equals("Change"))
+			if (changeButton.getText().equals(getResources().getString(R.string.Button_change)))
 			{
 				// make Slide draggable
-				changeButton.setText("Accept");
+				changeButton.setText(R.string.Button_accept);
 				progress.setModifiable(true);
 			}
 			else
 			{
 				// Accept new Progress
 				progress.setModifiable(false);
-				changeButton.setText("Change");
+				changeButton.setText(R.string.Button_change);
 				// change data
 				goal.setCompletion(progress.getProgress());
 				crud.setDataChanged();
@@ -193,7 +193,7 @@ public class Detail extends Activity implements OnClickListener
 				// refresh view
 				nameTextView.setBackgroundColor(getResources().getColor(
 						goal.getCompletionColor()));
-				completionTextView.setText("Progress: "
+				completionTextView.setText(getResources().getString(R.string.Progress)+": "
 						+ goal.getCompletion() + "%");
 			}
 		}
@@ -229,7 +229,7 @@ public class Detail extends Activity implements OnClickListener
 											.getCompletionColor()));
 			nameTextView.setBackgroundColor(getResources().getColor(
 					goal.getCompletionColor()));
-			this.completionTextView.setText("Progress: "
+			this.completionTextView.setText(getResources().getString(R.string.Progress)+": "
 					+ goal.getCompletion() + "%");
 			HorizontalSlide progress = (HorizontalSlide) findViewById(R.detail.progress);
 			progress.setProgress(goal.getCompletion());

@@ -20,7 +20,7 @@
 
 package de.mango.business;
 
-import java.util.Calendar;
+import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -287,56 +287,8 @@ public class Goal
 	public String getFormattedDeadline()
 	{
 		GregorianCalendar dl = this.deadline;
-		String s = "";
-		if (dl.get(Calendar.DAY_OF_MONTH) < 10)
-			s += "0";
-		s += dl.get(Calendar.DAY_OF_MONTH);
-		s += ". ";
-
-		switch (dl.get(Calendar.MONTH))
-		{
-			case 0:
-				s += "JAN.";
-				break;
-			case 1:
-				s += "FEB.";
-				break;
-			case 2:
-				s += "MAR.";
-				break;
-			case 3:
-				s += "APR.";
-				break;
-			case 4:
-				s += "MAY";
-				break;
-			case 5:
-				s += "JUN.";
-				break;
-			case 6:
-				s += "JUL.";
-				break;
-			case 7:
-				s += "AUG.";
-				break;
-			case 8:
-				s += "SEP.";
-				break;
-			case 9:
-				s += "OCT.";
-				break;
-			case 10:
-				s += "NOV.";
-				break;
-			case 11:
-				s += "DEC.";
-				break;
-		}
-
-		s += " ";
-		s += dl.get(Calendar.YEAR);
-
-		return s;
+		DateFormat sdf = DateFormat.getDateInstance(DateFormat.MEDIUM);
+		return sdf.format(dl.getTime());
 	}
 
 	/**
