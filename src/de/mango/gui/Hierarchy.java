@@ -114,19 +114,13 @@ public class Hierarchy extends ListActivity implements OnClickListener
 							{
 								// delete the goal
 								GoalCrud c = GoalCrud.getInstance(Hierarchy.this);
-								c.setDataChanged();
-								Goal p = g.getParent();
-								if (p == null)// g is toplevel Goal
+								if (c.removeFromTree(g, Hierarchy.this))
 								{
-									c.getTopLevelGoals().remove(g);
 									setResult(RESULT_TOP_LEVEL_GOALS_CHANGED);
 									finish();
 								}
 								else
-								{
-									p.removeChild(g);
 									mAdapter.notifyDataSetChanged();
-								}
 							}
 						}
 					});

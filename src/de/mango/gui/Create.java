@@ -421,7 +421,10 @@ public class Create extends Activity implements OnClickListener
 		goal.setCompletion((progress.getProgress() * 100) / progress.getMax());
 
 		if (goalImage != null)
+		{
+			goal.deleteImage(this);
 			goal.setImageName(ImageHandling.saveLocalBitmap(this, goalImage));
+		}
 
 		// insert goal into tree
 		GoalCrud crud = GoalCrud.getInstance(this);

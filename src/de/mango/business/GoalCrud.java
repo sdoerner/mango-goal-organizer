@@ -136,6 +136,42 @@ public class GoalCrud
 	}
 
 	/**
+	 * Removes a goal from the tree, caring for all cleanup stuff.
+	 * @param g Goal that should be deleted
+	 * @param c Context to access the app's file system
+	 * @return true if g was a top level goal
+	 */
+	public boolean removeFromTree(Goal g, Context c)
+	{
+		this.setDataChanged();
+		g.wipeImages(c);
+		Goal p = g.getParent();
+		if (p == null)// g is toplevel Goal
+		{
+			this.getTopLevelGoals().remove(g);
+			return true;
+		}
+		else
+		{
+			p.removeChild(g);
+			return false;
+		}
+	}
+
+	/**
+	 * Clears the goal tree
+	 * @param c context to access the app only file system
+	 * @param withImages true if the images on disk shall be deleted, too
+	 */
+	public void clear(Context c, boolean withImages)
+	{
+		if (withImages)
+			for (Goal g:topLevelGoals)
+				g.wipeImages(c);
+		topLevelGoals.clear();
+	}
+
+	/**
 	 * Adds all leaves of the roots vector to the leaves vector.
 	 * @param roots
 	 *            Vector of roots of goal trees whose leaves are sought

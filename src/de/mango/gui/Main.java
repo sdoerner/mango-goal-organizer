@@ -259,8 +259,7 @@ public class Main extends Activity implements OnClickListener,
 							{
 								if (which == AlertDialog.BUTTON_POSITIVE)
 								{
-									crud.getTopLevelGoals().remove(g);
-									crud.setDataChanged();
+									crud.removeFromTree(g, Main.this);
 									mAdapter.notifyDataSetChanged();
 								}
 							}

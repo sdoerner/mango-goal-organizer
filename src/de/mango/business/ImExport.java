@@ -72,9 +72,10 @@ public class ImExport
 	{
 		// assign the file
 		FileInputStream in;
+		boolean externalFile = filename.contains("/");
 		try
 		{
-			in = filename.contains("/") ? new FileInputStream(filename)
+			in =  externalFile ? new FileInputStream(filename)
 					: context.openFileInput(filename);
 		} catch (FileNotFoundException e)
 		{
@@ -114,13 +115,13 @@ public class ImExport
 			return false;
 		}
 
-		mFileList = context.fileList();
 		// parse DOM
 		Element mangoElem = doc.getDocumentElement();
 		// System.out.println(mangoElem.getTagName());
 
+		into.clear(context,externalFile);
+		mFileList = context.fileList();
 		Vector<Goal> topLevelGoals = into.getTopLevelGoals();
-		topLevelGoals.clear();
 		NodeList goalElements = mangoElem.getChildNodes();
 		Node n;
 		Goal g;

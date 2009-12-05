@@ -20,13 +20,14 @@
 
 package de.mango.business;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import de.mango.R;
-
+import android.content.Context;
 import android.content.Intent;
+import de.mango.R;
 
 /**
  * Goal Class encapsulating all goal-related information
@@ -235,9 +236,37 @@ public class Goal
 		}
 	}
 
-	public boolean removeChild(Goal child)
+	protected boolean removeChild(Goal child)
 	{
 		return this.children!=null? this.children.remove(child):false;
+	}
+
+	/**
+	 * Removes all images of this goal and all of its descendants from the long term memory
+	 */
+	public void wipeImages(Context c)
+	{
+		File imageFile = c.getFileStreamPath(this.imageName);
+		if (imageFile.exists())
+			imageFile.delete();
+		if (this.children!=null)
+		{
+			for (Goal g:this.children)
+				g.wipeImages(c);
+		}
+	}
+
+	/**
+	 * Deletes the image of this goal from hd.
+	 */
+	public void deleteImage(Context c)
+	{
+		if (this.imageName.length()==0)
+			return;
+		File imageFile = c.getFileStreamPath(this.imageName);
+		if (imageFile.exists())
+			imageFile.delete();
+		this.imageName="";
 	}
 
 	public boolean hasParent()
