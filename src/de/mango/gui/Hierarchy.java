@@ -103,7 +103,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			// show "Are you sure?" dialog
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setCancelable(true);
-			dialogBuilder.setMessage(String.format(getString(R.string.Really_delete), g.getName()));
+			dialogBuilder.setMessage(getString(R.string.Really_delete, g.getName()));
 			AlertDialog dialog = dialogBuilder.create();
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.Yes_delete_it),
 					new DialogInterface.OnClickListener()

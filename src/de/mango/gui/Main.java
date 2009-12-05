@@ -144,7 +144,7 @@ public class Main extends Activity implements OnClickListener,
 			else
 			{
 				if (ImExport.exportToXML(crud, "/sdcard/goals.mango", this))
-					Toast.makeText(this, R.string.Main_goals_exported_to+"\n/sdcard/goals.mango", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getResources().getString(R.string.Main_goals_exported_to)+"/sdcard/goals.mango", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case ExportToICSMenu:
@@ -158,7 +158,7 @@ public class Main extends Activity implements OnClickListener,
 			else
 			{
 				if (ImExport.exportToICS(crud, this, "/sdcard/goals.ics", true))
-					Toast.makeText(this, R.string.Main_goals_exported_to +"\n/sdcard/goals.ics", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getResources().getString(R.string.Main_goals_exported_to) +"/sdcard/goals.ics", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case SendXMLMenu:
@@ -202,7 +202,7 @@ public class Main extends Activity implements OnClickListener,
 					Toast.makeText(this, R.string.Main_import_successful, Toast.LENGTH_SHORT).show();
 				}
 				else
-					Toast.makeText(this, String.format(getResources().getString(R.string.Main_import_failed),"/sdcard/goals.mango"), Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getString(R.string.Main_import_failed,"/sdcard/goals.mango"), Toast.LENGTH_LONG).show();
 			}
 			break;
 		}
@@ -248,7 +248,7 @@ public class Main extends Activity implements OnClickListener,
 			case DeleteGoalMenu:
 				mAlertDialogBuilder.setCancelable(true);
 				mAlertDialogBuilder
-						.setMessage(String.format(getResources().getString(R.string.Really_delete), g.getName()));
+						.setMessage(getString(R.string.Really_delete, g.getName()));
 				AlertDialog dialog = mAlertDialogBuilder.create();
 				dialog.setButton(AlertDialog.BUTTON_POSITIVE,
 						getString(R.string.Yes_delete_it),
