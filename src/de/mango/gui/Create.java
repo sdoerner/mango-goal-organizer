@@ -223,6 +223,7 @@ public class Create extends Activity implements OnClickListener
 			final GregorianCalendar deadline = new GregorianCalendar();
 			deadline.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
 					23, 59, 59);
+			deadline.set(Calendar.MILLISECOND, 0);
 			final String name = ((EditText) this.findViewById(R.create.nameEditField)).getText()
 					.toString();
 			final String description = ((EditText) this.findViewById(R.create.descriptionEditField))

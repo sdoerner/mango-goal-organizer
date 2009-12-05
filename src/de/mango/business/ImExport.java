@@ -159,6 +159,11 @@ public class ImExport
 		{
 			d = SDF.parse(root.getAttribute("deadline"));
 			cal.setTime(d);
+			//new dates are set to this time, so they are not in the past
+			//for proper "parent isn't earlier"-check old times need the same values
+			cal.set(Calendar.HOUR_OF_DAY, 23);
+			cal.set(Calendar.MINUTE, 59);
+			cal.set(Calendar.SECOND, 59);
 		} catch (ParseException e)
 		{
 			if (GoalCrud.DOLOG)
