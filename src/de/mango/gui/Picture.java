@@ -27,22 +27,26 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import de.mango.R;
+import de.mango.business.GoalCrud;
 import de.mango.business.GoogleSearchProvider;
 import de.mango.business.ImageDownloadCompleteCallback;
 import de.mango.business.ImageHandling;
 import de.mango.business.ImageSearchProvider;
 
 public class Picture extends Activity implements OnClickListener,
-		ImageDownloadCompleteCallback
+		OnKeyListener, ImageDownloadCompleteCallback
 {
 	private Vector<Bitmap> imageVector = new Vector<Bitmap>();
 	private int counter = 0;
@@ -66,8 +70,10 @@ public class Picture extends Activity implements OnClickListener,
 		next.setOnClickListener(this);
 		Button attache = (Button) findViewById(R.picture.attacheButton);
 		attache.setOnClickListener(this);
-
+		EditText queryField = (EditText) findViewById(R.picture.searchString);
+		queryField.setOnKeyListener(this);
 		ImageView iv = (ImageView) findViewById(R.picture.mainImageView);
+
 		//handle orientation change
 		final Object data = getLastNonConfigurationInstance();
 		if (data!=null)
@@ -186,5 +192,19 @@ public class Picture extends Activity implements OnClickListener,
 	{
 		public Bitmap[] bitmaps;
 		public int currentPosition;
+	}
+
+	public boolean onKey(View v, int keyCode, KeyEvent event)
+	{
+		//bound to the EditText component
+		if (GoalCrud.DOLOG)
+			Log.d(GoalCrud.TAG, Integer.toString(keyCode));
+		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
+		{
+			this.onClick(this.findViewById(R.picture.searchButton));
+			//still let the android system close the software keyboard
+			return false;
+		}
+		return false;
 	}
 }
