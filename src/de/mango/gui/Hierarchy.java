@@ -31,6 +31,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,9 +39,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.mango.R;
@@ -162,6 +165,44 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		setListAdapter(mAdapter);
 		registerForContextMenu(getListView());
 		getListView().setLongClickable(true);
+		getListView().setOnKeyListener(new OnKeyListener()
+		{
+			public boolean onKey(View v, int keyCode, KeyEvent event)
+			{
+				if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER && event.getAction()==KeyEvent.ACTION_UP)
+				{
+					ListView lv = (ListView)v;
+					LinearLayout ll = (LinearLayout) lv.getSelectedView();
+					if (ll==null)
+						return false;
+					Hierarchy.this.onClick(ll.getChildAt(1));
+					return true;
+				}
+				if ((keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) && event.getAction()==KeyEvent.ACTION_UP)
+				{
+					ListView lv = (ListView) v;
+					LinearLayout ll = (LinearLayout) lv.getSelectedView();
+					if (ll == null)
+						return false;
+					if (ll.getChildCount()>0)
+					{
+						ImageButton ib = (ImageButton) ll.getChildAt(0);
+						if (ib.getVisibility() == ImageButton.VISIBLE)
+						{
+							ListEntry entry = (ListEntry) ll.getChildAt(0).getTag();
+							if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+									&& entry.expanded == true)
+								mAdapter.collapseEntry(entry);
+							if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+									&& entry.expanded == false)
+								mAdapter.expandEntry(entry);
+						}
+					}
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -380,31 +421,46 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		{
 			// expand or collapse was clicked
 			ListEntry entry = (ListEntry) v.getTag();
-			Vector<ListEntry> currentlyShownGoals = mCurrentlyShownGoals;
 			if (entry.expanded)
-			{
-				// collapse
-				entry.expanded = false;
-				int index = currentlyShownGoals.indexOf(entry) + 1;
-				int offset = entry.offset;
-				while (currentlyShownGoals.size() > index
-						&& currentlyShownGoals.get(index).offset > offset)
-					currentlyShownGoals.remove(index);
-			}
+				collapseEntry(entry);
 			else
+				expandEntry(entry);
+		}
+
+		/**
+		 * Expands the given list entry
+		 * @param entry List entry to be expanded
+		 */
+		private void expandEntry(ListEntry entry)
+		{
+			Vector<ListEntry> currentlyShownGoals = mCurrentlyShownGoals;
+			Vector<Goal> children = entry.goal.getChildren();
+			if (children == null || children.isEmpty())
+				return;
+			entry.expanded = true;
+			int newoffset = entry.offset + INDENT;
+			int newlocation = currentlyShownGoals.indexOf(entry);
+			for (Goal g : children)
 			{
-				// expand
-				Vector<Goal> children = entry.goal.getChildren();
-				if (children == null || children.isEmpty())
-					return;
-				entry.expanded = true;
-				int newoffset = entry.offset + INDENT;
-				int newlocation = currentlyShownGoals.indexOf(entry);
-				for (Goal g : children)
-				{
-					currentlyShownGoals.add(++newlocation, new ListEntry(g, newoffset, false));
-				}
+				currentlyShownGoals.add(++newlocation, new ListEntry(g, newoffset, false));
 			}
+			super.notifyDataSetChanged();
+		}
+
+		/**
+		 * Collapses the given list entry
+		 * @param entry List entry to be collapsed
+		 */
+		private void collapseEntry(ListEntry entry)
+		{
+			Vector<ListEntry> currentlyShownGoals = mCurrentlyShownGoals;
+			// collapse
+			entry.expanded = false;
+			int index = currentlyShownGoals.indexOf(entry) + 1;
+			int offset = entry.offset;
+			while (currentlyShownGoals.size() > index
+					&& currentlyShownGoals.get(index).offset > offset)
+				currentlyShownGoals.remove(index);
 			super.notifyDataSetChanged();
 		}
 

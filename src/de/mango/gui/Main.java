@@ -33,7 +33,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +45,7 @@ import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.View.OnKeyListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -310,10 +313,29 @@ public class Main extends Activity implements OnClickListener,
 		gridview.setAdapter(mAdapter);
 		registerForContextMenu(gridview);
 		mEmptyScreen = false;
+
+		gridview.setOnKeyListener(new OnKeyListener()
+		{
+			public boolean onKey(View v, int keyCode, KeyEvent event)
+			{
+				if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER && event.getAction()==KeyEvent.ACTION_UP)
+				{
+					GridView gv = (GridView) v;
+					LinearLayout ll = (LinearLayout) gv.getSelectedView();
+					if (ll==null)
+						return false;
+					Main.this.onClick(ll.getChildAt(0));
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	public void onClick(View v)
 	{
+		if (GoalCrud.DOLOG)
+			Log.d(GoalCrud.TAG, "Tag of the clicked view: " + ((Integer) v.getTag()).toString());
 		Intent i = new Intent(this, Hierarchy.class);
 		i.putExtra("topLevelGoal", ((Integer) v.getTag()));
 		startActivityForResult(i, 0);
