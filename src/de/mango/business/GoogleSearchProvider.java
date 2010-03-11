@@ -42,6 +42,12 @@ import android.util.Log;
  */
 public class GoogleSearchProvider implements ImageSearchProvider
 {
+	/**
+	 * Enable/disable logging. The compiler will strip all logging if disabled.
+	 */
+	public static final boolean DEBUG = false;
+	public static final String TAG = "Mango";
+
 	private boolean moreResults = false;
 	// only show results from openclipart.org
 	private static final boolean restrictToOpenClipart = false;
@@ -106,11 +112,11 @@ public class GoogleSearchProvider implements ImageSearchProvider
 							"UTF-8") + "&start=";
 		} catch (UnsupportedEncodingException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "Unsupported Encoding Exception:"
+				Log.w(TAG, "Unsupported Encoding Exception:"
 						+ e.getMessage());
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 			return results;
 		}
@@ -182,8 +188,8 @@ public class GoogleSearchProvider implements ImageSearchProvider
 					this.moreResults = readMore = (pageCount - 1) > currentPageIndex;
 				} else
 				{
-					if (GoalCrud.DOLOG)
-						Log.w(GoalCrud.TAG, "Goole Search Error (Code "
+					if (DEBUG)
+						Log.w(TAG, "Goole Search Error (Code "
 								+ responseStatus + "):"
 								+ json.getString("responseDetails"));
 					this.moreResults = readMore = false;// prevent for (;;) loop
@@ -191,27 +197,27 @@ public class GoogleSearchProvider implements ImageSearchProvider
 				}
 			} catch (MalformedURLException e)
 			{
-				if (GoalCrud.DOLOG)
+				if (DEBUG)
 				{
-					Log.w(GoalCrud.TAG, "MalformedURLException:"
+					Log.w(TAG, "MalformedURLException:"
 							+ e.getMessage());
-					Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+					Log.w(TAG, Log.getStackTraceString(e));
 				}
 				this.moreResults = readMore = false;
 			} catch (IOException e)
 			{
-				if (GoalCrud.DOLOG)
+				if (DEBUG)
 				{
-					Log.w(GoalCrud.TAG, "IOException:" + e.getMessage());
-					Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+					Log.w(TAG, "IOException:" + e.getMessage());
+					Log.w(TAG, Log.getStackTraceString(e));
 				}
 				this.moreResults = readMore = false;
 			} catch (JSONException e)
 			{
-				if (GoalCrud.DOLOG)
+				if (DEBUG)
 				{
-					Log.w(GoalCrud.TAG, "JSONException:" + e.getMessage());
-					Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+					Log.w(TAG, "JSONException:" + e.getMessage());
+					Log.w(TAG, Log.getStackTraceString(e));
 				}
 				this.moreResults = readMore = false;
 			}

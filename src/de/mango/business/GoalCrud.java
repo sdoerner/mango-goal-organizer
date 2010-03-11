@@ -31,14 +31,6 @@ import android.content.Context;
 public class GoalCrud
 {
 	/**
-	 * Our Log Tag
-	 */
-	public static final String TAG = "Mango";
-	/**
-	 * Enable/disable logging. The compiler will strip all logging if disabled.
-	 */
-	public static final boolean DOLOG = false;
-	/**
 	 * Field to be used temporarily to pass goal references to the next screen
 	 * without serialization
 	 */

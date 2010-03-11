@@ -40,7 +40,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import de.mango.R;
-import de.mango.business.GoalCrud;
 import de.mango.business.GoogleSearchProvider;
 import de.mango.business.ImageDownloadCompleteCallback;
 import de.mango.business.ImageHandling;
@@ -49,6 +48,12 @@ import de.mango.business.ImageSearchProvider;
 public class Picture extends Activity implements OnClickListener,
 		OnKeyListener, DialogInterface.OnKeyListener, ImageDownloadCompleteCallback
 {
+	/**
+	 * Enable/disable logging. The compiler will strip all logging if disabled.
+	 */
+	public static final boolean DEBUG = false;
+	public static final String TAG = "Mango";
+
 	private Vector<Bitmap> imageVector = new Vector<Bitmap>();
 	private int counter = 0;
 	private ProgressDialog pd;
@@ -210,8 +215,8 @@ public class Picture extends Activity implements OnClickListener,
 	public boolean onKey(View v, int keyCode, KeyEvent event)
 	{
 		//bound to the EditText component
-		if (GoalCrud.DOLOG)
-			Log.d(GoalCrud.TAG, Integer.toString(keyCode));
+		if (DEBUG)
+			Log.d(TAG, Integer.toString(keyCode));
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
 		{
 			this.onClick(this.findViewById(R.picture.searchButton));

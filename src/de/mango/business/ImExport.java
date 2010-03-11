@@ -50,6 +50,12 @@ import android.util.Log;
  */
 public class ImExport
 {
+	/**
+	 * Enable/disable logging. The compiler will strip all logging if disabled.
+	 */
+	public static final boolean DEBUG = false;
+	public static final String TAG = "Mango";
+
 	// ISO date format
 	private static final SimpleDateFormat SDF = new SimpleDateFormat(
 			"yyyy-MM-dd");
@@ -90,8 +96,8 @@ public class ImExport
 			documentBuilder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException ex)
 		{
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, ex.getMessage());
+			if (DEBUG)
+				Log.w(TAG, ex.getMessage());
 			return false;
 		}
 		// read the file and import its contents into DOM
@@ -102,16 +108,16 @@ public class ImExport
 			in.close();
 		} catch (SAXException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "Not a valid XML file.");
-				Log.w(GoalCrud.TAG, e.getMessage());
+				Log.w(TAG, "Not a valid XML file.");
+				Log.w(TAG, e.getMessage());
 			}
 			return false;
 		} catch (IOException e)
 		{
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, e.getMessage());
+			if (DEBUG)
+				Log.w(TAG, e.getMessage());
 			return false;
 		}
 
@@ -166,8 +172,8 @@ public class ImExport
 			cal.set(Calendar.SECOND, 59);
 		} catch (ParseException e)
 		{
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, "No deadline found or wrong format.");
+			if (DEBUG)
+				Log.w(TAG, "No deadline found or wrong format.");
 		}
 		Goal g = new Goal(root.getAttribute("name"), root
 				.getAttribute("description"), cal);
@@ -187,8 +193,8 @@ public class ImExport
 			cal.setTime(d);
 		} catch (ParseException e)
 		{
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, "No timestamp found or wrong format.");
+			if (DEBUG)
+				Log.w(TAG, "No timestamp found or wrong format.");
 		}
 		g.setTimestamp(cal);
 
@@ -263,8 +269,8 @@ public class ImExport
 		}
 		catch (Exception e)
 		{
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, "Error exporting to XML:" + e.getMessage());
+			if (DEBUG)
+				Log.w(TAG, "Error exporting to XML:" + e.getMessage());
 			return false;
 		}
 
@@ -388,8 +394,8 @@ public class ImExport
 			out.write("END:VCALENDAR".getBytes());
 		} catch (Exception f)
 		{// Catch exception if any
-			if (GoalCrud.DOLOG)
-				Log.w(GoalCrud.TAG, "Error in exportToICS: " + f.getMessage());
+			if (DEBUG)
+				Log.w(TAG, "Error in exportToICS: " + f.getMessage());
 		}
 		return true;
 	}

@@ -49,6 +49,12 @@ import android.util.Log;
  */
 public class ImageHandling
 {
+	/**
+	 * Enable/disable logging. The compiler will strip all logging if disabled.
+	 */
+	public static final boolean DEBUG = false;
+	public static final String TAG = "Mango";
+
 	// Bitmaps received from async network threads
 	private final Vector<Bitmap> bitmaps = new Vector<Bitmap>();
 	// number of Bitmaps wanted (to know when we're done)
@@ -79,23 +85,23 @@ public class ImageHandling
 			String inputLine;
 
 			while ((inputLine = in.readLine()) != null)
-				Log.i(GoalCrud.TAG, inputLine);
+				Log.i(TAG, inputLine);
 
 			in.close();
 
 		} catch (MalformedURLException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "Malformed URL Exception in ImageHandling");
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, "Malformed URL Exception in ImageHandling");
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		} catch (IOException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "IOException in ImageHandling");
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, "IOException in ImageHandling");
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		}
 
@@ -137,21 +143,21 @@ public class ImageHandling
 
 		} catch (MalformedURLException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
 				Log
-						.w(GoalCrud.TAG, "Given file URL \"" + url
+						.w(TAG, "Given file URL \"" + url
 								+ "\"is invalid.");
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		} catch (IOException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
 				Log
-						.w(GoalCrud.TAG, "Could not write to local file "
+						.w(TAG, "Could not write to local file "
 								+ filename);
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		}
 
@@ -181,13 +187,13 @@ public class ImageHandling
 			return bm;
 		} catch (FileNotFoundException e)
 		{
-			Log.w(GoalCrud.TAG, "loadLocalBitmap: File " + filename
+			Log.w(TAG, "loadLocalBitmap: File " + filename
 					+ " not found!");
-			Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+			Log.w(TAG, Log.getStackTraceString(e));
 		} catch (IOException e)
 		{
-			Log.w(GoalCrud.TAG, "IOException in loadLocalBitmap");
-			Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+			Log.w(TAG, "IOException in loadLocalBitmap");
+			Log.w(TAG, Log.getStackTraceString(e));
 		}
 		return null;
 	}
@@ -212,18 +218,18 @@ public class ImageHandling
 			return bm;
 		} catch (MalformedURLException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "Given file URL \"" + url
+				Log.w(TAG, "Given file URL \"" + url
 								+ "\"is invalid.");
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		} catch (IOException e)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
-				Log.w(GoalCrud.TAG, "IOException in retrieveWebBitmap");
-				Log.w(GoalCrud.TAG, Log.getStackTraceString(e));
+				Log.w(TAG, "IOException in retrieveWebBitmap");
+				Log.w(TAG, Log.getStackTraceString(e));
 			}
 		}
 		return null;
@@ -363,8 +369,8 @@ public class ImageHandling
 		protected void onPostExecute(Vector<String> urls)
 		{
 			ImageHandling.this.searchTask = null;
-			if (GoalCrud.DOLOG)
-				Log.d(GoalCrud.TAG, "Search complete. Fetching images.");
+			if (DEBUG)
+				Log.d(TAG, "Search complete. Fetching images.");
 			this.imageHandler.requestedCount = urls.size();
 			for (String url : urls)
 			{
@@ -396,25 +402,25 @@ public class ImageHandling
 			final Bitmap b = ImageHandling.retrieveWebBitmap(mUrl);
 			if (b != null)
 			{
-				if (GoalCrud.DOLOG)
-					Log.v(GoalCrud.TAG, "Successful: " + mUrl);
+				if (DEBUG)
+					Log.v(TAG, "Successful: " + mUrl);
 			} else
 			// TODO: still dunno WHY he fails sometimes,
 			// shouldn't TCP handle that?
 			// maybe we should retry until $maximum_tries has
 			// been reached
-			if (GoalCrud.DOLOG)
-				Log.v(GoalCrud.TAG, "Failed to retrieve " + mUrl);
+			if (DEBUG)
+				Log.v(TAG, "Failed to retrieve " + mUrl);
 			return b;
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap result)
 		{
-			if (GoalCrud.DOLOG)
+			if (DEBUG)
 			{
 				if (result==null)
-					Log.d(GoalCrud.TAG, "returned Bitmap is null in dl-thread");
+					Log.d(TAG, "returned Bitmap is null in dl-thread");
 			}
 			ImageHandling.this.imageDownloadTasks.remove(DownloadImageTask.this);
 			mIh.addBitmap(result);
@@ -542,8 +548,8 @@ public class ImageHandling
 	 */
 	public void cancelAllThreads()
 	{
-		if (GoalCrud.DOLOG)
-			Log.d(GoalCrud.TAG,"In Method: cancelAllThreads()");
+		if (DEBUG)
+			Log.d(TAG,"In Method: cancelAllThreads()");
 		if (searchTask!=null)
 		{
 			searchTask.cancel(true);
@@ -552,15 +558,15 @@ public class ImageHandling
 		try{
 		for (DownloadImageTask t:imageDownloadTasks)
 		{
-			if (GoalCrud.DOLOG)
-				Log.d(GoalCrud.TAG,"Cancelling Thread");
+			if (DEBUG)
+				Log.d(TAG,"Cancelling Thread");
 			t.cancel(true);
 		}
 		}
 		catch (SecurityException e)
 		{
-			if (GoalCrud.DOLOG)
-				Log.d(GoalCrud.TAG,"Security Exception: " + e.getMessage());
+			if (DEBUG)
+				Log.d(TAG,"Security Exception: " + e.getMessage());
 		}
 		imageDownloadTasks.clear();
 	}

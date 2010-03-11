@@ -62,6 +62,12 @@ import de.mango.business.ImageHandling;
 public class Main extends Activity implements OnClickListener,
 		OnCreateContextMenuListener
 {
+	/**
+	 * Enable/disable logging. The compiler will strip all logging if disabled.
+	 */
+	public static final boolean DEBUG = false;
+	public static final String TAG = "Mango";
+
 	private static final int CreateGoalMenu = Menu.FIRST;
 	private static final int CreateSubGoalMenu = Menu.FIRST + 1;
 	private static final int ModifyGoalMenu = Menu.FIRST + 2;
@@ -334,8 +340,8 @@ public class Main extends Activity implements OnClickListener,
 
 	public void onClick(View v)
 	{
-		if (GoalCrud.DOLOG)
-			Log.d(GoalCrud.TAG, "Tag of the clicked view: " + ((Integer) v.getTag()).toString());
+		if (DEBUG)
+			Log.d(TAG, "Tag of the clicked view: " + ((Integer) v.getTag()).toString());
 		Intent i = new Intent(this, Hierarchy.class);
 		i.putExtra("topLevelGoal", ((Integer) v.getTag()));
 		startActivityForResult(i, 0);
