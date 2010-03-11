@@ -49,7 +49,7 @@
     <string name="Button_cancel">Cancel</string>
     <string name="Button_yes">Yes</string>
     <string name="Button_no">No</string>
-    <string name="Button_ok">ok</string>
+    <string name="Button_ok">OK</string>
     <string name="Button_modify">Modify</string>
 
     <!-- Menu Entries -->
@@ -66,6 +66,7 @@
     <string name="Menu_export_xml">Export Goals to XML File</string>
     <string name="Menu_choose_calendar_application">Choose Calendar application</string>
     <string name="Menu_export_to_calendar">Export to Calendar</string>
+    <string name="Menu_about">About Mango</string>
 
     <!-- Create Activity -->
     <string name="Create_high">high</string>
@@ -92,6 +93,7 @@
     <string name="Main_goals_saved_to">Goals have been saved to\n</string>
     <string name="Main_import_successful">Import successful</string>
     <string name="Main_import_failed">Import from %s failed</string>
+    <string name="Main_About_Text">Navigation:\nChoose goals using the touch screen or DPAD/Trackball. For interacting with goals or to create subgoals, long click on a goal to make the context menu visible.\nThe tree structure in hierarchy view can be expanded or collapsed using either the +/- symbols, the left and right DPAD key or the trackball.\n\nProgress calculation:\nOnly the progress for leaves of the tree is manually adjustable. The progress of higher level goals is automatically calculated according to the tuned weights.\n\nRecent changes:\n0.7.0: Improved DPAD navigation, fixed crash on screen rotation while searching for images, respond to Enter key in search window, About window\n0.6.3: bug fixes \n0.6.2: German language support\n0.6.1: fixed crash in landscap mode\n\nFor more information visit \nhttp://mango-android.de/</string>
 
     <!-- Picture Activity -->
     <string name="Picture_no_results">Sorry, no results for your query.</string>

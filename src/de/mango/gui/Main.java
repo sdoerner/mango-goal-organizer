@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,6 +80,7 @@ public class Main extends Activity implements OnClickListener,
 	private static final int ExportToCalendarMenu = Menu.FIRST + 8;
 	private static final int ImportFromXMLMenu = Menu.FIRST + 9;
 	private static final int ShowDetails = Menu.FIRST + 10;
+	private static final int AboutWindow = Menu.FIRST + 11;
 	private static final int REQUEST_CODE_PICK_XML_EXPORT_FILE = 1;
 	private static final int REQUEST_CODE_PICK_ICS_FILE = 2;
 	private static final int REQUEST_CODE_PICK_XML_IMPORT_FILE = 3;
@@ -126,6 +128,7 @@ public class Main extends Activity implements OnClickListener,
 		submenu.add(Menu.NONE, SendXMLMenu, Menu.NONE, R.string.Menu_send_xml);
 		submenu.add(Menu.NONE, SendICSMenu, Menu.NONE, R.string.Menu_send_ics);
 		menu.add(Menu.NONE, ImportFromXMLMenu, Menu.NONE,R.string.Menu_import_xml);
+		menu.add(Menu.NONE,AboutWindow, Menu.NONE, R.string.Menu_about);
 		return true;
 	}
 
@@ -213,6 +216,18 @@ public class Main extends Activity implements OnClickListener,
 				else
 					Toast.makeText(this, getString(R.string.Main_import_failed,"/sdcard/goals.mango"), Toast.LENGTH_LONG).show();
 			}
+			break;
+		case AboutWindow:
+			AlertDialog dialog = mAlertDialogBuilder.create();
+			dialog.setTitle(R.string.Menu_about);
+			dialog.setMessage(getString(R.string.Main_About_Text));
+			dialog.setButton(Dialog.BUTTON_NEUTRAL, getString(R.string.Button_ok), new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+				}
+			});
+			dialog.show();
 			break;
 		}
 		return true;
