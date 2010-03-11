@@ -23,6 +23,9 @@
     <string name="app_name">Mango - Mobile ANdroid Goal Organizer</string>
     <string name="app_description">Mobile ANdroid Goal Organizer</string>
     
+    <!-- Google search parameters -->
+    <string name="Google_hl">en</string>
+
     <!-- Activity titles -->
     <string name="ActivityTitle_Main">Mango - Goal Overview</string>
     <string name="ActivityTitle_Create">Mango - Create Goal</string>

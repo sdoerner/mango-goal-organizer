@@ -19,6 +19,9 @@
 
  -->
 <resources>
+    <!-- Google search parameters -->
+    <string name="Google_hl">de</string>
+
     <!-- Activity titles -->
     <string name="ActivityTitle_Main">Mango - Zielübersicht</string>
     <string name="ActivityTitle_Create">Mango - Ziel erstellen</string>

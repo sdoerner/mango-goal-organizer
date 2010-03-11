@@ -63,19 +63,23 @@ public class GoogleSearchProvider implements ImageSearchProvider
 	// v : search API version, only 1.0 possible atm
 	// rsz: number of results (small = 4, large = 8)
 	// hl: language
-	private static final String searchArguments = "v=1.0&rsz=large&hl=de&imgsz=small|medium&";
+	private static final String searchArguments = "v=1.0&rsz=large&imgsz=small|medium&hl=";
+	private String hostLanguage;
 
 	// --------------------Singleton implementation--------------------
 	private static GoogleSearchProvider instance;
 
+
 	private GoogleSearchProvider()
 	{
+		 
 	}
 
-	public static GoogleSearchProvider getInstance()
+	public static GoogleSearchProvider getInstance(String Google_hl)
 	{
 		if (instance == null)
 			instance = new GoogleSearchProvider();
+		instance.hostLanguage = Google_hl;
 		return instance;
 	}
 
@@ -104,8 +108,8 @@ public class GoogleSearchProvider implements ImageSearchProvider
 		try
 		{
 			query = "http://ajax.googleapis.com/ajax/services/search/images?"
-					+ GoogleSearchProvider.searchArguments
-					+ "q="
+					+ GoogleSearchProvider.searchArguments + this.hostLanguage
+					+ "&q="
 					+ URLEncoder.encode(
 							GoogleSearchProvider.restrictToOpenClipart ? query
 									+ GoogleSearchProvider.openClipart : query,
@@ -141,6 +145,8 @@ public class GoogleSearchProvider implements ImageSearchProvider
 		{
 			// add start index to the query
 			String currentQuery = query + firstindex;
+			if (DEBUG)
+				Log.d(TAG, "Searching: " + currentQuery);
 			try
 			{
 				// prepare the connection

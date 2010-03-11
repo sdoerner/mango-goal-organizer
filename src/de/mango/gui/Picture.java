@@ -131,7 +131,7 @@ public class Picture extends Activity implements OnClickListener,
 	 */
 	public void search(String searchQuery)
 	{
-		ImageSearchProvider imageSearch = GoogleSearchProvider.getInstance();
+		ImageSearchProvider imageSearch = GoogleSearchProvider.getInstance(this.getString(R.string.Google_hl));
 		imageHandling = new ImageHandling();
 		imageHandling.fetchBitmapsForQuery(searchQuery, 8, 0, imageSearch, this, this);
 	}
