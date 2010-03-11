@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -54,7 +56,9 @@ public class ImageHandling
 	// number of finished download threads
 	private int receivedCallbacks = 0;
 	// UI thread activity to perform ui actions on
-	private Activity uiActivity;
+
+	private SearchTask searchTask;
+	private Set<DownloadImageTask> imageDownloadTasks = new HashSet<DownloadImageTask>();
 
 	private ImageDownloadCompleteCallback imageDownloadCompleteCallback;
 
@@ -289,15 +293,14 @@ public class ImageHandling
 		// since networking
 		// should be slower than clearing an array
 		// run the search in another thread
-		DownloadImagesTask t = new DownloadImagesTask(count, this);
+		searchTask = new SearchTask(this);
 		Params p = new Params(query, count, page, search);
 		// these are needed for the callback-receiving addBitmap-Method to
 		// display results
-		this.uiActivity = activity;
 		this.requestedCount = count;
 		this.imageDownloadCompleteCallback = callback;
 		// now go to work
-		t.execute(p);
+		searchTask.execute(p);
 		return true;
 	}
 
@@ -327,16 +330,15 @@ public class ImageHandling
 	}
 
 	/**
-	 * Class to provide functionality for downloading multiple Bitmaps belonging
-	 * to a search query using multiple threads.
+	 * Task searching for a query and initializing downloads for all results in multiple threads.
 	 */
-	private class DownloadImagesTask extends
+	private class SearchTask extends
 			AsyncTask<Params, Void, Vector<String>>
 	{
 		// needed in onPostExecute and thus must be kept as class variables
 		private final ImageHandling imageHandler;
 
-		public DownloadImagesTask(int count, ImageHandling imageHandler)
+		public SearchTask(ImageHandling imageHandler)
 		{
 			this.imageHandler = imageHandler;
 		}
@@ -360,43 +362,62 @@ public class ImageHandling
 		 */
 		protected void onPostExecute(Vector<String> urls)
 		{
+			ImageHandling.this.searchTask = null;
+			if (GoalCrud.DOLOG)
+				Log.d(GoalCrud.TAG, "Search complete. Fetching images.");
 			this.imageHandler.requestedCount = urls.size();
 			for (String url : urls)
 			{
-				final String furl = url;
-				// download each picture in a seperate thread
-				new Thread(new Runnable()
-				{
-					public void run()
-					{
-						final Bitmap b = ImageHandling.retrieveWebBitmap(furl);
-						if (b != null)
-						{
-							if (GoalCrud.DOLOG)
-								Log.v(GoalCrud.TAG, "Successful: " + furl);
-						} else
-						// TODO: still dunno WHY he fails sometimes,
-						// shouldn't TCP handle that?
-						// maybe we should retry until $maximum_tries has
-						// been reached
-						if (GoalCrud.DOLOG)
-							Log.v(GoalCrud.TAG, "Failed to retrieve " + furl);
-
-						// since the imageHandler always calls us with himself
-						// as a parameter, we
-						// can use his UI thread
-						imageHandler.uiActivity.runOnUiThread(new Runnable()
-						{
-							public void run()
-							{
-								imageHandler.addBitmap(b);
-							}
-						});
-					}
-				}).start();
+				DownloadImageTask dl = new DownloadImageTask(this.imageHandler, url);
+				ImageHandling.this.imageDownloadTasks.add(dl);
+				dl.execute((ImageHandling.Params)null);
 			}
 			if (urls.size() == 0)
 				imageDownloadCompleteCallback.action(null);
+		}
+	}
+
+	/**
+	 * Task for downloading exactly one Bitmap.
+	 */
+	private class DownloadImageTask extends AsyncTask<Params, Void, Bitmap>
+	{
+		String mUrl;
+		ImageHandling mIh;
+		DownloadImageTask(ImageHandling ih, String url)
+		{
+			mUrl = url;
+			mIh = ih;
+		}
+
+		@Override
+		protected Bitmap doInBackground(Params... params)
+		{
+			final Bitmap b = ImageHandling.retrieveWebBitmap(mUrl);
+			if (b != null)
+			{
+				if (GoalCrud.DOLOG)
+					Log.v(GoalCrud.TAG, "Successful: " + mUrl);
+			} else
+			// TODO: still dunno WHY he fails sometimes,
+			// shouldn't TCP handle that?
+			// maybe we should retry until $maximum_tries has
+			// been reached
+			if (GoalCrud.DOLOG)
+				Log.v(GoalCrud.TAG, "Failed to retrieve " + mUrl);
+			return b;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result)
+		{
+			if (GoalCrud.DOLOG)
+			{
+				if (result==null)
+					Log.d(GoalCrud.TAG, "returned Bitmap is null in dl-thread");
+			}
+			ImageHandling.this.imageDownloadTasks.remove(DownloadImageTask.this);
+			mIh.addBitmap(result);
 		}
 	}
 
@@ -514,6 +535,34 @@ public class ImageHandling
 				matrix, true);
 
 		return resizedBitmap;
+	}
+
+	/**
+	 * Cancels all image search threads
+	 */
+	public void cancelAllThreads()
+	{
+		if (GoalCrud.DOLOG)
+			Log.d(GoalCrud.TAG,"In Method: cancelAllThreads()");
+		if (searchTask!=null)
+		{
+			searchTask.cancel(true);
+			searchTask = null;
+		}
+		try{
+		for (DownloadImageTask t:imageDownloadTasks)
+		{
+			if (GoalCrud.DOLOG)
+				Log.d(GoalCrud.TAG,"Cancelling Thread");
+			t.cancel(true);
+		}
+		}
+		catch (SecurityException e)
+		{
+			if (GoalCrud.DOLOG)
+				Log.d(GoalCrud.TAG,"Security Exception: " + e.getMessage());
+		}
+		imageDownloadTasks.clear();
 	}
 
 }

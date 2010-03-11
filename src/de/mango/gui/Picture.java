@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -46,11 +47,12 @@ import de.mango.business.ImageHandling;
 import de.mango.business.ImageSearchProvider;
 
 public class Picture extends Activity implements OnClickListener,
-		OnKeyListener, ImageDownloadCompleteCallback
+		OnKeyListener, DialogInterface.OnKeyListener, ImageDownloadCompleteCallback
 {
 	private Vector<Bitmap> imageVector = new Vector<Bitmap>();
 	private int counter = 0;
 	private ProgressDialog pd;
+	private ImageHandling imageHandling;
 
 	/*
 	 * (non-Javadoc)
@@ -102,6 +104,12 @@ public class Picture extends Activity implements OnClickListener,
 	@Override
 	public Object onRetainNonConfigurationInstance()
 	{
+		if (imageHandling!=null && !imageHandling.allThreadsFinished())
+		{
+			imageHandling.cancelAllThreads();
+		}
+		if (pd!=null)
+			pd.cancel();
 		Vector<Bitmap> v = imageVector;
 	    final OrientationChangeContainer c = new OrientationChangeContainer();
 	    c.bitmaps = new Bitmap[v.size()];
@@ -119,8 +127,8 @@ public class Picture extends Activity implements OnClickListener,
 	public void search(String searchQuery)
 	{
 		ImageSearchProvider imageSearch = GoogleSearchProvider.getInstance();
-		ImageHandling ih = new ImageHandling();
-		ih.fetchBitmapsForQuery(searchQuery, 8, 0, imageSearch, this, this);
+		imageHandling = new ImageHandling();
+		imageHandling.fetchBitmapsForQuery(searchQuery, 8, 0, imageSearch, this, this);
 	}
 
 	/*
@@ -160,8 +168,12 @@ public class Picture extends Activity implements OnClickListener,
 			// Search for user input "searchString"
 			EditText queryField = (EditText) findViewById(R.picture.searchString);
 			//start progress
-			pd = ProgressDialog.show(Picture.this, getString(R.string.Picture_search_progress_title), getString(R.string.Picture_search_progress_text),
-					true, false);
+			pd = new ProgressDialog(this);
+			pd.setTitle(R.string.Picture_search_progress_title);
+			pd.setMessage(getString(R.string.Picture_search_progress_text));
+			pd.setIndeterminate(true);
+			pd.setOnKeyListener(this);
+			pd.show();
 			search(queryField.getText().toString());
 		}
 	}
@@ -174,6 +186,7 @@ public class Picture extends Activity implements OnClickListener,
 	 */
 	public void action(Vector<Bitmap> bitmaps)
 	{
+		imageHandling = null;
 		//stop progress dialog
 		pd.dismiss();
 		//present found images as choices for the current goal
@@ -204,6 +217,19 @@ public class Picture extends Activity implements OnClickListener,
 			this.onClick(this.findViewById(R.picture.searchButton));
 			//still let the android system close the software keyboard
 			return false;
+		}
+		return false;
+	}
+
+	public boolean onKey(DialogInterface dialog, int keyCode,
+			KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+		{	//stop potential searches
+			if (imageHandling!=null)
+				imageHandling.cancelAllThreads();
+			pd.dismiss();
+			return true;
 		}
 		return false;
 	}
