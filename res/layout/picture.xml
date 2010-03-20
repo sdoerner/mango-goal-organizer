@@ -56,21 +56,29 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@picture/searchString"
 			/>
+		<Button
+			android:id="@+picture/attacheButton"
+			android:text="@string/Picture_attache"
+			android:layout_width="85dip"
+			android:layout_height="wrap_content"
+			android:layout_below="@picture/mainImageView"
+			android:layout_centerHorizontal="true"
+			/>
 		<ImageButton 
 			android:id="@+picture/nextButton"
 			android:src="@android:drawable/ic_media_play"
-			android:layout_centerHorizontal="true"
-			android:layout_width="wrap_content"
+			android:layout_width="85dip"
 			android:layout_height="wrap_content"
 			android:layout_below="@picture/mainImageView"
+			android:layout_toLeftOf="@picture/attacheButton"
 			/>
 		<Button 
-			android:id="@+picture/attacheButton"
-			android:text="@string/Picture_attache"
-			android:layout_centerHorizontal="true"
-			android:layout_width="wrap_content"
+			android:text="@string/Picture_gallery"
+			android:id="@+picture/galleryButton"
+			android:layout_width="85dip"
 			android:layout_height="wrap_content"
-			android:layout_below="@picture/nextButton"
+			android:layout_below="@picture/mainImageView"
+			android:layout_toRightOf="@picture/attacheButton"
 			/>
 	</RelativeLayout>
 </ScrollView>

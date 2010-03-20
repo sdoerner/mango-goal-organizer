@@ -89,7 +89,7 @@
     <string name="Main_goals_saved_to">Die Ziele wurden gespeichert in \n</string>
     <string name="Main_import_successful">Import erfolgreich</string>
     <string name="Main_import_failed">Import von %s fehlgeschlagen</string>
-    <string name="Main_About_Text">Navigation:\nWählen Sie Ziele mit dem Touchscreen oder Digitalpad aus. Um mit Zielen zu interagieren bzw. Sub-Ziele zu erstellen, tippen sie lange auf ein Ziel, damit das Kontektmenü erscheint.\nIn der Hierarchie können sie die Baumstruktur über die Symbole +/- oder über die links/rechts-Tasten des Vier-Wege-Steuerkreuzes bzw. den Trackball ein- und ausklappen.\n\nFortschrittsberechnung:\nDer Abarbeitungsfortschritt ist nur für Ziele auf der untersten Baumebene einstellbar. Entsprechend der gewählten Gewichtung wird der Fortschritt der Oberziele automatisch berechnet.\n\nNeueste Änderungen:\n0.7.0: Verbesserte Steuerkreuz-Navigation, Absturz beim Drehen des Bildschirms während der Suche behoben, Reaktion auf die Enter-Taste im Such-Bildschirm, \"Über Mango\"-Fenster\n0.6.3: Bugfixes \n0.6.2: deutsche Sprachunterstützung\n0.6.1: Absturz im Querformat behoben\n\nMehr Infos unter\nhttp://mango-android.de/</string>
+    <string name="Main_About_Text">Navigation:\nWählen Sie Ziele mit dem Touchscreen oder Digitalpad aus. Um mit Zielen zu interagieren bzw. Sub-Ziele zu erstellen, tippen sie lange auf ein Ziel, damit das Kontektmenü erscheint.\nIn der Hierarchie können sie die Baumstruktur über die Symbole +/- oder über die links/rechts-Tasten des Vier-Wege-Steuerkreuzes bzw. den Trackball ein- und ausklappen.\n\nFortschrittsberechnung:\nDer Abarbeitungsfortschritt ist nur für Ziele auf der untersten Baumebene einstellbar. Entsprechend der gewählten Gewichtung wird der Fortschritt der Oberziele automatisch berechnet.\n\nNeueste Änderungen:\n0.7.1: Bilder aus der Galerie laden\n0.7.0: Verbesserte Steuerkreuz-Navigation, Absturz beim Drehen des Bildschirms während der Suche behoben, Reaktion auf die Enter-Taste im Such-Bildschirm, \"Über Mango\"-Fenster\n0.6.3: Bugfixes \n0.6.2: deutsche Sprachunterstützung\n0.6.1: Absturz im Querformat behoben\n\nMehr Infos unter\nhttp://mango-android.de/</string>
     <!-- Picture Activity -->
     <string name="Picture_no_results">Es tut uns leid, aber ihr Suchbegriff lieferte keine Resultate.</string>
     <string name="Picture_search_progress_text">Suche nach Bildern</string>
@@ -97,5 +97,7 @@
     <string name="Picture_type_search_query">Bitte geben Sie einen Suchbegriff ein.</string>
     <string name="Picture_attache">Anhängen</string>
     <string name="Picture_search">Suchen</string>
+    <string name="Picture_gallery">Galerie</string>
+    <string name="Picture_noGallery">Es konnte keine Galerie-Anwendung gefunden werden.</string>
 </resources>
 

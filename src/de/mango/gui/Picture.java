@@ -24,9 +24,11 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -73,6 +75,8 @@ public class Picture extends Activity implements OnClickListener,
 		//set Listeners
 		Button search = (Button) findViewById(R.picture.searchButton);
 		search.setOnClickListener(this);
+		Button gallery = (Button) findViewById(R.picture.galleryButton);
+		gallery.setOnClickListener(this);
 		ImageButton next = (ImageButton) findViewById(R.picture.nextButton);
 		next.setOnClickListener(this);
 		Button attache = (Button) findViewById(R.picture.attacheButton);
@@ -180,6 +184,54 @@ public class Picture extends Activity implements OnClickListener,
 			pd.setOnKeyListener(this);
 			pd.show();
 			search(queryField.getText().toString());
+		}
+		else if (v == findViewById(R.picture.galleryButton))
+		{
+			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			try
+			{
+				startActivityForResult(intent, 0);
+			}
+			catch (ActivityNotFoundException e)
+			{
+				Toast.makeText(this, R.string.Picture_noGallery, Toast.LENGTH_LONG).show();
+				if (DEBUG)
+					Log.e(TAG, "Could not start gallary intent: " + e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK)
+		{
+			//returned from gallery image picker
+			Uri photoUri = data.getData();
+			if (photoUri != null) {
+				try
+				{
+					Bitmap bitmap = ImageHandling.loadBitmapFromContentUri(getContentResolver(), photoUri);
+					if (DEBUG)
+					{
+						Log.d(TAG, "Loading image: " + photoUri.toString());
+						if (bitmap == null)
+							Log.e(TAG, "Bitmap is null");
+					}
+					if (bitmap != null)
+					{
+						Intent i = new Intent();
+						i.putExtra("image", bitmap);
+						setResult(RESULT_OK, i);
+						finish();
+					}
+				} catch (Exception e)
+				{
+					if (DEBUG)
+						Log.e(TAG, "Exception loading image from gallery:" + e.getMessage());
+				}
+			}
 		}
 	}
 

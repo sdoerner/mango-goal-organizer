@@ -32,7 +32,7 @@
 		<EditText 
 		android:id="@+picture/searchString"
 		android:textSize="18sp"
-		android:layout_width="300px"
+		android:layout_width="270px"
 		android:layout_height="wrap_content"
 		android:layout_margin="4dp"
 		android:maxLines="1"
@@ -42,9 +42,17 @@
 		<Button 
 			android:text="@string/Picture_search"
 			android:id="@+picture/searchButton"
-			android:layout_width="120px"
+			android:layout_width="90px"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@picture/searchString"
+			android:layout_alignBaseline="@picture/searchString"
+			/>
+		<Button
+			android:text="@string/Picture_gallery"
+			android:id="@+picture/galleryButton"
+			android:layout_width="90px"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@picture/searchButton"
 			android:layout_alignBaseline="@picture/searchString"
 			/>
 		<ImageView

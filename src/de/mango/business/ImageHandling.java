@@ -36,10 +36,12 @@ import java.util.Set;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -183,7 +185,6 @@ public class ImageHandling
 			BufferedInputStream bis = new BufferedInputStream(is, 8);
 			Bitmap bm = BitmapFactory.decodeStream(bis);
 			bis.close();
-			is.close();
 			return bm;
 		} catch (FileNotFoundException e)
 		{
@@ -197,6 +198,26 @@ public class ImageHandling
 		}
 		return null;
 	}
+
+	/**
+	 * Loads a Bitmap specified by a given URI.
+	 * @param contentResolver The contentResolver to resolve the URI.
+	 * @param uri The URI to resolve. Must start with content://
+	 * @return a Bitmap representing the content of the URI.
+	 */
+	public static Bitmap loadBitmapFromContentUri(ContentResolver contentResolver, Uri uri) {
+		Bitmap photo =  null;
+		try {
+			BufferedInputStream bis = new BufferedInputStream(contentResolver.openInputStream(uri));
+			photo = BitmapFactory.decodeStream(bis);
+			bis.close();
+		} catch (Exception e) {
+			if (DEBUG)
+				Log.e(TAG, "loadPhotoFromUri: " + e.getMessage());
+		}
+	    return photo;
+	}
+
 
 	/**
 	 * Downloads an image from the given URL and returns it as a bitmap.
