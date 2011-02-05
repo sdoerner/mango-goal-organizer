@@ -140,6 +140,7 @@ public class GoalProvider
 				Log.w(TAG, "No deadline found or wrong format.");
 		}
 		Goal g = new Goal(c.getString(2), description, deadline);
+		g.setId(c.getLong(0));
 		g.setImageName(c.isNull(4) ? "" : c.getString(4));
 		g.setCompletion(c.getInt(5));
 		g.setCompletionWeight(c.getInt(6));

@@ -36,6 +36,7 @@ import de.mango.R;
 public class Goal
 {
 	// these fields may never be null
+	private long id;
 	private String name;
 	private String description;
 	private String imageName;
@@ -334,6 +335,16 @@ public class Goal
 		i.putExtra("allDay", true);
 		i.putExtra("title", this.name);
 		i.putExtra("description", this.description);
+	}
+
+	public void setId(long id)
+	{
+		this.id = id;
+	}
+
+	public long getId()
+	{
+		return id;
 	}
 
 }
