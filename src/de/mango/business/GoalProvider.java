@@ -103,6 +103,19 @@ public class GoalProvider
 	 * @return ID of the new Goal
 	 */
 	public long insertGoal(Goal g, long parent) {
+		ContentValues values = extractValues(g);
+		if (parent != -1)
+			values.put("parent", parent);
+		return db.insert(GOALS_TABLE_NAME, null, values);
+	}
+
+	public boolean updateGoal(long id, Goal g) {
+		final int affectedRows =
+			db.update(GOALS_TABLE_NAME, extractValues(g), "id=" + Long.toString(id), null) ;
+		return affectedRows == 1;
+	}
+
+	private ContentValues extractValues(Goal g) {
 		ContentValues values = new ContentValues();
 		values.put("name", g.getName());
 		values.put("description", g.getDescription().length() > 0 ? g.getDescription(): "NULL");
@@ -111,9 +124,7 @@ public class GoalProvider
 		values.put("completionWeight", g.getCompletionWeight());
 		values.put("deadline", SDF.format(g.getDeadline().getTime()));
 		values.put("timestamp", SDF.format(g.getTimestamp().getTime()));
-		if (parent != -1)
-			values.put("parent", parent);
-		return db.insert(GOALS_TABLE_NAME, null, values);
+		return values;
 	}
 
 	private Goal getGoalFromCursor(Cursor c) {
