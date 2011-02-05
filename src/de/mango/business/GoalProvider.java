@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -76,8 +77,8 @@ public class GoalProvider
 		return g;
 	}
 	
-	public Goal getGoalWithId(int id) {
-		Cursor c = db.query(GOALS_TABLE_NAME, null, "id=" + Integer.toString(id),
+	public Goal getGoalWithId(long id) {
+		Cursor c = db.query(GOALS_TABLE_NAME, null, "id=" + Long.toString(id),
 				null, null, null, null);
 		c.moveToFirst();
 		Goal result = getGoalFromCursor(c);
@@ -94,6 +95,25 @@ public class GoalProvider
 		}
 		c.close();
 		return results;
+	}
+
+	/**
+	 * @param g the Goal to insert
+	 * @param parent ID of the parent, or -1 if topLevelGoal
+	 * @return ID of the new Goal
+	 */
+	public long insertGoal(Goal g, long parent) {
+		ContentValues values = new ContentValues();
+		values.put("name", g.getName());
+		values.put("description", g.getDescription().length() > 0 ? g.getDescription(): "NULL");
+		values.put("imageName", g.getImageName().length() > 0 ? g.getImageName(): "NULL");
+		values.put("completion", g.getCompletion());
+		values.put("completionWeight", g.getCompletionWeight());
+		values.put("deadline", SDF.format(g.getDeadline().getTime()));
+		values.put("timestamp", SDF.format(g.getTimestamp().getTime()));
+		if (parent != -1)
+			values.put("parent", parent);
+		return db.insert(GOALS_TABLE_NAME, null, values);
 	}
 
 	private Goal getGoalFromCursor(Cursor c) {
