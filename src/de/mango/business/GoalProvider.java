@@ -3,6 +3,7 @@ package de.mango.business;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import android.content.Context;
@@ -10,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQuery;
 import android.util.Log;
 
 public class GoalProvider
@@ -76,6 +76,26 @@ public class GoalProvider
 		return g;
 	}
 	
+	public Goal getGoalWithId(int id) {
+		Cursor c = db.query(GOALS_TABLE_NAME, null, "id=" + Integer.toString(id),
+				null, null, null, null);
+		c.moveToFirst();
+		Goal result = getGoalFromCursor(c);
+		c.close();
+		return result;
+	}
+
+	public ArrayList<Goal> getChildGoals(int parentId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, null, "parent=" + Integer.toString(parentId),
+				null, null, null, null);
+		ArrayList<Goal> results = new ArrayList<Goal>();
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+			results.add(getGoalFromCursor(c));
+		}
+		c.close();
+		return results;
+	}
+
 	private Goal getGoalFromCursor(Cursor c) {
 		String description = c.isNull(3) ? "" : c.getString(3);
 		GregorianCalendar deadline = new GregorianCalendar();
@@ -105,6 +125,7 @@ public class GoalProvider
 		return g;
 	}
 	
+
 	//temporary for debug
 	
 	public void wipe() throws SQLException {
