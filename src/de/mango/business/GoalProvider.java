@@ -86,8 +86,17 @@ public class GoalProvider
 		return result;
 	}
 
-	public ArrayList<Goal> getChildGoals(int parentId) {
-		Cursor c = db.query(GOALS_TABLE_NAME, null, "parent=" + Integer.toString(parentId),
+	public boolean hasChildren(long parentId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, new String[]{ "COUNT(id)" }, "parent=" + Long.toString(parentId),
+				null, null, null, null);
+		c.moveToFirst();
+		int count = c.getInt(0);
+		c.close();
+		return count > 0;
+	}
+
+	public ArrayList<Goal> getChildGoals(long parentId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, null, "parent=" + Long.toString(parentId),
 				null, null, null, null);
 		ArrayList<Goal> results = new ArrayList<Goal>();
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {

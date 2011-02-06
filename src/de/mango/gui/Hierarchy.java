@@ -20,6 +20,7 @@
 
 package de.mango.gui;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import android.app.AlertDialog;
@@ -49,6 +50,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.mango.R;
 import de.mango.business.Goal;
 import de.mango.business.GoalCrud;
+import de.mango.business.GoalProvider;
 import de.mango.business.ImageHandling;
 
 public class Hierarchy extends ListActivity implements OnClickListener
@@ -61,6 +63,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	// track if we must return RESULT_TOP_LEVEL_GOALS_CHANGED
 	private static final int REQUEST_CODE_CHANGE_TLG = 1;
 	private Goal mTopLevelGoal;
+	private GoalProvider mGoalProvider;
 	private HierarchicalListAdapter mAdapter;
 
 	/*
@@ -150,18 +153,20 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(de.mango.R.layout.hierarchy);
+		mGoalProvider = new GoalProvider(this);
 		Intent intent = this.getIntent();
 
-		if (intent.getExtras().containsKey("topLevelGoal"))
-			mTopLevelGoal = GoalCrud.getInstance(this).getTopLevelGoals().get(
-					(Integer) intent.getExtras().get("topLevelGoal"));
+		if (intent.getExtras().containsKey("topLevelGoal")) {
+			final long id =(Long) intent.getExtras().get("topLevelGoal");
+			mTopLevelGoal = mGoalProvider.getGoalWithId(id);
+		}
 		else
 		{
 			setResult(RESULT_CANCELED);
 			finish();
 		}
 
-		mAdapter = new HierarchicalListAdapter(this, mTopLevelGoal);
+		mAdapter = new HierarchicalListAdapter(this, mTopLevelGoal, mGoalProvider);
 		setListAdapter(mAdapter);
 		registerForContextMenu(getListView());
 		getListView().setLongClickable(true);
@@ -221,8 +226,8 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	public void onClick(View v)
 	{
 		//show details for clicked goal
-		GoalCrud.currentGoal = (Goal) v.getTag();
 		Intent i = new Intent(this, Detail.class);
+		i.putExtra("goalId", (Long) v.getTag());
 		startActivityForResult(i, 0);
 	}
 
@@ -281,12 +286,13 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 		final Hierarchy mHierarchy;
 		final Goal mTopLevelGoal;
+		final GoalProvider mGoalProvider;
 		/**
 		 * Currently show goals in order (direct connection to the list view)
 		 */
 		Vector<ListEntry> mCurrentlyShownGoals;
 
-		public HierarchicalListAdapter(Hierarchy hierarchy, Goal topLevelGoal)
+		public HierarchicalListAdapter(Hierarchy hierarchy, Goal topLevelGoal, GoalProvider gp)
 		{
 			mInflater = getLayoutInflater();
 			mPlusBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plus);
@@ -297,6 +303,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 			mHierarchy = hierarchy;
 			mTopLevelGoal = topLevelGoal;
+			mGoalProvider = gp;
 			mCurrentlyShownGoals = new Vector<ListEntry>();
 			populate();
 		}
@@ -306,7 +313,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		 */
 		private void populate()
 		{
-			Vector<Goal> c = mTopLevelGoal.getChildren();
+			ArrayList<Goal> c = mGoalProvider.getChildGoals(mTopLevelGoal.getId());
 			boolean hasChildren = c != null && !c.isEmpty();
 			mCurrentlyShownGoals.add(new ListEntry(mTopLevelGoal, 0, hasChildren));
 			if (hasChildren)
@@ -377,7 +384,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			Goal goal = entry.goal;
 			// expand/collapse stuff
 			convertView.setPadding(entry.offset, 0, 0, 0);
-			if (entry.goal.getChildren() != null && !entry.goal.getChildren().isEmpty())
+			if (mGoalProvider.hasChildren(entry.goal.getId()))
 			{
 				viewHolder.expandButton.setVisibility(View.VISIBLE);
 				viewHolder.expandButton.setImageBitmap(entry.expanded ? mMinusBitmap : mPlusBitmap);
@@ -394,7 +401,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 			// show goal information
 			viewHolder.textView.setText(goal.getName());
-			viewHolder.textView.setTag(goal);
+			viewHolder.textView.setTag(goal.getId());
 
 			BitmapDrawable d;
 			if (goal.getImageName().equals("") || goal.getImageName().equals(null))
@@ -434,8 +441,8 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		private void expandEntry(ListEntry entry)
 		{
 			Vector<ListEntry> currentlyShownGoals = mCurrentlyShownGoals;
-			Vector<Goal> children = entry.goal.getChildren();
-			if (children == null || children.isEmpty())
+			ArrayList<Goal> children = mGoalProvider.getChildGoals(entry.goal.getId());
+			if (children.isEmpty())
 				return;
 			entry.expanded = true;
 			int newoffset = entry.offset + INDENT;

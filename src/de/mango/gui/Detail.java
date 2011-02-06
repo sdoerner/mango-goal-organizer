@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.mango.R;
 import de.mango.business.Goal;
-import de.mango.business.GoalCrud;
+import de.mango.business.GoalProvider;
 import de.mango.business.ImageHandling;
 
 /**
@@ -61,7 +61,7 @@ public class Detail extends Activity implements OnClickListener
 	 * Children of the currently shown goal in presented order.
 	 */
 	private Vector<Goal> children;
-	private GoalCrud crud;
+	private GoalProvider goalProvider;
 
 	// widgets for later access
 	private TextView nameTextView;
@@ -82,11 +82,15 @@ public class Detail extends Activity implements OnClickListener
 		setContentView(de.mango.R.layout.detail);
 		subgoalsLayout = (ViewGroup) findViewById(R.detail.subgoalsLayout);
 		setResult(RESULT_CANCELED);
+		goalProvider = new GoalProvider(this);
 
 		// get and check goal to be shown
-		goal = GoalCrud.currentGoal;
-		crud = GoalCrud.getInstance(this);
-		GoalCrud.currentGoal = null;
+		Intent i = getIntent();
+		final long id = i.getLongExtra("goalId", -1);
+		if (id == -1) {
+			finish();
+		}
+		goal = goalProvider.getGoalWithId(id);
 		if (goal == null)
 		{
 			goal = Detail.currentGoal;
@@ -160,7 +164,6 @@ public class Detail extends Activity implements OnClickListener
 	@Override
 	protected void onPause()
 	{
-		GoalCrud.getInstance(this).saveToDisk(this);
 		super.onPause();
 	}
 
@@ -188,7 +191,6 @@ public class Detail extends Activity implements OnClickListener
 				changeButton.setText(R.string.Button_change);
 				// change data
 				goal.setCompletion(progress.getProgress());
-				crud.setDataChanged();
 				setResult(Create.RESULT_MODIFIED);
 				// refresh view
 				nameTextView.setBackgroundColor(getResources().getColor(
@@ -201,8 +203,8 @@ public class Detail extends Activity implements OnClickListener
 		{
 			// clicked on a subgoal -> show new Details screen for it
 			int index = (Integer) v.getTag();
-			GoalCrud.currentGoal = this.children.get(index);
 			Intent i = new Intent(this, Detail.class);
+			i.putExtra("goalId", goal.getId());
 			startActivityForResult(i, index);
 		}
 	}

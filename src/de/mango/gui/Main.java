@@ -57,6 +57,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.mango.R;
 import de.mango.business.Goal;
 import de.mango.business.GoalCrud;
+import de.mango.business.GoalProvider;
 import de.mango.business.ImExport;
 import de.mango.business.ImageHandling;
 
@@ -85,6 +86,7 @@ public class Main extends Activity implements OnClickListener,
 	private static final int REQUEST_CODE_PICK_ICS_FILE = 2;
 	private static final int REQUEST_CODE_PICK_XML_IMPORT_FILE = 3;
 	private GoalCrud crud;
+	private GoalProvider goalProvider;
 	private ImageAdapter mAdapter;
 	private AlertDialog.Builder mAlertDialogBuilder;
 	/**
@@ -315,8 +317,9 @@ public class Main extends Activity implements OnClickListener,
 		mAlertDialogBuilder = new AlertDialog.Builder(this);
 
 		crud = GoalCrud.getInstance(this);
+		goalProvider = new GoalProvider(this);
 
-		if (mEmptyScreen = crud.isEmpty())
+		if (mEmptyScreen = (goalProvider.getNumTopLevelGoals()==0))
 		{
 			setContentView(R.layout.emptymain);
 		}
@@ -330,7 +333,7 @@ public class Main extends Activity implements OnClickListener,
 	{
 		setContentView(de.mango.R.layout.main);
 		GridView gridview = (GridView) findViewById(R.main.goalGridview);
-		mAdapter = new ImageAdapter(this, crud);
+		mAdapter = new ImageAdapter(this, goalProvider);
 		gridview.setAdapter(mAdapter);
 		registerForContextMenu(gridview);
 		mEmptyScreen = false;
@@ -358,9 +361,8 @@ public class Main extends Activity implements OnClickListener,
 		if (DEBUG)
 			Log.d(TAG, "Tag of the clicked view: " + ((Integer) v.getTag()).toString());
 		Intent i = new Intent(this, Hierarchy.class);
-		i.putExtra("topLevelGoal", ((Integer) v.getTag()));
+		i.putExtra("topLevelGoal", ((Long) v.getTag()));
 		startActivityForResult(i, 0);
-
 	}
 
 	@Override
@@ -441,27 +443,27 @@ public class Main extends Activity implements OnClickListener,
 	public class ImageAdapter extends BaseAdapter
 	{
 		private Main mMainDialog;
-		private GoalCrud mCrud;
+		private GoalProvider mGoalProvider;
 		// inflater for rolling out the layout
 		private LayoutInflater mInflater;
 		private Bitmap mNoPic;
 
-		public ImageAdapter(Main mainActivity, GoalCrud crud)
+		public ImageAdapter(Main mainActivity, GoalProvider gp)
 		{
 			mMainDialog = mainActivity;
-			mCrud = crud;
+			mGoalProvider = gp;
 			mInflater = getLayoutInflater();
 			mNoPic = BitmapFactory.decodeResource(getResources(), R.drawable.nopic);
 		}
 
 		public int getCount()
 		{
-			return mCrud.getTopLevelGoals().size();
+			return mGoalProvider.getNumTopLevelGoals();
 		}
 
 		public Object getItem(int position)
 		{
-			return mCrud.getTopLevelGoals().get(position);
+			return mGoalProvider.getTopLevelGoal(position);
 		}
 
 		public long getItemId(int position)
@@ -499,9 +501,9 @@ public class Main extends Activity implements OnClickListener,
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
 			// load goal information
-			Goal goal = mCrud.getTopLevelGoals().get(position);
-			viewHolder.textView.setTag(position);
-			viewHolder.expandButton.setTag(position);
+			Goal goal = mGoalProvider.getTopLevelGoal(position);
+			viewHolder.textView.setTag(goal.getId());
+			viewHolder.expandButton.setTag(goal.getId());
 
 			viewHolder.textView.setText(goal.getName());
 			Bitmap bitmap = ((goal.getImageName().equals(""))) ? mNoPic : ImageHandling.loadLocalBitmap(goal.getImageName(), getBaseContext());
