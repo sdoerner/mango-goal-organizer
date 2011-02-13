@@ -20,13 +20,14 @@
 
 package de.mango.gui;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -42,7 +43,7 @@ import de.mango.business.ImageHandling;
 
 /**
  * Activity showing the details of a Goal. All Children are shown as pictures
- * and accessible through these. Progress is the only changable property.
+ * and accessible through these. Progress is the only changeable property.
  */
 public class Detail extends Activity implements OnClickListener
 {
@@ -55,18 +56,15 @@ public class Detail extends Activity implements OnClickListener
 	 * The currently shown goal (which is only one in details screen).
 	 */
 	private Goal goal;
-	private static Goal currentGoal; 
 	
 	/**
 	 * Children of the currently shown goal in presented order.
 	 */
-	private Vector<Goal> children;
 	private GoalProvider goalProvider;
 
 	// widgets for later access
 	private TextView nameTextView;
 	private TextView completionTextView;
-	private Vector<ImageButton> childButtons = new Vector<ImageButton>();
 	private HorizontalSlide progress;
 	private Button changeProgress;
 
@@ -91,11 +89,6 @@ public class Detail extends Activity implements OnClickListener
 			finish();
 		}
 		goal = goalProvider.getGoalWithId(id);
-		if (goal == null)
-		{
-			goal = Detail.currentGoal;
-			Detail.currentGoal = null;
-		}
 		if (goal==null)
 			finish();
 		else
@@ -135,7 +128,7 @@ public class Detail extends Activity implements OnClickListener
 			}
 				
 
-			if (goal.getChildren() != null && !goal.getChildren().isEmpty())
+			if (goalProvider.hasChildren(goal.getId()))
 				changeProgress.setVisibility(View.INVISIBLE);
 
 			ImageView iv = (ImageView) findViewById(R.detail.image);
@@ -151,7 +144,6 @@ public class Detail extends Activity implements OnClickListener
 	protected void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
-		Detail.currentGoal = goal;
 		boolean slideActiveState = changeProgress.getText().equals(R.string.Button_accept);
 		outState.putBoolean("ChangeButtonPressed", slideActiveState);
 		if (slideActiveState)
@@ -191,6 +183,7 @@ public class Detail extends Activity implements OnClickListener
 				changeButton.setText(R.string.Button_change);
 				// change data
 				goal.setCompletion(progress.getProgress());
+				goalProvider.updateGoal(goal.getId(), goal);
 				setResult(Create.RESULT_MODIFIED);
 				// refresh view
 				nameTextView.setBackgroundColor(getResources().getColor(
@@ -202,10 +195,9 @@ public class Detail extends Activity implements OnClickListener
 		else
 		{
 			// clicked on a subgoal -> show new Details screen for it
-			int index = (Integer) v.getTag();
 			Intent i = new Intent(this, Detail.class);
-			i.putExtra("goalId", goal.getId());
-			startActivityForResult(i, index);
+			i.putExtra("goalId", (Long) v.getTag());
+			startActivityForResult(i, 0);
 		}
 	}
 
@@ -223,18 +215,19 @@ public class Detail extends Activity implements OnClickListener
 			// returned from another Details-Screen, in which the progress has
 			// been adjusted
 			
-			// update progress and progress colors
-			this.childButtons.get(requestCode).setBackgroundColor(
-					getResources()
-							.getColor(
-									this.children.get(requestCode)
-											.getCompletionColor()));
+			// refresh relevant goal information
+			goal = goalProvider.getGoalWithId(goal.getId());
 			nameTextView.setBackgroundColor(getResources().getColor(
 					goal.getCompletionColor()));
 			this.completionTextView.setText(getResources().getString(R.string.Progress)+": "
 					+ goal.getCompletion() + "%");
 			HorizontalSlide progress = (HorizontalSlide) findViewById(R.detail.progress);
 			progress.setProgress(goal.getCompletion());
+
+			// update children
+			this.subgoalsLayout.removeAllViews();
+			this.drawChildren();
+
 			// propagate changes up
 			this.setResult(Create.RESULT_MODIFIED);
 		}
@@ -247,15 +240,14 @@ public class Detail extends Activity implements OnClickListener
 	 */
 	private void drawChildren()
 	{
-		Goal goal = this.goal;
-		Vector<Goal> subgoals = goal.getChildren();
-		// TODO: Need of improvement - Maybe a Grid View
-		if (subgoals != null && !subgoals.isEmpty())
-		{
-			TextView header = (TextView) findViewById(R.detail.subgoalsCaption);
-			header.setVisibility(View.VISIBLE);
+		final ArrayList<Goal> subgoals = goalProvider.getChildGoals(goal.getId());
+		TextView header = (TextView) findViewById(R.detail.subgoalsCaption);
+		header.setVisibility(subgoals.isEmpty() ? View.INVISIBLE : View.VISIBLE);
 
-			this.children = subgoals;
+		// TODO: Need of improvement - Maybe a Grid View
+		if (!subgoals.isEmpty())
+		{
+
 			int i = subgoals.size() / 5;
 			int j = subgoals.size() % 5;
 
@@ -271,7 +263,7 @@ public class Detail extends Activity implements OnClickListener
 
 				for (int y = 0; y < 5; y++)
 				{
-					currentChild = subgoals.get(z);
+					currentChild = subgoals.get(z++);
 					ImageButton ib = new ImageButton(subgoalsLayout
 							.getContext());
 					ib.setBackgroundColor(getResources().getColor(
@@ -284,10 +276,9 @@ public class Detail extends Activity implements OnClickListener
 
 					ib.setImageBitmap(ImageHandling
 							.resizeBitmap(bitmap, 40, 40));
-					ib.setTag(z++);
+					ib.setTag(currentChild.getId());
 					ib.setOnClickListener(this);
 					layout.addView(ib);
-					childButtons.add(ib);
 				}
 				subgoalsLayout.addView(layout);
 			}
@@ -298,7 +289,7 @@ public class Detail extends Activity implements OnClickListener
 				layout = new LinearLayout(subgoalsLayout.getContext());
 				for (int x = 0; x < j; x++)
 				{
-					currentChild = subgoals.get(z);
+					currentChild = subgoals.get(z++);
 					ImageButton ib = new ImageButton(subgoalsLayout
 							.getContext());
 					ib.setBackgroundColor(getResources().getColor(
@@ -311,10 +302,9 @@ public class Detail extends Activity implements OnClickListener
 
 					ib.setImageBitmap(ImageHandling
 							.resizeBitmap(bitmap, 40, 40));
-					ib.setTag(z++);
+					ib.setTag(currentChild.getId());
 					ib.setOnClickListener(this);
 					layout.addView(ib);
-					childButtons.add(ib);
 				}
 				subgoalsLayout.addView(layout);
 			}
