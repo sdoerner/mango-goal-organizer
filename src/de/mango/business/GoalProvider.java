@@ -1,5 +1,6 @@
 package de.mango.business;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +53,7 @@ public class GoalProvider
 		}
 	}
 
+	private Context context;
 	private GoalDBOpenHelper dbHelper;
 	private SQLiteDatabase db;
 
@@ -59,6 +61,7 @@ public class GoalProvider
 	public GoalProvider(Context context) throws SQLiteException {
 		dbHelper = new GoalDBOpenHelper(context);
 		db = dbHelper.getWritableDatabase();
+		this.context = context;
 	}
 	
 	public int getNumTopLevelGoals() {
@@ -134,6 +137,41 @@ public class GoalProvider
 		return (affectedRows == 1 && updateParentCompletion(id));
 	}
 
+	public boolean deleteGoal(long id) {
+		return deleteGoal(id, null);
+	}
+
+	private boolean deleteGoal(long id, String imageName) {
+		if (hasChildren(id)) {
+			Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "id", "imageName"}, "parent=" + Long.toString(id),
+					null, null, null, null);
+			c.moveToFirst();
+			while (!c.isAfterLast()) {
+				deleteGoal(c.getLong(0), c.getString(1));
+				c.moveToNext();
+			}
+			c.close();
+		}
+		return deleteGoalNonRecursive(id, imageName);
+	}
+
+	private boolean deleteGoalNonRecursive(long id, String imageName) {
+		if (imageName == null)
+			imageName = getImageName(id);
+		deleteImage(imageName);
+		final int affectedRows =
+			db.delete(GOALS_TABLE_NAME, "id=" + id, null);
+		return affectedRows == 1;
+	}
+
+	private void deleteImage(String imageName) {
+		if (imageName == null)
+			return;
+		File imageFile = context.getFileStreamPath(imageName);
+		if (imageFile.exists())
+			imageFile.delete();
+	}
+
 	/**
 	 * Updates the completion of a non-leaf with the completion of all children
 	 * @param goalId the id of the goal to update
@@ -159,7 +197,7 @@ public class GoalProvider
 		// normalize the degree of completion
 		newCompletion = newCompletion / weight;
 		// update entry
-		if (!updateGoalCompletionNonrecursive(goalId, newCompletion))
+		if (!updateGoalCompletionNonRecursive(goalId, newCompletion))
 			return false;
 		return updateParentCompletion(goalId);
 	}
@@ -183,7 +221,7 @@ public class GoalProvider
 		return true;
 	}
 
-	private boolean updateGoalCompletionNonrecursive(long goalId, int newCompletion) {
+	private boolean updateGoalCompletionNonRecursive(long goalId, int newCompletion) {
 		ContentValues values = new ContentValues();
 		values.put("completion", newCompletion);
 		final int affectedRows =
@@ -191,13 +229,34 @@ public class GoalProvider
 		return affectedRows == 1;
 	}
 
+	/**
+	 * @param goalId ID of the goal, whose parent we are interested in.
+	 * @return The ID of the parent or -1 if goalId belongs to TLG.
+	 */
 	public long getParentId(long goalId) {
 		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "parent" }, "id=" + Long.toString(goalId), 
 				null, null, null, null);
 		c.moveToFirst();
-		if (c.isAfterLast() || c.isNull(0))
+		if (c.isAfterLast() || c.isNull(0)) {
+			c.close();
 			return -1;
-		return c.getLong(0);
+		}
+		long result = c.getLong(0);
+		c.close();
+		return result;
+	}
+
+	private String getImageName(long goalId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "imageName" },
+				"id=" + Long.toString(goalId), null, null, null, null);
+		c.moveToFirst();
+		if (c.isAfterLast() || c.isNull(0)) {
+			c.close();
+			return null;
+		}
+		String result = c.getString(0);
+		c.close();
+		return result;
 	}
 
 	private ContentValues extractValues(Goal g) {
