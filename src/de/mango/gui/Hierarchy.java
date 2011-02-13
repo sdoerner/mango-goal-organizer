@@ -49,7 +49,6 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.mango.R;
 import de.mango.business.Goal;
-import de.mango.business.GoalCrud;
 import de.mango.business.GoalProvider;
 import de.mango.business.ImageHandling;
 
@@ -120,8 +119,9 @@ public class Hierarchy extends ListActivity implements OnClickListener
 							if (which == AlertDialog.BUTTON_POSITIVE)
 							{
 								// delete the goal
-								GoalCrud c = GoalCrud.getInstance(Hierarchy.this);
-								if (c.removeFromTree(g, Hierarchy.this))
+								boolean TLG = -1 == mGoalProvider.getParentId(goalId);
+								mGoalProvider.deleteGoal(goalId);
+								if (TLG)
 								{
 									setResult(RESULT_TOP_LEVEL_GOALS_CHANGED);
 									finish();
@@ -214,7 +214,6 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	@Override
 	protected void onPause()
 	{
-		GoalCrud.getInstance(this).saveToDisk(this);
 		super.onPause();
 	}
 
