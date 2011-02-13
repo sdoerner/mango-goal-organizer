@@ -81,7 +81,10 @@ public class GoalProvider
 	public Goal getGoalWithId(long id) {
 		Cursor c = db.query(GOALS_TABLE_NAME, null, "id=" + Long.toString(id),
 				null, null, null, null);
-		c.moveToFirst();
+		if (!c.moveToFirst()) {
+			c.close();
+			return null;
+		}
 		Goal result = getGoalFromCursor(c);
 		c.close();
 		return result;
@@ -205,8 +208,8 @@ public class GoalProvider
 	private ContentValues extractValues(Goal g, boolean withCompletion) {
 		ContentValues values = new ContentValues();
 		values.put("name", g.getName());
-		values.put("description", g.getDescription().length() > 0 ? g.getDescription(): "NULL");
-		values.put("imageName", g.getImageName().length() > 0 ? g.getImageName(): "NULL");
+		values.put("description", g.getDescription().length() > 0 ? g.getDescription() : null);
+		values.put("imageName", g.getImageName().length() > 0 ? g.getImageName() : null);
 		if (withCompletion)
 			values.put("completion", g.getCompletion());
 		values.put("completionWeight", g.getCompletionWeight());
