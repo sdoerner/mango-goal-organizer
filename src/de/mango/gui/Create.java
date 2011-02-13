@@ -28,7 +28,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -47,7 +46,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.mango.R;
 import de.mango.business.Goal;
-import de.mango.business.GoalCrud;
+import de.mango.business.GoalProvider;
 import de.mango.business.ImageHandling;
 
 public class Create extends Activity implements OnClickListener
@@ -55,7 +54,6 @@ public class Create extends Activity implements OnClickListener
 	// first result type used by Hierarchy
 	public static final int RESULT_CREATED = RESULT_FIRST_USER + 1;
 	public static final int RESULT_MODIFIED = RESULT_FIRST_USER + 2;
-	private AlertDialog.Builder mAlertDialogBuilder;
 	private Bitmap goalImage = null;
 	PopupWindow pw = null;
 	// if true, modify g
@@ -63,7 +61,9 @@ public class Create extends Activity implements OnClickListener
 	// if g==null, create new toplevel goal
 	// else create subgoal for g
 	boolean modify = false;
+	long parentId; //id of the parent of the goal to be created, -1 if new TLG
 	Goal g = null;
+	GoalProvider goalProvider;
 
 	/*
 	 * (non-Javadoc)
@@ -76,6 +76,7 @@ public class Create extends Activity implements OnClickListener
 
 		super.onCreate(savedInstanceState);
 		setContentView(de.mango.R.layout.create);
+		goalProvider = new GoalProvider(this);
 
 		
 		DatePicker date = (DatePicker) findViewById(R.create.deadlineDatePicker);
@@ -104,17 +105,13 @@ public class Create extends Activity implements OnClickListener
 		// modified
 		modify = getIntent().getBooleanExtra("modify", false);
 
-		g = GoalCrud.currentGoal;
-		// currentGoal should only be used within Activity-Launches since static
-		// variables may
-		// become null when our process is killed and restarted
-		GoalCrud.currentGoal = null;
-
 		setTitle(modify ? R.string.ActivityTitle_Modify : R.string.ActivityTitle_Create);
 
 		// If an existing goal is being modified
 		if (modify)
 		{
+			long goalId = getIntent().getLongExtra("goalId", -1);
+			g = goalProvider.getGoalWithId(goalId);
 			if (g == null)
 			{
 				setResult(RESULT_CANCELED);
@@ -122,7 +119,7 @@ public class Create extends Activity implements OnClickListener
 			}
 			else
 			{
-				progress.setModifiable(g.getChildren() == null || g.getChildren().isEmpty());
+				progress.setModifiable(!goalProvider.hasChildren(goalId));
 				progress.setProgress(g.getCompletion());
 
 				EditText text = (EditText) findViewById(R.create.nameEditField);
@@ -156,6 +153,10 @@ public class Create extends Activity implements OnClickListener
 				save.setText(getResources().getString(R.string.Button_modify));
 			}
 		}
+		else
+		{
+			parentId = getIntent().getLongExtra("parentId", -1);
+		}
 		if (goalImage != null)
 		{
 			ImageButton iv = (ImageButton) findViewById(R.create.imagebutton);
@@ -170,7 +171,7 @@ public class Create extends Activity implements OnClickListener
 	protected void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
-		GoalCrud.currentGoal = g;
+		//TODO: save current goal settings
 
 		DatePicker datePicker = (DatePicker) findViewById(R.create.deadlineDatePicker);
 		outState.putInt("dlYear", datePicker.getYear());
@@ -230,88 +231,7 @@ public class Create extends Activity implements OnClickListener
 					.getText().toString();
 
 			if (verify(name, description, deadline))
-			{
-				// checks if deadlines of parental goals are in conflict with
-				// current goal
-				if (g == null) // new Top Level Goal
-				{
-					save(name, description, deadline);
-				}
-				else
-				{
-					// Check Parents' deadlines (new subgoal -> p is g; modified
-					// subgoal -> p is g.getParent)
-					boolean parentDeadlineConflicting = false;
-					// parent of current/new goal
-					Goal traverserUp = modify ? g.getParent() : g;
-					while (traverserUp != null && !parentDeadlineConflicting)
-					{
-						if (deadline.compareTo(traverserUp.getDeadline()) == 1)
-							parentDeadlineConflicting = true;
-						traverserUp = traverserUp.getParent();
-					}
-
-					if (parentDeadlineConflicting)
-					{
-						mAlertDialogBuilder = new AlertDialog.Builder(this);
-						mAlertDialogBuilder.setCancelable(true);
-						mAlertDialogBuilder.setMessage(R.string.Create_DL_behind_parent);
-						AlertDialog dialog = mAlertDialogBuilder.create();
-						dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.Button_yes),
-								new DialogInterface.OnClickListener()
-								{
-									public void onClick(DialogInterface dialog, int which)
-									{
-										if (which == AlertDialog.BUTTON_POSITIVE)
-										{
-											// adjust parent's deadlines
-											Goal traverserUp = modify ? g.getParent() : g;
-											while (traverserUp != null)
-											{
-												if (deadline.compareTo(traverserUp.getDeadline()) == 1)
-													traverserUp.setDeadline(deadline);
-												traverserUp = traverserUp.getParent();
-											}
-											save(name, description, deadline);
-										}
-									}
-								});
-						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.Button_no),
-								(DialogInterface.OnClickListener) null);
-						dialog.show();
-					}
-					else if (modify && !checkChildren(g, deadline))
-					{
-						// ChangeChildren
-						mAlertDialogBuilder = new AlertDialog.Builder(this);
-						mAlertDialogBuilder.setCancelable(true);
-						mAlertDialogBuilder
-								.setMessage(R.string.Create_DL_before_child);
-						AlertDialog dialog = mAlertDialogBuilder.create();
-						dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.Button_yes),
-								new DialogInterface.OnClickListener()
-								{
-									public void onClick(DialogInterface dialog, int which)
-									{
-										if (which == AlertDialog.BUTTON_POSITIVE)
-										{
-											changeChildren(g, deadline);
-											save(name, description, deadline);
-										}
-									}
-								});
-						dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.Button_no),
-								(DialogInterface.OnClickListener) null);
-						dialog.show();
-
-					}
-					else
-					// parents' and children's deadlines ok
-					{
-						save(name, description, deadline);
-					}
-				}
-			}
+				save(name, description, deadline);
 		}
 		else if (v == findViewById(R.create.cancelButton))
 		{
@@ -428,65 +348,16 @@ public class Create extends Activity implements OnClickListener
 		}
 
 		// insert goal into tree
-		GoalCrud crud = GoalCrud.getInstance(this);
-		crud.setDataChanged();
 		if (modify)
 		{
+			goalProvider.updateGoal(goal.getId(), goal);
 			setResult(RESULT_MODIFIED);
 		}
 		else
 		{
-			if (g != null) // create subgoal branch
-				g.addChild(goal);
-			else
-				crud.getTopLevelGoals().add(goal);
+			goalProvider.insertGoal(goal, parentId);
 			setResult(RESULT_CREATED);
 		}
 		finish();
-	}
-
-	/**
-	 * Checks if deadline of any direct child is behind given deadline. Grand
-	 * children will also fit if we expect validity of children.
-	 * 
-	 * @param g
-	 *            Goal, whose children are to be considered
-	 * @param deadline
-	 *            deadline to be compared with
-	 * @return true if all children have deadline before given deadline
-	 */
-	private boolean checkChildren(Goal g, GregorianCalendar deadline)
-	{
-		Vector<Goal> children = g.getChildren();
-		if (children == null || children.isEmpty())
-			return true;
-		for (Goal c : children)
-		{
-			if (deadline.compareTo(c.getDeadline()) == -1)
-				return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Sets all deadlines below g to deadline if they are too high
-	 * 
-	 * @param g
-	 *            root of the goal tree to be adjusted
-	 * @param deadline
-	 *            dealine to which the children should be set
-	 */
-	private void changeChildren(Goal g, GregorianCalendar deadline)
-	{
-		Vector<Goal> children = g.getChildren();
-		// method is only called if there actually are children, thus children
-		// is NOT null
-		for (Goal c : children)
-		{
-			if (deadline.compareTo(c.getDeadline()) == -1)
-				c.setDeadline(deadline);
-			if (c.getChildren() != null && !c.getChildren().isEmpty())
-				changeChildren(c, deadline);
-		}
 	}
 }

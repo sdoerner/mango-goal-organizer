@@ -90,24 +90,26 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	public boolean onContextItemSelected(MenuItem item)
 	{
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		final Goal g = (Goal) ((Main.ViewHolder) (info.targetView.getTag())).textView.getTag();
+		final long goalId = (Long) ((Main.ViewHolder) (info.targetView.getTag())).textView.getTag();
+
 		switch (item.getItemId())
 		{
 		case CreateSubGoalMenu:
 			Intent i = new Intent(this, Create.class);
-			GoalCrud.currentGoal = g;
+			i.putExtra("parentId", goalId);
 			startActivityForResult(i, 0);
 			break;
 		case ModifyGoalMenu:
 			Intent i2 = new Intent(this, Create.class);
 			i2.putExtra("modify", true);
-			GoalCrud.currentGoal = g;
-			startActivityForResult(i2, g.getParent() == null ? REQUEST_CODE_CHANGE_TLG : 0);
+			i2.putExtra("goalId", goalId);
+			startActivityForResult(i2, mGoalProvider.getParentId(goalId) == -1 ? REQUEST_CODE_CHANGE_TLG : 0);
 			break;
 		case DeleteGoalMenu:
 			// show "Are you sure?" dialog
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setCancelable(true);
+			final Goal g = mGoalProvider.getGoalWithId(goalId);
 			dialogBuilder.setMessage(getString(R.string.Really_delete, g.getName()));
 			AlertDialog dialog = dialogBuilder.create();
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.Yes_delete_it),
@@ -136,7 +138,8 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		case ExportToCalendarMenu:
 			Intent i3 = new Intent("android.intent.action.EDIT");
 			i3.setType("vnd.android.cursor.item/event");
-			g.putCalendarExtras(i3);
+			final Goal g2 = mGoalProvider.getGoalWithId(goalId);
+			g2.putCalendarExtras(i3);
 			i3 = Intent.createChooser(i3, getString(R.string.Menu_choose_calendar_application));
 			startActivity(i3);
 			break;

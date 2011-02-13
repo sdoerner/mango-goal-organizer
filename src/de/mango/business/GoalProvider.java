@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -192,7 +191,7 @@ public class GoalProvider
 		return affectedRows == 1;
 	}
 
-	private long getParentId(long goalId) {
+	public long getParentId(long goalId) {
 		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "parent" }, "id=" + Long.toString(goalId), 
 				null, null, null, null);
 		c.moveToFirst();

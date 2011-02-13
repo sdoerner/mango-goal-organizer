@@ -142,7 +142,6 @@ public class Main extends Activity implements OnClickListener,
 		{
 		case CreateGoalMenu:
 			//ensure we create a new tlg
-			GoalCrud.currentGoal = null;
 			i = new Intent(this, Create.class);
 			startActivityForResult(i, 0);
 			break;
@@ -262,13 +261,13 @@ public class Main extends Activity implements OnClickListener,
 		{
 			case CreateSubGoalMenu:
 				Intent i = new Intent(this, Create.class);
-				GoalCrud.currentGoal = g;
+				i.putExtra("parentId", g.getId());
 				startActivityForResult(i, 0);
 				break;
 			case ModifyGoalMenu:
 				Intent i2 = new Intent(this, Create.class);
 				i2.putExtra("modify", true);
-				GoalCrud.currentGoal = g;
+				i2.putExtra("goalId", g.getId());
 				startActivityForResult(i2, 0);
 				break;
 			case DeleteGoalMenu:
