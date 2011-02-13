@@ -255,9 +255,9 @@ public class Main extends Activity implements OnClickListener,
 	{
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
-		final Goal g = crud.getTopLevelGoals().get(
-				(Integer) ((ViewHolder) (info.targetView
-						.getTag())).textView.getTag());
+		final ViewHolder clickedView = (ViewHolder) info.targetView.getTag();
+		final long goalId = (Long) clickedView.textView.getTag();
+		final Goal g = goalProvider.getGoalWithId(goalId);
 		switch (item.getItemId())
 		{
 			case CreateSubGoalMenu:
@@ -295,8 +295,8 @@ public class Main extends Activity implements OnClickListener,
 				dialog.show();
 				break;
 			case ShowDetails:
-				GoalCrud.currentGoal = g;
 				Intent i3 = new Intent(this, Detail.class);
+				i3.putExtra("goalId", goalId);
 				startActivity(i3);
 				break;
 			case ExportToCalendarMenu:
