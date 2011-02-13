@@ -154,26 +154,7 @@ public class Goal
 	 */
 	public void setCompletion(int completion)
 	{
-		int weight = 0;
-		if (this.children == null || this.children.isEmpty())
-		{
-			this.completion = completion;
-		} else
-		{
-			completion = 0;
-			Vector<Goal> children = this.children;
-			// Sum of weighted Completion of all children
-			for (Goal g : children)
-			{
-				weight += g.getCompletionWeight();
-				completion += (g.getCompletion() * g.getCompletionWeight());
-			}
-			// normalize the degree of completion
-			this.completion = completion / weight;
-		}
-		// propagate completion upwards
-		if (this.parent != null)
-			this.parent.setCompletion(completion);
+		this.completion = completion;
 	}
 
 	public GregorianCalendar getDeadline()
@@ -294,7 +275,7 @@ public class Goal
 	 * recalculation if you will shortly set the completion anyway.
 	 * 
 	 * @param completionWeight
-	 *            Bew weight for completion calculation of the parent
+	 *            the weight for completion calculation of the parent
 	 * @param recalculate
 	 *            True if the parent's completion should be recalculated
 	 */

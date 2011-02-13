@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -95,6 +96,10 @@ public class GoalProvider
 		return count > 0;
 	}
 
+	/**
+	 * @param parentId id of the parent goal
+	 * @return possibly empty vector of child goals
+	 */
 	public ArrayList<Goal> getChildGoals(long parentId) {
 		Cursor c = db.query(GOALS_TABLE_NAME, null, "parent=" + Long.toString(parentId),
 				null, null, null, null);
@@ -115,21 +120,95 @@ public class GoalProvider
 		ContentValues values = extractValues(g);
 		if (parent != -1)
 			values.put("parent", parent);
-		return db.insert(GOALS_TABLE_NAME, null, values);
+		long newId = db.insert(GOALS_TABLE_NAME, null, values);
+		updateParentCompletion(newId);
+		return newId;
 	}
 
 	public boolean updateGoal(long id, Goal g) {
+		boolean hasChildren = hasChildren(id);
 		final int affectedRows =
-			db.update(GOALS_TABLE_NAME, extractValues(g), "id=" + Long.toString(id), null) ;
+			db.update(GOALS_TABLE_NAME, extractValues(g, !hasChildren), "id=" + Long.toString(id), null);
+		return (affectedRows == 1 && updateParentCompletion(id));
+	}
+
+	/**
+	 * Updates the completion of a non-leaf with the completion of all children
+	 * @param goalId the id of the goal to update
+	 * @return True if successful, false otherwise, in particular if the goal is a leaf.
+	 */
+	public boolean updateGoalCompletion(long goalId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, new String[]{ "completion", "completionWeight" },
+				"parent=" + Long.toString(goalId), null, null, null, null);
+		c.moveToFirst();
+		if (c.isAfterLast()) {
+			c.close();
+			return false;
+		}
+		// calculate completion
+		int newCompletion = 0;
+		int weight = 0;
+		while (!c.isAfterLast()) {
+			weight += c.getInt(1);
+			newCompletion += (c.getInt(0) * c.getInt(1));
+			c.moveToNext();
+		}
+		c.close();
+		// normalize the degree of completion
+		newCompletion = newCompletion / weight;
+		// update entry
+		if (!updateGoalCompletionNonrecursive(goalId, newCompletion))
+			return false;
+		return updateParentCompletion(goalId);
+	}
+
+	public boolean updateGoalCompletion(long goalId, int newCompletion) {
+		if (hasChildren(goalId))
+			return false;
+		ContentValues values = new ContentValues();
+		values.put("completion", newCompletion);
+		final int affectedRows =
+			db.update(GOALS_TABLE_NAME, values, "id=" + Long.toString(goalId), null);
+		if (affectedRows == 1)
+			return updateParentCompletion(goalId);
+		return false;
+	}
+
+	private boolean updateParentCompletion(long goalId) {
+		long parentId = getParentId(goalId);
+		if (parentId != -1)
+			return updateGoalCompletion(parentId);
+		return true;
+	}
+
+	private boolean updateGoalCompletionNonrecursive(long goalId, int newCompletion) {
+		ContentValues values = new ContentValues();
+		values.put("completion", newCompletion);
+		final int affectedRows =
+			db.update(GOALS_TABLE_NAME, values, "id=" + Long.toString(goalId), null);
 		return affectedRows == 1;
 	}
 
+	private long getParentId(long goalId) {
+		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "parent" }, "id=" + Long.toString(goalId), 
+				null, null, null, null);
+		c.moveToFirst();
+		if (c.isAfterLast() || c.isNull(0))
+			return -1;
+		return c.getLong(0);
+	}
+
 	private ContentValues extractValues(Goal g) {
+		return extractValues(g, true);
+	}
+
+	private ContentValues extractValues(Goal g, boolean withCompletion) {
 		ContentValues values = new ContentValues();
 		values.put("name", g.getName());
 		values.put("description", g.getDescription().length() > 0 ? g.getDescription(): "NULL");
 		values.put("imageName", g.getImageName().length() > 0 ? g.getImageName(): "NULL");
-		values.put("completion", g.getCompletion());
+		if (withCompletion)
+			values.put("completion", g.getCompletion());
 		values.put("completionWeight", g.getCompletionWeight());
 		values.put("deadline", SDF.format(g.getDeadline().getTime()));
 		values.put("timestamp", SDF.format(g.getTimestamp().getTime()));
@@ -173,7 +252,7 @@ public class GoalProvider
 		db.execSQL("DROP TABLE " + GOALS_TABLE_NAME);
 		dbHelper.onCreate(db);
 	}
-	
+
 	public void execSQL(String sql) throws SQLException{
 		db.execSQL(sql);
 	}

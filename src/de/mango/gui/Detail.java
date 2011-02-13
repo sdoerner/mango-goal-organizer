@@ -182,8 +182,9 @@ public class Detail extends Activity implements OnClickListener
 				progress.setModifiable(false);
 				changeButton.setText(R.string.Button_change);
 				// change data
+				goalProvider.updateGoalCompletion(goal.getId(), progress.getProgress());
+				// we can set this directly instead of making a new db request
 				goal.setCompletion(progress.getProgress());
-				goalProvider.updateGoal(goal.getId(), goal);
 				setResult(Create.RESULT_MODIFIED);
 				// refresh view
 				nameTextView.setBackgroundColor(getResources().getColor(
