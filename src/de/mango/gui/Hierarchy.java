@@ -62,7 +62,6 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	private static final int ExportToCalendarMenu = Menu.FIRST + 3;
 	// track if we must return RESULT_TOP_LEVEL_GOALS_CHANGED
 	private static final int REQUEST_CODE_CHANGE_TLG = 1;
-	private Goal mTopLevelGoal;
 	private GoalProvider mGoalProvider;
 	private HierarchicalListAdapter mAdapter;
 
@@ -156,17 +155,13 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		mGoalProvider = new GoalProvider(this);
 		Intent intent = this.getIntent();
 
-		if (intent.getExtras().containsKey("topLevelGoal")) {
-			final long id =(Long) intent.getExtras().get("topLevelGoal");
-			mTopLevelGoal = mGoalProvider.getGoalWithId(id);
-		}
-		else
-		{
+		if (!intent.getExtras().containsKey("topLevelGoal")) {
 			setResult(RESULT_CANCELED);
 			finish();
 		}
+		final long topLevelGoalId =(Long) intent.getExtras().get("topLevelGoal");
 
-		mAdapter = new HierarchicalListAdapter(this, mTopLevelGoal, mGoalProvider);
+		mAdapter = new HierarchicalListAdapter(this, topLevelGoalId, mGoalProvider);
 		setListAdapter(mAdapter);
 		registerForContextMenu(getListView());
 		getListView().setLongClickable(true);
@@ -285,14 +280,14 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		final LayoutInflater mInflater;
 
 		final Hierarchy mHierarchy;
-		final Goal mTopLevelGoal;
+		Goal mTopLevelGoal;
 		final GoalProvider mGoalProvider;
 		/**
 		 * Currently show goals in order (direct connection to the list view)
 		 */
 		Vector<ListEntry> mCurrentlyShownGoals;
 
-		public HierarchicalListAdapter(Hierarchy hierarchy, Goal topLevelGoal, GoalProvider gp)
+		public HierarchicalListAdapter(Hierarchy hierarchy, Long topLevelGoalId, GoalProvider gp)
 		{
 			mInflater = getLayoutInflater();
 			mPlusBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plus);
@@ -302,7 +297,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			mNoPicBitmap.setBounds(0, 0, 50, 50);
 
 			mHierarchy = hierarchy;
-			mTopLevelGoal = topLevelGoal;
+			mTopLevelGoal = gp.getGoalWithId(topLevelGoalId);
 			mGoalProvider = gp;
 			mCurrentlyShownGoals = new Vector<ListEntry>();
 			populate();
@@ -419,6 +414,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		public void notifyDataSetChanged()
 		{
 			// initialize shown goals
+			mTopLevelGoal = mGoalProvider.getGoalWithId(mTopLevelGoal.getId());
 			mCurrentlyShownGoals.clear();
 			this.populate();
 			super.notifyDataSetChanged();
