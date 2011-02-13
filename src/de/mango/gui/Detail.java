@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -103,10 +102,8 @@ public class Detail extends Activity implements OnClickListener
 			text = (TextView) findViewById(R.detail.deadline);
 			text.setText(goal.getFormattedDeadline());
 
-			text = (TextView) findViewById(R.detail.completion);
-			text.setText(getResources().getString(R.string.Progress)+": "
-					+ Integer.toString(goal.getCompletion()) + "%");
-			this.completionTextView = text;
+			completionTextView = (TextView) findViewById(R.detail.completion);
+			displayProgress(goal.getCompletion());
 
 			text = (TextView) findViewById(R.detail.description);
 			text.setText(goal.getDescription());
@@ -189,8 +186,7 @@ public class Detail extends Activity implements OnClickListener
 				// refresh view
 				nameTextView.setBackgroundColor(getResources().getColor(
 						goal.getCompletionColor()));
-				completionTextView.setText(getResources().getString(R.string.Progress)+": "
-						+ goal.getCompletion() + "%");
+				displayProgress(goal.getCompletion());
 			}
 		}
 		else
@@ -220,8 +216,7 @@ public class Detail extends Activity implements OnClickListener
 			goal = goalProvider.getGoalWithId(goal.getId());
 			nameTextView.setBackgroundColor(getResources().getColor(
 					goal.getCompletionColor()));
-			this.completionTextView.setText(getResources().getString(R.string.Progress)+": "
-					+ goal.getCompletion() + "%");
+			displayProgress(goal.getCompletion());
 			HorizontalSlide progress = (HorizontalSlide) findViewById(R.detail.progress);
 			progress.setProgress(goal.getCompletion());
 
@@ -232,6 +227,14 @@ public class Detail extends Activity implements OnClickListener
 			// propagate changes up
 			this.setResult(Create.RESULT_MODIFIED);
 		}
+	}
+
+	/**
+	 * Show the progress properly formatted in the Progress text view
+	 * @param progress progress value to display
+	 */
+	private void displayProgress(int progress) {
+		completionTextView.setText(String.format("%s: %d%%", getResources().getString(R.string.Progress), goal.getCompletion()));
 	}
 
 	/**
