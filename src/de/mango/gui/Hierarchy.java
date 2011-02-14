@@ -470,4 +470,11 @@ public class Hierarchy extends ListActivity implements OnClickListener
 		}
 
 	}
+
+	@Override
+	protected void onDestroy()
+	{
+		mGoalProvider.close();
+		super.onDestroy();
+	}
 }

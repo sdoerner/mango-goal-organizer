@@ -17,12 +17,6 @@ import android.util.Log;
 
 public class GoalProvider
 {
-	@Override
-	protected void finalize() throws Throwable
-	{
-		db.close();
-		super.finalize();
-	}
 
 	public static final boolean DEBUG = false;
 	public static final String TAG = "Mango";
@@ -312,7 +306,11 @@ public class GoalProvider
 		}
 		return g;
 	}
-	
+
+	public void close()
+	{
+		db.close();
+	}
 
 	//temporary for debug
 	

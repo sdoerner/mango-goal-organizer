@@ -147,14 +147,6 @@ public class Detail extends Activity implements OnClickListener
 			outState.putInt("currentProgress", progress.getProgress());
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onPause()
-	 */
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -313,5 +305,12 @@ public class Detail extends Activity implements OnClickListener
 				subgoalsLayout.addView(layout);
 			}
 		}
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		goalProvider.close();
+		super.onDestroy();
 	}
 }

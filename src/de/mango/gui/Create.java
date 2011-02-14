@@ -360,4 +360,11 @@ public class Create extends Activity implements OnClickListener
 		}
 		finish();
 	}
+
+	@Override
+	protected void onDestroy()
+	{
+		goalProvider.close();
+		super.onDestroy();
+	}
 }

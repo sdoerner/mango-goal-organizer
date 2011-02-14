@@ -64,6 +64,7 @@ import de.mango.business.ImageHandling;
 public class Main extends Activity implements OnClickListener,
 		OnCreateContextMenuListener
 {
+
 	/**
 	 * Enable/disable logging. The compiler will strip all logging if disabled.
 	 */
@@ -509,6 +510,13 @@ public class Main extends Activity implements OnClickListener,
 			viewHolder.expandButton.setImageBitmap(bitmap);
 			return convertView;
 		}
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		goalProvider.close();
+		super.onDestroy();
 	}
 
 }
