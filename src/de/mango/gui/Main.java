@@ -171,7 +171,7 @@ public class Main extends Activity implements OnClickListener,
 			}
 			else
 			{
-				if (ImExport.exportToICS(crud, this, "/sdcard/goals.ics", true))
+				if (ImExport.exportToIcs(goalProvider, this, "/sdcard/goals.ics"))
 					Toast.makeText(this, getResources().getString(R.string.Main_goals_exported_to) +"/sdcard/goals.ics", Toast.LENGTH_LONG).show();
 			}
 			break;
@@ -187,7 +187,7 @@ public class Main extends Activity implements OnClickListener,
 			break;
 		case SendICSMenu:
 			// make sure the file is recent
-			ImExport.exportToICS(crud, this, "/sdcard/goals.ics", true);
+			ImExport.exportToIcs(goalProvider, this, "/sdcard/goals.ics");
 			i = new Intent(Intent.ACTION_SEND);
 			i.setType("text/calendar");
 			i.putExtra(Intent.EXTRA_STREAM, Uri
@@ -390,7 +390,7 @@ public class Main extends Activity implements OnClickListener,
 				if (resultCode == RESULT_OK)
 				{
 					String uri = data.getData().getEncodedPath();
-					if (ImExport.exportToICS(crud, this, uri, true))
+					if (ImExport.exportToIcs(goalProvider, this, uri))
 						Toast.makeText(this, R.string.Main_goals_exported_to+uri, Toast.LENGTH_LONG).show();
 				}
 				break;

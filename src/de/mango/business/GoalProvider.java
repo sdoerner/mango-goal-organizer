@@ -91,6 +91,16 @@ public class GoalProvider
 		return results;
 	}
 
+	public ArrayList<Goal> getAllGoals() {
+		ArrayList<Goal> results = new ArrayList<Goal>();
+		Cursor c = db.query(GOALS_TABLE_NAME, null, null, null, null, null, null);
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+			results.add(getGoalFromCursor(c));
+		}
+		c.close();
+		return results;
+	}
+
 	public Goal getGoalWithId(long id) {
 		Cursor c = db.query(GOALS_TABLE_NAME, null, "id=" + Long.toString(id),
 				null, null, null, null);

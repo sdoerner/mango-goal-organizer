@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -309,23 +308,9 @@ public class ImExport
 	 *            Goals to be exported
 	 * @param context
 	 *            Context needed to get a file handle.
-	 * @param exportLeavesOnly
-	 *            If true only leaves will be exported
 	 */
-	public static boolean exportToICS(GoalCrud tree, Context context,
-			String filename, boolean exportLeavesOnly)
+	public static boolean exportToIcs(GoalProvider gp, Context context, String filename)
 	{
-		if (tree == null)
-			return false;
-		Vector<Goal> termine = null;
-		// export only leaves
-		if (exportLeavesOnly == true)
-		{
-			termine = tree.getLeaves();
-		}
-		// export all Goals
-		else
-			termine = tree.getAllGoals();
 		try
 		{
 			FileOutputStream out = filename.contains("/") ? new FileOutputStream(
@@ -341,31 +326,30 @@ public class ImExport
 			out.write("VERSION:2.0".getBytes());
 			out.write(System.getProperty("line.separator").getBytes());
 			// Parse of calendar entries
-			Goal p;
 			GregorianCalendar greg = new GregorianCalendar();
 
-			for (int i = 0; i < termine.size(); i++)
+			ArrayList<Goal> goals = gp.getAllGoals();
+			for (Goal g: goals)
 			{
-				p = termine.get(i);
 				out.write("BEGIN:VEVENT".getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
 				out.write("DTSTART;VALUE=DATE:".getBytes());
-				out.write(ImExport.toIcsString(p.getDeadline(), true)
+				out.write(ImExport.toIcsString(g.getDeadline(), true)
 						.getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
 				out.write("CREATED:".getBytes());
-				out.write(ImExport.toIcsString(p.getTimestamp(), false)
+				out.write(ImExport.toIcsString(g.getTimestamp(), false)
 						.getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
 				out.write("SUMMARY:".getBytes());
-				out.write(p.getName().getBytes());
+				out.write(g.getName().getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
 				out.write("DESCRIPTION:".getBytes());
-				out.write(p.getDescription().getBytes());
+				out.write(g.getDescription().getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
 				out.write("DTEND;VALUE=DATE:".getBytes());
 				// Goals have a time frame of a full day
-				greg = p.getDeadline();
+				greg = g.getDeadline();
 				greg.add(Calendar.DAY_OF_MONTH, 1);
 				out.write(ImExport.toIcsString(greg, true).getBytes());
 				out.write(System.getProperty("line.separator").getBytes());
