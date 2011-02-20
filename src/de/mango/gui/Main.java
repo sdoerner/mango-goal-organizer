@@ -56,7 +56,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.mango.R;
 import de.mango.business.Goal;
-import de.mango.business.GoalCrud;
 import de.mango.business.GoalProvider;
 import de.mango.business.ImExport;
 import de.mango.business.ImageHandling;
@@ -86,7 +85,6 @@ public class Main extends Activity implements OnClickListener,
 	private static final int REQUEST_CODE_PICK_XML_EXPORT_FILE = 1;
 	private static final int REQUEST_CODE_PICK_ICS_FILE = 2;
 	private static final int REQUEST_CODE_PICK_XML_IMPORT_FILE = 3;
-	private GoalCrud crud;
 	private GoalProvider goalProvider;
 	private ImageAdapter mAdapter;
 	private AlertDialog.Builder mAlertDialogBuilder;
@@ -208,7 +206,6 @@ public class Main extends Activity implements OnClickListener,
 			{
 				if (ImExport.importFromXml(goalProvider, "/sdcard/goals.mango", this))
 				{
-					crud.setDataChanged();
 					if (mEmptyScreen)
 						inflateGridView();
 					else
@@ -317,7 +314,6 @@ public class Main extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		mAlertDialogBuilder = new AlertDialog.Builder(this);
 
-		crud = GoalCrud.getInstance(this);
 		goalProvider = new GoalProvider(this);
 
 		if (mEmptyScreen = (goalProvider.getNumTopLevelGoals()==0))
@@ -367,13 +363,6 @@ public class Main extends Activity implements OnClickListener,
 	}
 
 	@Override
-	protected void onPause()
-	{
-		crud.saveToDisk(this);
-		super.onPause();
-	}
-
-	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		switch (requestCode)
@@ -400,7 +389,6 @@ public class Main extends Activity implements OnClickListener,
 					Uri uri = data.getData();
 					if (ImExport.importFromXml(goalProvider, uri.getEncodedPath(), this))
 					{
-						crud.setDataChanged();
 						if (mEmptyScreen)
 							inflateGridView();
 						else
