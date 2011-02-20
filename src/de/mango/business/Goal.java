@@ -84,6 +84,16 @@ public class Goal
 		this.completionWeight = 1;
 	}
 
+	public long getId()
+	{
+		return id;
+	}
+
+	public void setId(long id)
+	{
+		this.id = id;
+	}
+
 	public String getName()
 	{
 		return name;
@@ -120,10 +130,21 @@ public class Goal
 	}
 
 	/**
-	 * Gets the id of the color ressource corresponding to the current goal
+	 * Sets the percentage of completion for this goal
+	 *
+	 * @param completion
+	 *            Degree of completion from 0 to 100
+	 */
+	public void setCompletion(int completion)
+	{
+		this.completion = completion;
+	}
+
+	/**
+	 * Gets the id of the color resource corresponding to the current goal
 	 * completion.
 	 *
-	 * @return The ressource id of the the color
+	 * @return The resource id of the the color
 	 */
 	public int getCompletionColor()
 	{
@@ -139,15 +160,20 @@ public class Goal
 			return R.color.Progress_complete;
 	}
 
-	/**
-	 * Sets the percentage of completion for this goal
-	 *
-	 * @param completion
-	 *            Degree of completion from 0 to 100
-	 */
-	public void setCompletion(int completion)
+	public int getCompletionWeight()
 	{
-		this.completion = completion;
+		return completionWeight;
+	}
+
+	/**
+	 * Sets the completion weight
+	 *
+	 * @param completionWeight
+	 *            New Completion weight ranging from 1 to 3
+	 */
+	public void setCompletionWeight(int completionWeight)
+	{
+		this.completionWeight = completionWeight;
 	}
 
 	public GregorianCalendar getDeadline()
@@ -160,15 +186,26 @@ public class Goal
 		this.deadline = deadline != null ? deadline : new GregorianCalendar();
 	}
 
-	public void setTimestamp(GregorianCalendar timestamp)
+	/**
+	 * Gets a String representation of the Deadline.
+	 * @return The Deadline Formatted like "01. JAN 2009".
+	 */
+	public String getFormattedDeadline()
 	{
-		this.timestamp = timestamp != null ? timestamp
-				: new GregorianCalendar();
+		GregorianCalendar dl = this.deadline;
+		DateFormat sdf = DateFormat.getDateInstance(DateFormat.MEDIUM);
+		return sdf.format(dl.getTime());
 	}
 
 	public GregorianCalendar getTimestamp()
 	{
 		return timestamp;
+	}
+
+	public void setTimestamp(GregorianCalendar timestamp)
+	{
+		this.timestamp = timestamp != null ? timestamp
+				: new GregorianCalendar();
 	}
 
 	/**
@@ -185,33 +222,6 @@ public class Goal
 	}
 
 	/**
-	 * Sets the completion weight
-	 *
-	 * @param completionWeight
-	 *            New Completion weight ranging from 1 to 3
-	 */
-	public void setCompletionWeight(int completionWeight)
-	{
-		this.completionWeight = completionWeight;
-	}
-
-	public int getCompletionWeight()
-	{
-		return completionWeight;
-	}
-
-	/**
-	 * Gets a String representation of the Deadline.
-	 * @return The Deadline Formatted like "01. JAN 2009".
-	 */
-	public String getFormattedDeadline()
-	{
-		GregorianCalendar dl = this.deadline;
-		DateFormat sdf = DateFormat.getDateInstance(DateFormat.MEDIUM);
-		return sdf.format(dl.getTime());
-	}
-
-	/**
 	 * Inserts all goal information needed for a new calendar entry into the
 	 * calendar launch intent.
 	 *
@@ -225,15 +235,5 @@ public class Goal
 		i.putExtra("allDay", true);
 		i.putExtra("title", this.name);
 		i.putExtra("description", this.description);
-	}
-
-	public void setId(long id)
-	{
-		this.id = id;
-	}
-
-	public long getId()
-	{
-		return id;
 	}
 }
