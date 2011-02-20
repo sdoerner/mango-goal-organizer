@@ -378,9 +378,10 @@ public class ImExport
 	{
 		String s = "";
 		s += cal.get(Calendar.YEAR);
-		if (cal.get(Calendar.MONTH) < 10)
+		int month = cal.get(Calendar.MONTH) + 1;
+		if ( month < 10)
 			s += "0";
-		s += cal.get(Calendar.MONTH);
+		s += month;
 		if (cal.get(Calendar.DAY_OF_MONTH) < 10)
 			s += "0";
 		s += cal.get(Calendar.DAY_OF_MONTH);
