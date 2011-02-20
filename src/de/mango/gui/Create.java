@@ -171,7 +171,6 @@ public class Create extends Activity implements OnClickListener
 	protected void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
-		//TODO: save current goal settings
 
 		DatePicker datePicker = (DatePicker) findViewById(R.create.deadlineDatePicker);
 		outState.putInt("dlYear", datePicker.getYear());
