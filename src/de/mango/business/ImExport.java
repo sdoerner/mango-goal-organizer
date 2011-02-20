@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -62,18 +63,17 @@ public class ImExport
 	private static String[] mFileList;
 
 	/**
-	 * Imports Goal from an XML file and assignes the content to a GoalCrud
-	 * object.
-	 * 
-	 * @param into
-	 *            GoalCrud object the new goals shall be assigned to
+	 * Imports Goal from an XML file
+	 *
+	 * @param gp
+	 *            GoalProvider accessing the data back end
 	 * @param filename
-	 *            Name of the xml file to read from
+	 *            Name of the XML file to read from
 	 * @param context
 	 *            Context(Activity) needed to get a file handle
 	 * @return
 	 */
-	public static boolean importFromXML(GoalCrud into, String filename,
+	public static boolean importFromXml(GoalProvider gp, String filename,
 			Context context)
 	{
 		// assign the file
@@ -125,38 +125,24 @@ public class ImExport
 		Element mangoElem = doc.getDocumentElement();
 		// System.out.println(mangoElem.getTagName());
 
-		into.clear(context,externalFile);
 		mFileList = context.fileList();
-		Vector<Goal> topLevelGoals = into.getTopLevelGoals();
 		NodeList goalElements = mangoElem.getChildNodes();
 		Node n;
-		Goal g;
 		for (int i = 0; i < goalElements.getLength(); i++)
 		{
 			n = goalElements.item(i);
 			if (n.getNodeType() == Node.ELEMENT_NODE)
-			{
-				g = traverseFromXML((Element) n);
-				if (g != null)
-					topLevelGoals.add(g);
-			}
+				traverseFromXml(gp, (Element) n, -1);
 		}
 
 		return true;
 	}
-
-	/**
-	 * Converts a DOM node into a Goal-Tree
-	 * 
-	 * @param root
-	 *            Root of the DOM tree to be converted
-	 * @return Root of the goal tree corresponding to the DOM tree
-	 */
-	private static Goal traverseFromXML(Element root)
+	
+	private static void traverseFromXml(GoalProvider gp, Element root, long parent)
 	{
 		// exit if tag is no goal-tag
 		if (root.getTagName().compareToIgnoreCase("goal") != 0)
-			return null;
+			return;
 
 		// read deadline
 		GregorianCalendar cal = new GregorianCalendar();
@@ -182,10 +168,10 @@ public class ImExport
 		g.setCompletion(root.getAttribute("completion").equals("") ? 0
 				: Integer.valueOf(root.getAttribute("completion")));
 
-		// take over image name if image existant
+		// take over image name if image existent
 		String imgName = root.getAttribute("imageName");
 		g.setImageName(FileExists(imgName) ? imgName : "");
-		// read timestamp
+		// read time stamp
 		cal = new GregorianCalendar();
 		try
 		{
@@ -197,25 +183,21 @@ public class ImExport
 				Log.w(TAG, "No timestamp found or wrong format.");
 		}
 		g.setTimestamp(cal);
+		//insert goal into DB
+		long goalid = gp.insertGoal(g, parent);
 
 		// recurse for children
 		if (root.hasChildNodes())
 		{
 			NodeList children = root.getChildNodes();
-			Node n;
-			Goal child;
+			Node node;
 			for (int i = 0; i < children.getLength(); i++)
 			{
-				n = children.item(i);
-				if (n.getNodeType() == Node.ELEMENT_NODE)
-				{
-					child = traverseFromXML((Element) n);
-					child.setParent(g);
-					g.addChild(child);
-				}
+				node = children.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE)
+					traverseFromXml(gp, (Element) node, goalid);
 			}
 		}
-		return g;
 	}
 
 	/**
@@ -237,17 +219,17 @@ public class ImExport
 	}
 
 	/**
-	 * Exports the given GoalCrud to XML
-	 * 
-	 * @param root
-	 *            root of the GoalCrud containing all Goals to be exported
+	 * Exports the goals from a given GoalProvider to XML
+	 *
+	 * @param gp
+	 *            GoalProvider giving access to the goals
 	 * @param filename
-	 *            name of the xml file to save the goals to
+	 *            name of the XML file to save the goals to
 	 * @param context
 	 *            context(activity) needed to get a file handle
 	 * @return
 	 */
-	public static boolean exportToXML(GoalCrud root, String filename,
+	public static boolean exportToXml(GoalProvider gp, String filename,
 			Context context)
 	{
 		try
@@ -259,10 +241,8 @@ public class ImExport
 			os.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
 			StringBuilder sb = new StringBuilder();
 			sb.append("<mango>\n");
-			for (Goal g : root.getTopLevelGoals())
-			{
-				traverseToXML(g, sb, 1);
-			}
+			for (Goal g : gp.getTopLevelGoals())
+				traverseToXml(gp, g, sb, 1);
 			sb.append("</mango>");
 			os.write(sb.toString().getBytes());
 			os.close();
@@ -276,11 +256,12 @@ public class ImExport
 
 		return true;
 	}
-
 	/**
 	 * Traverses a tree of goals ands adds their XML representation to a
 	 * StringBuilder
 	 * 
+	 * @param gp
+	 * 			  GoalProvider giving access to the goals
 	 * @param goal
 	 *            Root of the goal tree to be converted
 	 * @param s
@@ -288,7 +269,7 @@ public class ImExport
 	 * @param depth
 	 *            Depth in the goal tree to control XMl indentation
 	 */
-	private static void traverseToXML(Goal goal, StringBuilder s, int depth)
+	private static void traverseToXml(GoalProvider gp, Goal goal, StringBuilder s, int depth)
 	{
 		for (int i = 0; i < depth; i++)
 			s.append("   ");
@@ -309,14 +290,14 @@ public class ImExport
 		s.append("\" timestamp=\"");
 		s.append(SDF.format(goal.getTimestamp().getTime()));
 		s.append("\"");
-		Vector<Goal> children = goal.getChildren();
-		if (children == null || children.isEmpty())
+		ArrayList<Goal> children = gp.getChildGoals(goal.getId());
+		if (children.isEmpty())
 			s.append(" />\n");
 		else
 		{
 			s.append(">\n");
 			for (Goal c : children)
-				traverseToXML(c, s, depth + 1);
+				traverseToXml(gp, c, s, depth + 1);
 			for (int i = 0; i < depth; i++)
 				s.append("   ");
 			s.append("</goal>\n");
@@ -401,9 +382,9 @@ public class ImExport
 	}
 
 	/**
-	 * Gets the ICS timestamp for a given Calendar.
+	 * Gets the ICS time stamp for a given Calendar.
 	 * @param cal
-	 *            Calender to be converted.
+	 *            Calendar to be converted.
 	 * @param brief
 	 *            Use short format (date only)
 	 * @return String in form of YYYYMMDD or YYYYMMDDTHHMMSS with T as separator

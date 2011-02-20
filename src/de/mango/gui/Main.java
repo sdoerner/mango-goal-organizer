@@ -157,7 +157,7 @@ public class Main extends Activity implements OnClickListener,
 			}
 			else
 			{
-				if (ImExport.exportToXML(crud, "/sdcard/goals.mango", this))
+				if (ImExport.exportToXml(goalProvider, "/sdcard/goals.mango", this))
 					Toast.makeText(this, getResources().getString(R.string.Main_goals_exported_to)+"/sdcard/goals.mango", Toast.LENGTH_LONG).show();
 			}
 			break;
@@ -177,7 +177,7 @@ public class Main extends Activity implements OnClickListener,
 			break;
 		case SendXMLMenu:
 			// make sure the file is recent
-			ImExport.exportToXML(crud, "/sdcard/goals.mango", this);
+			ImExport.exportToXml(goalProvider, "/sdcard/goals.mango", this);
 			i = new Intent(Intent.ACTION_SEND);
 			i.setType("text/xml");
 			i.putExtra(Intent.EXTRA_STREAM, Uri
@@ -206,7 +206,7 @@ public class Main extends Activity implements OnClickListener,
 			}
 			else
 			{
-				if (ImExport.importFromXML(crud, "/sdcard/goals.mango", this))
+				if (ImExport.importFromXml(goalProvider, "/sdcard/goals.mango", this))
 				{
 					crud.setDataChanged();
 					if (mEmptyScreen)
@@ -381,7 +381,7 @@ public class Main extends Activity implements OnClickListener,
 				if (resultCode == RESULT_OK)
 				{
 					String uri = data.getData().getEncodedPath();
-					if (ImExport.exportToXML(crud, uri, this))
+					if (ImExport.exportToXml(goalProvider, uri, this))
 						Toast.makeText(this, R.string.Main_goals_saved_to+uri, Toast.LENGTH_LONG).show();
 				}
 				break;
@@ -397,7 +397,7 @@ public class Main extends Activity implements OnClickListener,
 				if (resultCode == RESULT_OK)
 				{
 					Uri uri = data.getData();
-					if (ImExport.importFromXML(crud, uri.getEncodedPath(), this))
+					if (ImExport.importFromXml(goalProvider, uri.getEncodedPath(), this))
 					{
 						crud.setDataChanged();
 						if (mEmptyScreen)

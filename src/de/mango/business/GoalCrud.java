@@ -50,7 +50,7 @@ public class GoalCrud
 		if (instance == null)
 		{
 			instance = new GoalCrud();
-			ImExport.importFromXML(instance, "goals.mango", context);
+//			ImExport.importFromXML(instance, "goals.mango", context);
 			instance.mDataChanged = false;
 		}
 		return instance;
@@ -94,9 +94,9 @@ public class GoalCrud
 	 */
 	public void saveToDisk(Context context)
 	{
-		if (mDataChanged)
-			if (ImExport.exportToXML(this, "goals.mango", context))
-				mDataChanged = false;
+//		if (mDataChanged)
+//			if (ImExport.exportToXML(this, "goals.mango", context))
+//				mDataChanged = false;
 	}
 
 	/**
