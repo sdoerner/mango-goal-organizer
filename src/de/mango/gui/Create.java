@@ -327,13 +327,13 @@ public class Create extends Activity implements OnClickListener
 		switch (rgroup.getCheckedRadioButtonId())
 		{
 		case R.create.weightRadioButtonLow:
-			goal.setCompletionWeight(1, false);
+			goal.setCompletionWeight(1);
 			break;
 		case R.create.weightRadioButtonMedium:
-			goal.setCompletionWeight(2, false);
+			goal.setCompletionWeight(2);
 			break;
 		case R.create.weightRadioButtonHigh:
-			goal.setCompletionWeight(3, false);
+			goal.setCompletionWeight(3);
 			break;
 		}
 

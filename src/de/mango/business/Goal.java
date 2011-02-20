@@ -23,7 +23,6 @@ package de.mango.business;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 
 import android.content.Context;
 import android.content.Intent;
@@ -44,9 +43,6 @@ public class Goal
 	private int completionWeight; // 1, 2 or 3
 	private GregorianCalendar deadline;
 	private GregorianCalendar timestamp; // date and time of creation
-	// these fields may be null
-	private Goal parent;
-	private Vector<Goal> children;
 
 	/**
 	 * Creates a new empty goal
@@ -84,8 +80,6 @@ public class Goal
 		this.imageName = "";
 		this.completion = 0;
 		this.deadline = deadline != null ? deadline : new GregorianCalendar();
-		this.parent = null;
-		this.children = null;
 		this.timestamp = new GregorianCalendar();
 		this.completionWeight = 1;
 	}
@@ -146,8 +140,7 @@ public class Goal
 	}
 
 	/**
-	 * Sets the percentage of completion for this goal if it is a leaf.
-	 * Otherwise calculates the completion from its children.
+	 * Sets the percentage of completion for this goal
 	 *
 	 * @param completion
 	 *            Degree of completion from 0 to 100
@@ -167,27 +160,6 @@ public class Goal
 		this.deadline = deadline != null ? deadline : new GregorianCalendar();
 	}
 
-	public void setChildren(Vector<Goal> children)
-	{
-		this.children = children;
-		this.setCompletion(0);
-	}
-
-	public Vector<Goal> getChildren()
-	{
-		return children;
-	}
-
-	public void setParent(Goal parent)
-	{
-		this.parent = parent;
-	}
-
-	public Goal getParent()
-	{
-		return parent;
-	}
-
 	public void setTimestamp(GregorianCalendar timestamp)
 	{
 		this.timestamp = timestamp != null ? timestamp
@@ -197,45 +169,6 @@ public class Goal
 	public GregorianCalendar getTimestamp()
 	{
 		return timestamp;
-	}
-
-	/**
-	 * Adds a goal as a child. Both children and parent attributes are set
-	 * accordingly.
-	 *
-	 * @param child
-	 *            The goal to be added as a child
-	 */
-	public void addChild(Goal child)
-	{
-		if (child != null)
-		{
-			if (this.children == null)
-				this.children = new Vector<Goal>();
-			this.children.add(child);
-			child.setParent(this);
-			this.setCompletion(0);
-		}
-	}
-
-	protected boolean removeChild(Goal child)
-	{
-		return this.children!=null? this.children.remove(child):false;
-	}
-
-	/**
-	 * Removes all images of this goal and all of its descendants from the long term memory
-	 */
-	public void wipeImages(Context c)
-	{
-		File imageFile = c.getFileStreamPath(this.imageName);
-		if (imageFile.exists())
-			imageFile.delete();
-		if (this.children!=null)
-		{
-			for (Goal g:this.children)
-				g.wipeImages(c);
-		}
 	}
 
 	/**
@@ -251,14 +184,8 @@ public class Goal
 		this.imageName="";
 	}
 
-	public boolean hasParent()
-	{
-		return this.parent != null;
-	}
-
 	/**
-	 * Sets the completion weight and recalculates the completion accordingly
-	 * (parents as well).
+	 * Sets the completion weight
 	 *
 	 * @param completionWeight
 	 *            New Completion weight ranging from 1 to 3
@@ -266,24 +193,6 @@ public class Goal
 	public void setCompletionWeight(int completionWeight)
 	{
 		this.completionWeight = completionWeight;
-		this.setCompletion(this.getCompletion());
-	}
-
-	/**
-	 * Sets the completion weight and recalculates completion if wanted. Use
-	 * this method with recalculate explicitly set to false to suppress
-	 * recalculation if you will shortly set the completion anyway.
-	 *
-	 * @param completionWeight
-	 *            the weight for completion calculation of the parent
-	 * @param recalculate
-	 *            True if the parent's completion should be recalculated
-	 */
-	public void setCompletionWeight(int completionWeight, boolean recalculate)
-	{
-		this.completionWeight = completionWeight;
-		if (recalculate)
-			this.setCompletion(this.getCompletion());
 	}
 
 	public int getCompletionWeight()
@@ -327,5 +236,4 @@ public class Goal
 	{
 		return id;
 	}
-
 }

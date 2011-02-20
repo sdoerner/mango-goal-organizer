@@ -163,7 +163,7 @@ public class ImExport
 		Goal g = new Goal(root.getAttribute("name"), root
 				.getAttribute("description"), cal);
 		g.setCompletionWeight(root.getAttribute("weight").equals("") ? 1
-				: Integer.valueOf(root.getAttribute("weight")), false);
+				: Integer.valueOf(root.getAttribute("weight")));
 		g.setCompletion(root.getAttribute("completion").equals("") ? 0
 				: Integer.valueOf(root.getAttribute("completion")));
 
