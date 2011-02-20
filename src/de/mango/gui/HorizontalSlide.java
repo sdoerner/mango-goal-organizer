@@ -63,7 +63,7 @@ public class HorizontalSlide extends ProgressBar
 	/**
 	 * Set the object listening for drag events. The potential old listener is
 	 * dropped.
-	 * 
+	 *
 	 * @param l
 	 *            New Listener for drag events.
 	 */
@@ -74,7 +74,7 @@ public class HorizontalSlide extends ProgressBar
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.view.View#onTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class HorizontalSlide extends ProgressBar
 			{
 				float x_mouse = event.getX() - padding;
 				float width = getWidth() - 2 * padding;
-				int progress = Math.round((float) getMax() * (x_mouse / width));
+				int progress = Math.round(getMax() * (x_mouse / width));
 
 				if (progress < 0)
 					progress = 0;
@@ -104,7 +104,7 @@ public class HorizontalSlide extends ProgressBar
 
 	/**
 	 * Determine if the user can control the progress of the HorizontalSlide.
-	 * 
+	 *
 	 * @param modifiable
 	 *            If true, user interaction is enabled; otherwise disabled.
 	 */

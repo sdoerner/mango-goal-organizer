@@ -47,7 +47,7 @@ import android.util.Log;
 
 /**
  * Class to handle all import and export (currently xml and ics)
- * 
+ *
  */
 public class ImExport
 {
@@ -137,7 +137,7 @@ public class ImExport
 
 		return true;
 	}
-	
+
 	private static void traverseFromXml(GoalProvider gp, Element root, long parent)
 	{
 		// exit if tag is no goal-tag
@@ -202,7 +202,7 @@ public class ImExport
 
 	/**
 	 * Checks if a file with a given name exists in the app directory.
-	 * 
+	 *
 	 * @param filename
 	 *            Name of the file to check.
 	 * @return True if there is a file with the given name
@@ -259,7 +259,7 @@ public class ImExport
 	/**
 	 * Traverses a tree of goals ands adds their XML representation to a
 	 * StringBuilder
-	 * 
+	 *
 	 * @param gp
 	 * 			  GoalProvider giving access to the goals
 	 * @param goal
@@ -400,7 +400,7 @@ public class ImExport
 		if (cal.get(Calendar.DAY_OF_MONTH) < 10)
 			s += "0";
 		s += cal.get(Calendar.DAY_OF_MONTH);
-		
+
 		if (brief == false)
 		{
 			s += "T";

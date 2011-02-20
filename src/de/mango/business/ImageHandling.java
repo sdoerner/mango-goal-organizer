@@ -66,13 +66,13 @@ public class ImageHandling
 	// UI thread activity to perform ui actions on
 
 	private SearchTask searchTask;
-	private Set<DownloadImageTask> imageDownloadTasks = new HashSet<DownloadImageTask>();
+	private final Set<DownloadImageTask> imageDownloadTasks = new HashSet<DownloadImageTask>();
 
 	private ImageDownloadCompleteCallback imageDownloadCompleteCallback;
 
 	/**
 	 * Debug Method to print the contents of a given URL (should be a text file)
-	 * 
+	 *
 	 * @param sUrl
 	 *            the URL for the text file, which is to be printed
 	 */
@@ -111,7 +111,7 @@ public class ImageHandling
 
 	/**
 	 * Retrieves a file from the Web and saves it to the local file system
-	 * 
+	 *
 	 * @param url
 	 *            The Web URL to the file
 	 * @param filename
@@ -167,7 +167,7 @@ public class ImageHandling
 
 	/**
 	 * Loads an image from the local file system.
-	 * 
+	 *
 	 * @param filename
 	 *            Name of the file to be opened. Must be either absolute or
 	 *            without any path separator.
@@ -221,7 +221,7 @@ public class ImageHandling
 
 	/**
 	 * Downloads an image from the given URL and returns it as a bitmap.
-	 * 
+	 *
 	 * @param url
 	 *            The URL for the image
 	 * @return The image as a Bitmap.
@@ -259,7 +259,7 @@ public class ImageHandling
 	/**
 	 * Retrieves a unique, unused filename based on the desired filename. Only
 	 * works for local file names.
-	 * 
+	 *
 	 * @param filename
 	 *            The base file name we would like to use.
 	 * @param context
@@ -293,7 +293,7 @@ public class ImageHandling
 
 	/**
 	 * Retrieves a number of bitmaps for a given key word.
-	 * 
+	 *
 	 * @param query
 	 *            The Keyword to search for.
 	 * @param count
@@ -372,9 +372,10 @@ public class ImageHandling
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@Override
 		protected Vector<String> doInBackground(Params... p)
 		{
 			// perform a search in a seperate thread
@@ -384,9 +385,10 @@ public class ImageHandling
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
+		@Override
 		protected void onPostExecute(Vector<String> urls)
 		{
 			ImageHandling.this.searchTask = null;
@@ -450,7 +452,7 @@ public class ImageHandling
 
 	/**
 	 * Adds a Bitmap to our results list. Is (mostly) called asynchronously.
-	 * 
+	 *
 	 * @param b
 	 *            The Bitmap to add to the list;
 	 */
@@ -480,7 +482,7 @@ public class ImageHandling
 	 * all threads are finished enabling us to retrieve partial results. If a
 	 * you only want to react on results of a completed search, use the callback
 	 * parameter of fetchBitmapsForQuery
-	 * 
+	 *
 	 * @return A Vector containing all Bitmaps, which have been downloaded until
 	 *         now.
 	 */
@@ -491,8 +493,8 @@ public class ImageHandling
 
 	/**
 	 * Saves a given bitmap to the local file system.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param context
 	 * @param bitmap
 	 * @return Unique filename of saved bitmap
@@ -538,7 +540,7 @@ public class ImageHandling
 
 	/**
 	 * Method that resizes a given bitmap and returns it as a result.
-	 * 
+	 *
 	 * @param bitmap
 	 *            bitmap to be resized
 	 * @param wantedWidth

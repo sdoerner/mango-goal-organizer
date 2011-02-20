@@ -63,7 +63,7 @@ public class Picture extends Activity implements OnClickListener,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -71,7 +71,7 @@ public class Picture extends Activity implements OnClickListener,
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(de.mango.R.layout.picture);
-		
+
 		//set Listeners
 		Button search = (Button) findViewById(R.picture.searchButton);
 		search.setOnClickListener(this);
@@ -142,7 +142,7 @@ public class Picture extends Activity implements OnClickListener,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(View v)
@@ -237,7 +237,7 @@ public class Picture extends Activity implements OnClickListener,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.mango.business.ImageDownloadCompleteCallback#action(java.util.Vector)
 	 */

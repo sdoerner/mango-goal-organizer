@@ -72,7 +72,7 @@ public class GoogleSearchProvider implements ImageSearchProvider
 
 	private GoogleSearchProvider()
 	{
-		 
+
 	}
 
 	public static GoogleSearchProvider getInstance(String Google_hl)
@@ -87,7 +87,7 @@ public class GoogleSearchProvider implements ImageSearchProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.mango.business.ImageSearchProvider#hasMoreResults()
 	 */
 	public boolean hasMoreResults()
@@ -97,7 +97,7 @@ public class GoogleSearchProvider implements ImageSearchProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.mango.business.ImageSearchProvider#search(java.lang.String, int,
 	 * int)
 	 */

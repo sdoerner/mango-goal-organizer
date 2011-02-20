@@ -95,12 +95,12 @@ public class Main extends Activity implements OnClickListener,
 	 */
 	private boolean mPickFileAvailable;
 	/**
-	 * True if emptymain.xml is shown because GoalCrud is empty. 
+	 * True if emptymain.xml is shown because GoalCrud is empty.
 	 */
 	private boolean mEmptyScreen = true;
 
 	/**
-	 * Checks if a handler for a given intent action is available. 
+	 * Checks if a handler for a given intent action is available.
 	 * @param context Context to get the package manager.
 	 * @param action Intent Action, e.g. org.openintents.action.PICK_FILE
 	 * @return True if the given Action can be handled.
@@ -238,6 +238,7 @@ public class Main extends Activity implements OnClickListener,
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
 	 */
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo)
 	{
@@ -429,7 +430,7 @@ public class Main extends Activity implements OnClickListener,
 
 	/**
 	 * Class to encapsulate the contents of one cell of the GridView or of one Line of Hierarchy List View.
-	 * 
+	 *
 	 */
 	static class ViewHolder
 	{
@@ -442,11 +443,11 @@ public class Main extends Activity implements OnClickListener,
 
 	public class ImageAdapter extends BaseAdapter
 	{
-		private Main mMainDialog;
-		private GoalProvider mGoalProvider;
+		private final Main mMainDialog;
+		private final GoalProvider mGoalProvider;
 		// inflater for rolling out the layout
-		private LayoutInflater mInflater;
-		private Bitmap mNoPic;
+		private final LayoutInflater mInflater;
+		private final Bitmap mNoPic;
 
 		public ImageAdapter(Main mainActivity, GoalProvider gp)
 		{

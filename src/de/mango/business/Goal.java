@@ -31,7 +31,7 @@ import de.mango.R;
 
 /**
  * Goal Class encapsulating all goal-related information
- * 
+ *
  */
 public class Goal
 {
@@ -58,7 +58,7 @@ public class Goal
 
 	/**
 	 * Creates a new goal with the given name
-	 * 
+	 *
 	 * @param name
 	 *            Name of the goal
 	 */
@@ -69,7 +69,7 @@ public class Goal
 
 	/**
 	 * Creates a new goal with given name, description and deadline
-	 * 
+	 *
 	 * @param name
 	 *            Name of the goal
 	 * @param description
@@ -128,7 +128,7 @@ public class Goal
 	/**
 	 * Gets the id of the color ressource corresponding to the current goal
 	 * completion.
-	 * 
+	 *
 	 * @return The ressource id of the the color
 	 */
 	public int getCompletionColor()
@@ -148,7 +148,7 @@ public class Goal
 	/**
 	 * Sets the percentage of completion for this goal if it is a leaf.
 	 * Otherwise calculates the completion from its children.
-	 * 
+	 *
 	 * @param completion
 	 *            Degree of completion from 0 to 100
 	 */
@@ -202,7 +202,7 @@ public class Goal
 	/**
 	 * Adds a goal as a child. Both children and parent attributes are set
 	 * accordingly.
-	 * 
+	 *
 	 * @param child
 	 *            The goal to be added as a child
 	 */
@@ -259,7 +259,7 @@ public class Goal
 	/**
 	 * Sets the completion weight and recalculates the completion accordingly
 	 * (parents as well).
-	 * 
+	 *
 	 * @param completionWeight
 	 *            New Completion weight ranging from 1 to 3
 	 */
@@ -273,7 +273,7 @@ public class Goal
 	 * Sets the completion weight and recalculates completion if wanted. Use
 	 * this method with recalculate explicitly set to false to suppress
 	 * recalculation if you will shortly set the completion anyway.
-	 * 
+	 *
 	 * @param completionWeight
 	 *            the weight for completion calculation of the parent
 	 * @param recalculate
@@ -290,7 +290,7 @@ public class Goal
 	{
 		return completionWeight;
 	}
-	
+
 	/**
 	 * Gets a String representation of the Deadline.
 	 * @return The Deadline Formatted like "01. JAN 2009".
@@ -305,7 +305,7 @@ public class Goal
 	/**
 	 * Inserts all goal information needed for a new calendar entry into the
 	 * calendar launch intent.
-	 * 
+	 *
 	 * @param i
 	 *            The Intent to put the goal information in.
 	 */

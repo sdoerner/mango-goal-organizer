@@ -55,7 +55,7 @@ public class Detail extends Activity implements OnClickListener
 	 * The currently shown goal (which is only one in details screen).
 	 */
 	private Goal goal;
-	
+
 	/**
 	 * Children of the currently shown goal in presented order.
 	 */
@@ -69,9 +69,10 @@ public class Detail extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
+	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		// init dialog
@@ -111,7 +112,7 @@ public class Detail extends Activity implements OnClickListener
 			progress = (HorizontalSlide) findViewById(R.detail.progress);
 			changeProgress = (Button) findViewById(R.detail.progressChangeButton);
 			changeProgress.setOnClickListener(this);
-			
+
 			if (savedInstanceState!=null && savedInstanceState.getBoolean("ChangeButtonPressed"))
 			{
 				progress.setModifiable(true);
@@ -123,7 +124,7 @@ public class Detail extends Activity implements OnClickListener
 				progress.setModifiable(false);
 				progress.setProgress(goal.getCompletion());
 			}
-				
+
 
 			if (goalProvider.hasChildren(goal.getId()))
 				changeProgress.setVisibility(View.INVISIBLE);
@@ -136,7 +137,7 @@ public class Detail extends Activity implements OnClickListener
 			drawChildren();
 		}
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
@@ -150,7 +151,7 @@ public class Detail extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(View v)
@@ -192,7 +193,7 @@ public class Detail extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -203,7 +204,7 @@ public class Detail extends Activity implements OnClickListener
 		{
 			// returned from another Details-Screen, in which the progress has
 			// been adjusted
-			
+
 			// refresh relevant goal information
 			goal = goalProvider.getGoalWithId(goal.getId());
 			nameTextView.setBackgroundColor(getResources().getColor(
@@ -231,7 +232,7 @@ public class Detail extends Activity implements OnClickListener
 
 	/**
 	 * Draws Images for all children of the current goal.
-	 * 
+	 *
 	 * @param goal
 	 */
 	private void drawChildren()
@@ -251,7 +252,7 @@ public class Detail extends Activity implements OnClickListener
 			LinearLayout layout;
 			Bitmap bitmap;
 			int z = 0;
-			
+
 			// Pass through all subgoals and draw 5 subgoals per row
 			for (int x = 0; x < i; x++)
 			{
@@ -278,7 +279,7 @@ public class Detail extends Activity implements OnClickListener
 				}
 				subgoalsLayout.addView(layout);
 			}
-			
+
 			// fill last line (which is not full)
 			if (j != 0)
 			{

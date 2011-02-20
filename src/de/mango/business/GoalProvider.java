@@ -20,12 +20,12 @@ public class GoalProvider
 
 	public static final boolean DEBUG = false;
 	public static final String TAG = "Mango";
-	
+
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME="mango.db";
 	private static final String GOALS_TABLE_NAME = "goals";
 	private static final SimpleDateFormat SDF = new SimpleDateFormat(
-		"yyyy-MM-dd"); 
+		"yyyy-MM-dd");
 
  	private static class GoalDBOpenHelper extends SQLiteOpenHelper
 	{
@@ -40,7 +40,7 @@ public class GoalProvider
 					"parent INTEGER REFERENCES " + GOALS_TABLE_NAME + "(id)," +
 					"name TEXT NOT NULL," +
 					"description TEXT," +
-					"imageName TEXT," + 
+					"imageName TEXT," +
 					"completion INTEGER NOT NULL," +
 					"completionWeight INTEGER NOT NULL,"+
 					"deadline TEXT NOT NULL," +
@@ -54,17 +54,17 @@ public class GoalProvider
 		}
 	}
 
-	private Context context;
-	private GoalDBOpenHelper dbHelper;
-	private SQLiteDatabase db;
+	private final Context context;
+	private final GoalDBOpenHelper dbHelper;
+	private final SQLiteDatabase db;
 
-	
+
 	public GoalProvider(Context context) throws SQLiteException {
 		dbHelper = new GoalDBOpenHelper(context);
 		db = dbHelper.getWritableDatabase();
 		this.context = context;
 	}
-	
+
 	public int getNumTopLevelGoals() {
 		Cursor c = db.query(GOALS_TABLE_NAME, new String[]{ "COUNT(id)" }, "parent is NULL", null, null, null, null);
 		c.moveToFirst();
@@ -72,7 +72,7 @@ public class GoalProvider
 		c.close();
 		return count;
 	}
-	
+
 	public Goal getTopLevelGoal(int position) {
 		Cursor results = db.query(GOALS_TABLE_NAME, null, "parent is NULL", null, null, null, null);
 		results.moveToPosition(position);
@@ -80,7 +80,7 @@ public class GoalProvider
 		results.close();
 		return g;
 	}
-	
+
 	public ArrayList<Goal> getTopLevelGoals() {
 		ArrayList<Goal> results = new ArrayList<Goal>();
 		Cursor c = db.query(GOALS_TABLE_NAME, null, "parent is NULL", null, null, null, null);
@@ -245,7 +245,7 @@ public class GoalProvider
 	 * @return The ID of the parent or -1 if goalId belongs to TLG.
 	 */
 	public long getParentId(long goalId) {
-		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "parent" }, "id=" + Long.toString(goalId), 
+		Cursor c = db.query(GOALS_TABLE_NAME, new String[] { "parent" }, "id=" + Long.toString(goalId),
 				null, null, null, null);
 		c.moveToFirst();
 		if (c.isAfterLast() || c.isNull(0)) {
@@ -323,7 +323,7 @@ public class GoalProvider
 	}
 
 	//temporary for debug
-	
+
 	public void wipe() throws SQLException {
 		db.execSQL("DROP TABLE " + GOALS_TABLE_NAME);
 		dbHelper.onCreate(db);

@@ -21,6 +21,7 @@
 package de.mango.business;
 
 import java.util.Vector;
+
 import android.graphics.Bitmap;
 
 /**
@@ -31,7 +32,7 @@ public interface ImageDownloadCompleteCallback
 {
 	/**
 	 * Method to be called when all image downloads have completed.
-	 * 
+	 *
 	 * @param bitmaps
 	 *            The resulting Bitmaps.
 	 */

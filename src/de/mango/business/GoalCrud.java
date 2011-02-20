@@ -40,7 +40,7 @@ public class GoalCrud
 
 	/**
 	 * Get unique instance of the global GoalCrud object
-	 * 
+	 *
 	 * @param context
 	 *            Context to use for reading Goals from disk
 	 * @return The GoalCrud instance.
@@ -70,7 +70,7 @@ public class GoalCrud
 	 * First hierarchy level of our Goals. All subgoals will only be reachable
 	 * through the child-pointers of these.
 	 */
-	private Vector<Goal> topLevelGoals;
+	private final Vector<Goal> topLevelGoals;
 	/**
 	 * True if the data in this object is not equivalent to the standard XML
 	 * file any more.
@@ -88,7 +88,7 @@ public class GoalCrud
 
 	/**
 	 * Save current GoalCrud state to standard XML file in on permanent memory.
-	 * 
+	 *
 	 * @param context
 	 *            Context used to write out the file.
 	 */
@@ -190,7 +190,7 @@ public class GoalCrud
 
 	/**
 	 * Determines whether node is valid and actually has children.
-	 * 
+	 *
 	 * @param node
 	 *            Goal to be checked.
 	 * @return True if node has at least one child.
@@ -203,7 +203,7 @@ public class GoalCrud
 
 	/**
 	 * Get all Goals using post order traversal.
-	 * 
+	 *
 	 * @return Vector containing all Goals of this GoalCrud.
 	 */
 	public Vector<Goal> getAllGoals()
@@ -217,7 +217,7 @@ public class GoalCrud
 	}
 
 	/**
-	 * Adds all Goals beneath roots to currentResults in Post Order. 
+	 * Adds all Goals beneath roots to currentResults in Post Order.
 	 * @param roots
 	 *            Roots of the trees to be traversed
 	 * @param currentResults

@@ -67,7 +67,7 @@ public class Create extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -78,7 +78,7 @@ public class Create extends Activity implements OnClickListener
 		setContentView(de.mango.R.layout.create);
 		goalProvider = new GoalProvider(this);
 
-		
+
 		DatePicker date = (DatePicker) findViewById(R.create.deadlineDatePicker);
 		if (savedInstanceState!=null)
 		{
@@ -141,12 +141,12 @@ public class Create extends Activity implements OnClickListener
 					rgroup.check(R.create.weightRadioButtonHigh);
 					break;
 				}
-				
+
 				GregorianCalendar deadline = g.getDeadline();
 				if (savedInstanceState==null)
 					date.updateDate(deadline.get(Calendar.YEAR), deadline.get(Calendar.MONTH), deadline
 							.get(Calendar.DAY_OF_MONTH));
-				
+
 				if (goalImage==null && !g.getImageName().equals(""))
 					goalImage = ImageHandling.loadLocalBitmap(g.getImageName(), this);
 
@@ -182,12 +182,12 @@ public class Create extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(View v)
@@ -241,7 +241,7 @@ public class Create extends Activity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -265,7 +265,7 @@ public class Create extends Activity implements OnClickListener
 
 	/**
 	 * Verify user input
-	 * 
+	 *
 	 * @param name
 	 *            name of the goal
 	 * @param description
@@ -305,7 +305,7 @@ public class Create extends Activity implements OnClickListener
 
 	/**
 	 * Save given Goal data to current or new Goal and exit Activity.
-	 * 
+	 *
 	 * @param name
 	 *            New name of the goal.
 	 * @param description

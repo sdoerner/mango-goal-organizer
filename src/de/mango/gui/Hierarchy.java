@@ -66,7 +66,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreateContextMenu(android.view.ContextMenu,
 	 * android.view.View, android.view.ContextMenu.ContextMenuInfo)
 	 */
@@ -82,7 +82,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -254,7 +254,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 	}
 
 	//---------------------------------hierarchical list stuff------------------------------------
-	
+
 	/**
 	 * Encapsulates additional information for each line in the list view.
 	 */
@@ -274,7 +274,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 
 	class HierarchicalListAdapter extends BaseAdapter implements OnClickListener
 	{
-		//pixels used as indent for each level 
+		//pixels used as indent for each level
 		final static int INDENT = 20;
 		final Bitmap mPlusBitmap;
 		final Bitmap mMinusBitmap;
@@ -413,6 +413,7 @@ public class Hierarchy extends ListActivity implements OnClickListener
 			return convertView;
 		}
 
+		@Override
 		public void notifyDataSetChanged()
 		{
 			// initialize shown goals
