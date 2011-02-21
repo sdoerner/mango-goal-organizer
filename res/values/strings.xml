@@ -80,8 +80,6 @@
     <string name="Create_Error_deadline_in_past">Deadline is in past!</string>
     <string name="Create_Error_description_is_empty">Description is empty!</string>
     <string name="Create_Error_name_is_empty">Name is empty!</string>
-    <string name="Create_DL_before_child">Deadline is before one or more child(ren) deadline(s).\n\nDo you want to change child(dren) deadlines automatically?</string>
-    <string name="Create_DL_behind_parent">Deadline is behind parent\'s deadline.\n\nDo you want to change parent\'s deadline automatically?</string>
     <string name="Create_Helptitle">How to define a goal...</string>
     <string name="Create_no_network">No network connection available.</string>
 

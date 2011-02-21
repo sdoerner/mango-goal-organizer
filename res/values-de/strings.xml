@@ -76,8 +76,6 @@
     <string name="Create_Error_deadline_in_past">Der Termin liegt in der Vergangenheit!</string>
     <string name="Create_Error_description_is_empty">Die Beschreibung ist leer!</string>
     <string name="Create_Error_name_is_empty">Der Name ist leer!</string>
-    <string name="Create_DL_before_child">Der Termin liegt vor dem von mindestens einem Kind.\n\nMöchten Sie die Termine der Kinder automatisch anpassen?</string>
-    <string name="Create_DL_behind_parent">Der Termin liegt hinter dem seines übergeordneten Ziels. \n\nMöchten Sie den Termin des übergeordneten Ziels automatisch anpassen?</string>
     <string name="Create_Helptitle">Wie man ein Ziel definiert...</string>
     <string name="Create_no_network">Keine Netzwerkverbindung verfügbar.</string>
 
