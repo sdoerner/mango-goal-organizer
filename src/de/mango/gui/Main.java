@@ -28,6 +28,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -85,6 +86,8 @@ public class Main extends Activity implements OnClickListener,
 	private static final int REQUEST_CODE_PICK_XML_EXPORT_FILE = 1;
 	private static final int REQUEST_CODE_PICK_ICS_FILE = 2;
 	private static final int REQUEST_CODE_PICK_XML_IMPORT_FILE = 3;
+	private static final String GOALS_IMPORTED_KEY="goalsImportedOrChecked";
+	private static final String GOALS_XML_FILE="goals.mango";
 	private GoalProvider goalProvider;
 	private ImageAdapter mAdapter;
 	private AlertDialog.Builder mAlertDialogBuilder;
@@ -313,8 +316,21 @@ public class Main extends Activity implements OnClickListener,
 	{
 		super.onCreate(savedInstanceState);
 		mAlertDialogBuilder = new AlertDialog.Builder(this);
-
 		goalProvider = new GoalProvider(this);
+
+		// upgrade from xml data backed
+		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+		boolean alreadyImported = prefs.getBoolean(GOALS_IMPORTED_KEY, false);
+		if (!alreadyImported) {
+			Toast.makeText(this, R.string.Main_import_old, Toast.LENGTH_LONG).show();
+			if (ImExport.importFromXml(goalProvider, GOALS_XML_FILE, this)) {
+				getFileStreamPath(GOALS_XML_FILE).delete();
+			}
+
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean(GOALS_IMPORTED_KEY, true);
+			editor.commit();
+		}
 
 		if (mEmptyScreen = (goalProvider.getNumTopLevelGoals()==0))
 		{
