@@ -21,6 +21,7 @@
 
 package de.mango.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -453,6 +454,7 @@ public class Main extends Activity implements OnClickListener,
 		// inflater for rolling out the layout
 		private final LayoutInflater mInflater;
 		private final Bitmap mNoPic;
+		private ArrayList<Goal> mTLGs;
 
 		public ImageAdapter(Main mainActivity, GoalProvider gp)
 		{
@@ -460,16 +462,17 @@ public class Main extends Activity implements OnClickListener,
 			mGoalProvider = gp;
 			mInflater = getLayoutInflater();
 			mNoPic = BitmapFactory.decodeResource(getResources(), R.drawable.nopic);
+			mTLGs = gp.getTopLevelGoals();
 		}
 
 		public int getCount()
 		{
-			return mGoalProvider.getNumTopLevelGoals();
+			return mTLGs.size();
 		}
 
 		public Object getItem(int position)
 		{
-			return mGoalProvider.getTopLevelGoal(position);
+			return mTLGs.get(position);
 		}
 
 		public long getItemId(int position)
@@ -507,7 +510,7 @@ public class Main extends Activity implements OnClickListener,
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
 			// load goal information
-			Goal goal = mGoalProvider.getTopLevelGoal(position);
+			Goal goal = mTLGs.get(position);
 			viewHolder.textView.setTag(goal.getId());
 			viewHolder.expandButton.setTag(goal.getId());
 
@@ -515,6 +518,13 @@ public class Main extends Activity implements OnClickListener,
 			Bitmap bitmap = ((goal.getImageName().equals(""))) ? mNoPic : ImageHandling.loadLocalBitmap(goal.getImageName(), getBaseContext());
 			viewHolder.expandButton.setImageBitmap(bitmap);
 			return convertView;
+		}
+
+		@Override
+		public void notifyDataSetChanged()
+		{
+			super.notifyDataSetChanged();
+			mTLGs = mGoalProvider.getTopLevelGoals();
 		}
 	}
 
