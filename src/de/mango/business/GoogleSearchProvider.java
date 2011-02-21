@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2009 Sebastian Dörner, Julius Müller, Johannes Steffen
+ *  Copyright (C) 2010-2011 Sebastian Dörner
  *
  *  This file is part of Mango.
  *
