@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -219,6 +220,34 @@ public class ImageHandling
 	    return photo;
 	}
 
+	/**
+	 * Code provided by Google
+	 * @see http://code.google.com/p/android/issues/detail?id=6066
+	 *
+	 */
+	static class FlushedInputStream extends FilterInputStream {
+	    public FlushedInputStream(InputStream inputStream) {
+	        super(inputStream);
+	    }
+
+	    @Override
+	    public long skip(long n) throws IOException {
+	        long totalBytesSkipped = 0L;
+	        while (totalBytesSkipped < n) {
+	            long bytesSkipped = in.skip(n - totalBytesSkipped);
+	            if (bytesSkipped == 0L) {
+	                  int b = read();
+	                  if (b < 0) {
+	                      break;  // we reached EOF
+	                  } else {
+	                      bytesSkipped = 1; // we read one byte
+	                  }
+	           }
+	            totalBytesSkipped += bytesSkipped;
+	        }
+	        return totalBytesSkipped;
+	    }
+	}
 
 	/**
 	 * Downloads an image from the given URL and returns it as a bitmap.
@@ -234,7 +263,9 @@ public class ImageHandling
 			URL imageUrl = new URL(url);
 			InputStream is = imageUrl.openStream();
 			BufferedInputStream bis = new BufferedInputStream(is, 8);
-			Bitmap bm = BitmapFactory.decodeStream(bis);
+			// FlushedInputStream is a workaround for
+			// http://code.google.com/p/android/issues/detail?id=6066
+			Bitmap bm = BitmapFactory.decodeStream(new FlushedInputStream(bis));
 			bis.close();
 			is.close();
 			return bm;
@@ -429,12 +460,8 @@ public class ImageHandling
 				if (DEBUG)
 					Log.v(TAG, "Successful: " + mUrl);
 			} else
-			// TODO: still dunno WHY he fails sometimes,
-			// shouldn't TCP handle that?
-			// maybe we should retry until $maximum_tries has
-			// been reached
 			if (DEBUG)
-				Log.v(TAG, "Failed to retrieve " + mUrl);
+				Log.w(TAG, "Failed to retrieve " + mUrl);
 			return b;
 		}
 
