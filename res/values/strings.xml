@@ -80,7 +80,7 @@
     <string name="Create_Error_deadline_in_past">Deadline is in past!</string>
     <string name="Create_Error_description_is_empty">Description is empty!</string>
     <string name="Create_Error_name_is_empty">Name is empty!</string>
-    <string name="Create_Helptitle">How to define a goal...</string>
+    <string name="Create_Helptitle">How to define a goal&#8230;</string>
     <string name="Create_no_network">No network connection available.</string>
 
     <!-- Details Activity -->
@@ -97,7 +97,7 @@
     <!-- Picture Activity -->
     <string name="Picture_no_results">Sorry, no results for your query.</string>
     <string name="Picture_search_progress_text">Searching for Images</string>
-    <string name="Picture_search_progress_title">Searching...</string>
+    <string name="Picture_search_progress_title">Searching&#8230;</string>
     <string name="Picture_type_search_query">Please type in your search query.</string>
     <string name="Picture_attache">Attache</string>
     <string name="Picture_search">Search</string>
