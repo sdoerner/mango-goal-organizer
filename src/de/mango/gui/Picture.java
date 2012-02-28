@@ -80,7 +80,7 @@ public class Picture extends Activity implements OnClickListener,
 		gallery.setOnClickListener(this);
 		ImageButton next = (ImageButton) findViewById(R.picture.nextButton);
 		next.setOnClickListener(this);
-		Button attache = (Button) findViewById(R.picture.attacheButton);
+		Button attache = (Button) findViewById(R.picture.attachButton);
 		attache.setOnClickListener(this);
 		EditText queryField = (EditText) findViewById(R.picture.searchString);
 		queryField.setOnKeyListener(this);
@@ -148,7 +148,7 @@ public class Picture extends Activity implements OnClickListener,
 	 */
 	public void onClick(View v)
 	{
-		if (v == findViewById(R.picture.attacheButton))
+		if (v == findViewById(R.picture.attachButton))
 		{
 			// return chosen image
 			Intent i = new Intent();

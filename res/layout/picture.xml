@@ -57,8 +57,8 @@
 			android:layout_below="@picture/searchString"
 			/>
 		<Button
-			android:id="@+picture/attacheButton"
-			android:text="@string/Picture_attache"
+			android:id="@+picture/attachButton"
+			android:text="@string/Picture_attach"
 			android:layout_width="85dip"
 			android:layout_height="wrap_content"
 			android:layout_below="@picture/mainImageView"
@@ -70,7 +70,7 @@
 			android:layout_width="85dip"
 			android:layout_height="wrap_content"
 			android:layout_below="@picture/mainImageView"
-			android:layout_toLeftOf="@picture/attacheButton"
+			android:layout_toLeftOf="@picture/attachButton"
 			/>
 		<Button 
 			android:text="@string/Picture_gallery"
@@ -78,7 +78,7 @@
 			android:layout_width="85dip"
 			android:layout_height="wrap_content"
 			android:layout_below="@picture/mainImageView"
-			android:layout_toRightOf="@picture/attacheButton"
+			android:layout_toRightOf="@picture/attachButton"
 			/>
 	</RelativeLayout>
 </ScrollView>

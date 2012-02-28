@@ -99,7 +99,7 @@
     <string name="Picture_search_progress_text">Searching for Images</string>
     <string name="Picture_search_progress_title">Searching&#8230;</string>
     <string name="Picture_type_search_query">Please type in your search query.</string>
-    <string name="Picture_attache">Attache</string>
+    <string name="Picture_attach">Attach</string>
     <string name="Picture_search">Search</string>
     <string name="Picture_gallery">Gallery</string>
     <string name="Picture_noGallery">No gallery application found.</string>

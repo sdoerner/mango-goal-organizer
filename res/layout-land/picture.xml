@@ -75,8 +75,8 @@
 			android:layout_alignTop="@picture/mainImageView"
 			/>
 		<Button 
-			android:id="@+picture/attacheButton"
-			android:text="@string/Picture_attache"
+			android:id="@+picture/attachButton"
+			android:text="@string/Picture_attach"
 			android:layout_centerHorizontal="true"
 			android:layout_width="85px"
 			android:layout_height="50px"
