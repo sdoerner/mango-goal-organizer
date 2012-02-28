@@ -26,14 +26,14 @@
 	>
 	<RelativeLayout 
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:padding="5dp"
 		android:gravity="center_horizontal"
 		>
 		<EditText 
 		android:id="@+picture/searchString"
 		android:textSize="18sp"
-		android:layout_width="235px"
+		android:layout_width="235dp"
 		android:layout_height="wrap_content"
 		android:layout_margin="4dp"
 		android:maxLines="1"
@@ -64,7 +64,7 @@
 			android:layout_below="@picture/mainImageView"
 			android:layout_centerHorizontal="true"
 			/>
-		<ImageButton 
+		<ImageButton
 			android:id="@+picture/nextButton"
 			android:src="@android:drawable/ic_media_play"
 			android:layout_width="85dip"
