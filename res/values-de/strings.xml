@@ -22,6 +22,10 @@
     <!-- Google search parameters -->
     <string name="Google_hl">de</string>
 
+    <!-- General information -->
+    <string name="app_name">Mango Goal Organizer</string>
+    <string name="app_description">Mango Goal Organizer</string>
+
     <!-- Activity titles -->
     <string name="ActivityTitle_Main">Mango - Zielübersicht</string>
     <string name="ActivityTitle_Create">Mango - Ziel erstellen</string>
@@ -94,7 +98,7 @@
     <string name="Picture_search_progress_text">Suche nach Bildern</string>
     <string name="Picture_search_progress_title">Suche läuft...</string>
     <string name="Picture_type_search_query">Bitte geben Sie einen Suchbegriff ein.</string>
-    <string name="Picture_attache">Anhängen</string>
+    <string name="Picture_attach">Anhängen</string>
     <string name="Picture_search">Suchen</string>
     <string name="Picture_gallery">Galerie</string>
     <string name="Picture_noGallery">Es konnte keine Galerie-Anwendung gefunden werden.</string>
