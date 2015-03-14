@@ -2,6 +2,8 @@
 
 Mango Goal Organizer is a personal goal management software running on the Android platform. The user can create goals, put them in a hierarchical structure, assign attributes and track their progress.
 
+The app is on [Google Play](https://play.google.com/store/apps/details?id=de.mango).
+
 **Features**
 * Manage your Goals in a hierarchical tree structure.
 * Goal attributes
